@@ -26,7 +26,7 @@ public class TestProspero_SoilEvaporationPM_GEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2014-01-01 00:00";
-        String endDate	= "2014-02-01 23:00";
+        String endDate	= "2014-10-01 23:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -61,7 +61,7 @@ public class TestProspero_SoilEvaporationPM_GEOET{
         String outPathToFluxEvapoTranspiration	="resources/Output/FluxEvapoTranspiration.csv";
         String outPathToFluxEvaporation			="resources/Output/FluxEvaporation.csv";
         String outPathToEvapoTranspiration		="resources/Output/EvapoTranspiration.csv";
-        String outPathToTranspiration			="resources/Output/TranspirationNew.csv";
+        String outPathToTranspiration			="resources/Output/Transpiration.csv";
         String outPathToEvaporation				="resources/Output/Evaporation.csv";
         
         String outPathToLeafTemperatureSun		="resources/Output/LeafTemperatureSun.csv";
