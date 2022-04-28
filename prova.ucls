@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="false" 
+  realizations="false" associations="false" dependencies="false" nesting-relationships="false" router="FAN">  
+  <class id="1" language="java" name="it.geoframe.blogspot.geoet.prospero.solver.ProsperoSolverMain" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/solver/ProsperoSolverMain.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="534" width="347" x="223" y="355"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="2" language="java" name="it.geoframe.blogspot.geoet.prospero.data.ComputeQuantitiesProspero" 
+    project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/data/ComputeQuantitiesProspero.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="98" width="432" x="602" y="461"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="it.geoframe.blogspot.geoet.prospero.data.Leaf" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/data/Leaf.java" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="96" width="335" x="643" y="585"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" name="it.geoframe.blogspot.geoet.prospero.data.Parameters" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/data/Parameters.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="90" width="314" x="661" y="341"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="it.geoframe.blogspot.geoet.prospero.data.ProblemQuantities" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/data/ProblemQuantities.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="99" width="373" x="621" y="698"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <package id="6" language="java" name="it.geoframe.blogspot.geoet.prospero.solver" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/solver" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="397" y="225"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="7" language="java" name="it.geoframe.blogspot.geoet.prospero.data" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/data" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="822" y="232"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <package id="8" language="java" name="it.geoframe.blogspot.geoet.prospero.methods" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1330" y="226"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="9" language="java" name="it.geoframe.blogspot.geoet.evaporation.methods.PenmanMonteithEvaporationFromSoil" 
+    project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/evaporation/methods/PenmanMonteithEvaporationFromSoil.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="80" width="370" x="1147" y="278"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="10" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.SolarGeometry" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/SolarGeometry.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="414" x="1126" y="372"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="11" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.RadiationMethod" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/RadiationMethod.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="76" width="440" x="1113" y="466"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="12" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.PressureMethods" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/PressureMethods.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="410" x="1131" y="741"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="13" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.Transpiration" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/Transpiration.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="74" width="448" x="1110" y="656"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="14" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.LatentHeatMethods" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/LatentHeatMethods.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="412" x="1130" y="559"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="15" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.WindProfile" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/WindProfile.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="78" width="257" x="1208" y="929"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="16" language="java" name="it.geoframe.blogspot.geoet.prospero.methods.SensibleHeatMethods" project="GEOET8" 
+    file="/GEOET8/src/main/java/it/geoframe/blogspot/geoet/prospero/methods/SensibleHeatMethods.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="81" width="481" x="1099" y="838"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="17">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="18" name="plantstranspiration">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="19" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="13" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="20">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="21" name="leafparameters">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="22" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="3" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="23">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="24" name="radiationMethods">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="25" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="11" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="26">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="27" name="solarGeometry">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="28" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="10" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="29">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="30" name="parameters">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="31" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="4" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="32">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="33" name="variables">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="34" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="5" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="35">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="36" name="computeQuantitiesProspero">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="37" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="2" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="38">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="39" name="pressure">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="40" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="12" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="41">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="42" name="latentHeat">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="43" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="14" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="44">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="45" name="soilevaporation">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="46" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <association id="47">    
+    <end type="SOURCE" refId="1" navigable="false">      
+      <attribute id="48" name="sensibleHeat">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </attribute>      
+      <multiplicity id="49" minimum="0" maximum="1">        
+        <position height="0" width="0" x="0" y="0"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="16" navigable="true"/>    
+    <display labels="false" multiplicity="false"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="false" multiplicity="false"/>
+</class-diagram>

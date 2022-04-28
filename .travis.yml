@@ -1,0 +1,27 @@
+language: java
+jdk:
+- oraclejdk8
+before_cache:
+- rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+- rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+cache:
+  directories:
+  - "$HOME/.gradle/caches/"
+  - "$HOME/.gradle/wrapper/"
+before_deploy:
+- export GRADLE_BUILD_DIR="build/libs"
+- export TAG=$(git describe --abbrev=0 --tags)
+- export MOD_TAG=${TAG#"v"}
+- export RELEASE_PKG_FILE="${GRADLE_BUILD_DIR}/ETP-${MOD_TAG}.jar"
+- echo "deploying $RELEASE_PKG_FILE to GitHub releases"
+- gradle -PprojVersion=$MOD_TAG build
+deploy:
+  provider: releases
+  api_key:
+    secure: O8crf3G6x6u46JB6/7P02eDzoSC0UQWYhQ32JcUXBzyN0JnNIkN4Q57UFk/uyYV79Ouu+tznZvPSc/SwNV1hgN4YUIjJ6MKKInTQP48pP1Rh0+Vl4+GAZRWlPGICpNz2p9PjO6+zEOPN0lXiHH16FfaNMOohHf/a5Tl8xWiQj1og8rUdl0JavvN6xbuB5KxVb/J6wKfVztOasbZvzfyRyxg4J6DE4GpbeCzrMQ3dINDnW3qduS2cwkqTl+1avMF8Ib0427isn92pjl+y49vGFExgLVLe/1UoGJin5KLqCD68cd+3JAVA9fXz1hDBBJYeRjneJoXc56swTpU0grWRW5tIYmfh8b1QhNjTBHNiH7YqcKIlk2mv0Thl02AAjmqxKbo0hycayJz4U+XnlQ+255wB+8q9iH6ilOts2DvYsbz3D7uIFTpxaEVWcdeTNmYpMoboqBk+pGafdyCVLmm9jW1Nu65T7biO21JwsVM1b4Sa5cQVrZ2vA0evLXAsntglIgnTfT3UXccnNB5Q4jjXhk4nDVRNPWi0Dnxe+vy2CKEeh1HbQhS8/TUgDBPyYuruWW7n9b5BwW0h3xiLR3l+Vh9jovtJ0/kWqQpTYRrr5bKD8By3HCo/XS4yQP1ZpIfpJ6jB+mi/sUlH1J5x5MIm+cxd5PGQEgSPZG9tGPCEg1k=
+  file: "${RELEASE_PKG_FILE}"
+  skip_cleanup: true
+  on:
+    tags: true
+    all_branches: true
+    repo: geoframecomponents/ETP
