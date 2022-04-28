@@ -3,10 +3,10 @@ import java.net.URISyntaxException;
 import java.util.HashMap;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
-import org.jgrasstools.gears.io.rasterreader.OmsRasterReader;
-import org.jgrasstools.gears.io.shapefile.OmsShapefileFeatureReader;
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorReader;
-import org.jgrasstools.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
+import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
+import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
+import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 //import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
 import org.junit.*;
 
@@ -35,8 +35,8 @@ public class TestProsperoGEOET{
         
         OmsRasterReader DEMreader = new OmsRasterReader();
 		DEMreader.file = "resources/Input/dataET_point/1/dem_1.tif";
-		DEMreader.fileNovalue = -9999.0;
-		DEMreader.geodataNovalue = Double.NaN;
+		//DEMreader.fileNovalue = -9999.0;
+		//DEMreader.geodataNovalue = Double.NaN;
 		DEMreader.process();
 		GridCoverage2D digitalElevationModel = DEMreader.outRaster;
               
