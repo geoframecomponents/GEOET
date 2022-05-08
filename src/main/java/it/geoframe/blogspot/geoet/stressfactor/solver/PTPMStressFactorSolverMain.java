@@ -81,7 +81,10 @@ public class PTPMStressFactorSolverMain {
 	public boolean useWaterStress = false;
 	
 	@In
-	public double defaultStress;
+	public double defaultStress = 1;
+	
+	@In
+	public boolean  doProcess;
 	
 	@Description("It is needed to iterate on the date")
 	int step;

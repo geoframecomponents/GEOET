@@ -90,7 +90,7 @@ public class TestActualPriestleyTaylorGEOET{
         //PtEt.defaultAtmosphericPressure = 101.3;
         //PtEt.stressFactor = 0.5;
         
-        PTstressfactor.defaultStress = 1.0;
+       // PTstressfactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		
 		

@@ -145,6 +145,9 @@ public class OutputWriterMain {
 	@In
 	public boolean doPrintOutputPM = false;
 	
+	@In 
+	public boolean  doProcessOut;
+	
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	
