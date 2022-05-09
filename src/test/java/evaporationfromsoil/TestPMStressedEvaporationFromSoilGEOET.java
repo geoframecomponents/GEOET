@@ -24,8 +24,8 @@ import it.geoframe.blogspot.geoet.soilevaporation.solver.*;
 public class TestPMStressedEvaporationFromSoilGEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 09:00";
-        String endDate	= "2014-01-01 11:00";
+		String startDate= "2013-12-15 00:00";
+        String endDate	= "2013-12-15 02:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -216,7 +216,7 @@ public class TestPMStressedEvaporationFromSoilGEOET{
 		//ProsperoStressFactor.useRadiationStress=false;
 		//ProsperoStressFactor.useTemperatureStress=false;
 		//ProsperoStressFactor.useVDPStress=false;
-        PMwaterStressFactor.useWaterStress=true;
+        PMwaterStressFactor.useWaterStress=false;
 
 	
 		

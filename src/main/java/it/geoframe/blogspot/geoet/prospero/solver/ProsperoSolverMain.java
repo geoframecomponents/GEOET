@@ -39,7 +39,11 @@ public class ProsperoSolverMain {
 	
 	double nullValue = -9999.0;
 	
-	@In 
+	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@In
 	public boolean  doProcess;
 	
 	@Description("Stress factor for sun canopy")

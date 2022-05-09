@@ -50,6 +50,11 @@ public class PMEvaporationFromSoilAfterCanopySolverMain {
 	@In 
 	public boolean  doProcess;
 	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	
+	
 	/*@Description("Stress factor for sun canopy")
 	@In
 	@Unit("-")
