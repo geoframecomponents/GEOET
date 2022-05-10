@@ -230,7 +230,7 @@ public class TestPMStressedEvaporationFromSoilGEOET{
 		//Prospero.typeOfCanopy="multilayer";
         PMwaterStressFactor.waterWiltingPoint = 0.16;
         PMwaterStressFactor.waterFieldCapacity = 0.27; 
-        PMwaterStressFactor.rootsDepth = 0.25;
+        PMwaterStressFactor.depth = 0.25;
         PMwaterStressFactor.depletionFraction = 0.75;
 		//ProsperoStressFactor.cropCoefficient = 0.75;
 		

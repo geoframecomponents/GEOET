@@ -104,7 +104,7 @@ public class TestPenmanMonteithFAOTotalStressed{
 		PMstressfactor.Th = 45.0;
 		PMstressfactor.waterWiltingPoint = 0.05;
 		PMstressfactor.waterFieldCapacity = 0.27; 
-		PMstressfactor.rootsDepth = 0.75;
+		PMstressfactor.depth = 0.75;
 		PMstressfactor.depletionFraction = 0.55;
 		PMstressfactor.cropCoefficient = 0.75;
 		

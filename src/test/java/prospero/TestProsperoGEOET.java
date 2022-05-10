@@ -229,9 +229,9 @@ public class TestProsperoGEOET{
 		Prospero.typeOfCanopy="multilayer";
 		ProsperoStressFactor.waterWiltingPoint = 0.08;
 		ProsperoStressFactor.waterFieldCapacity = 0.27; 
-		ProsperoStressFactor.rootsDepth = 0.75;
+		ProsperoStressFactor.rootsDepth = 1;
 		ProsperoStressFactor.depletionFraction = 0.55;
-		ProsperoStressFactor.cropCoefficient = 0.75;
+		ProsperoStressFactor.cropCoefficient = 0.85;
 		
 		while(temperatureReader.doProcess ) {
         	temperatureReader.nextRecord();

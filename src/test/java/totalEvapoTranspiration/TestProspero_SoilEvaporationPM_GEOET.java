@@ -25,8 +25,8 @@ import it.geoframe.blogspot.geoet.totalEvapoTranspiration.*;
 public class TestProspero_SoilEvaporationPM_GEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 00:00";
-        String endDate	= "2014-10-01 23:00";
+		String startDate= "2013-12-15 11:00";
+        String endDate	= "2013-12-15 12:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -196,7 +196,7 @@ public class TestProspero_SoilEvaporationPM_GEOET{
 		vapourPressureDeficitWriter.fileNovalue="-9999";
 		
 		InputReaderMain Input 								= new InputReaderMain();
-		ProsperoStressFactorSolverMain ProsperoStressFactor = new ProsperoStressFactorSolverMain();
+		ProsperoPMStressFactorSolverMain ProsperoPMStressFactor = new ProsperoPMStressFactorSolverMain();
 		PMEvaporationFromSoilAfterCanopySolverMain PMsoilevaporation = new PMEvaporationFromSoilAfterCanopySolverMain();
 		ProsperoSolverMain Prospero 						= new ProsperoSolverMain();
 		TotalEvapoTranspirationSolverMain TotalEvapoTranspiration = new TotalEvapoTranspirationSolverMain();
@@ -210,31 +210,32 @@ public class TestProspero_SoilEvaporationPM_GEOET{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 0.2;
-		ProsperoStressFactor.defaultStress = 1.0;
+		Prospero.canopyHeight = 1.26;
+		ProsperoPMStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		
 		
-		ProsperoStressFactor.useRadiationStress=false;
-		ProsperoStressFactor.useTemperatureStress=false;
-		ProsperoStressFactor.useVDPStress=false;
-		ProsperoStressFactor.useWaterStress=false;
+		ProsperoPMStressFactor.useRadiationStress=false;
+		ProsperoPMStressFactor.useTemperatureStress=false;
+		ProsperoPMStressFactor.useVDPStress=false;
+		ProsperoPMStressFactor.useWaterStress=false;
 
 	
 		
-		ProsperoStressFactor.alpha = 0.005;
-		ProsperoStressFactor.theta = 0.9;
-		ProsperoStressFactor.VPD0 = 5.0;
+		ProsperoPMStressFactor.alpha = 0.005;
+		ProsperoPMStressFactor.theta = 0.9;
+		ProsperoPMStressFactor.VPD0 = 5.0;
         	
-		ProsperoStressFactor.Tl = -5.0;
-		ProsperoStressFactor.T0 = 20.0;
-		ProsperoStressFactor.Th = 45.0;
+		ProsperoPMStressFactor.Tl = -5.0;
+		ProsperoPMStressFactor.T0 = 20.0;
+		ProsperoPMStressFactor.Th = 45.0;
 		Prospero.typeOfCanopy="multilayer";
-		ProsperoStressFactor.waterWiltingPoint = 0.15;
-		ProsperoStressFactor.waterFieldCapacity = 0.27; 
-		ProsperoStressFactor.rootsDepth = 0.75;
-		ProsperoStressFactor.depletionFraction = 0.55;
-		ProsperoStressFactor.cropCoefficient = 0.75;
+		ProsperoPMStressFactor.waterWiltingPoint = 0.15;
+		ProsperoPMStressFactor.waterFieldCapacity = 0.27; 
+		ProsperoPMStressFactor.rootsDepth = 0.75;
+		ProsperoPMStressFactor.depletionFraction = 0.55;
+		ProsperoPMStressFactor.cropCoefficient = 0.75;
+		ProsperoPMStressFactor.evaporationDepth = 0.5;
 		
 		while(temperatureReader.doProcess ) {
         	temperatureReader.nextRecord();
@@ -293,14 +294,15 @@ public class TestProspero_SoilEvaporationPM_GEOET{
         
             Input.process();
 
-            PMsoilevaporation.evaporationStressWater = 0.9;
-            PMsoilevaporation.process();
-            
-            ProsperoStressFactor.solve();
-            
-            Prospero.stressSun = ProsperoStressFactor.stressSun;
-            Prospero.stressShade = ProsperoStressFactor.stressShade;
+            ProsperoPMStressFactor.solve();
+            Prospero.stressSun = ProsperoPMStressFactor.stressSun;
+            Prospero.stressShade = ProsperoPMStressFactor.stressShade;
             Prospero.process();
+            
+            PMsoilevaporation.evaporationStressWater = ProsperoPMStressFactor.evaporationStress;
+            PMsoilevaporation.process();
+           
+       
             
             TotalEvapoTranspiration.evaporation = PMsoilevaporation.evaporation;
             TotalEvapoTranspiration.transpiration = Prospero.transpiration;

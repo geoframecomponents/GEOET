@@ -196,7 +196,7 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET{
 		vapourPressureDeficitWriter.fileNovalue="-9999";
 		
 		InputReaderMain Input 								= new InputReaderMain();
-		ProsperoStressFactorSolverMain ProsperoStressFactor = new ProsperoStressFactorSolverMain();
+		ProsperoPMStressFactorSolverMain ProsperoStressFactor = new ProsperoPMStressFactorSolverMain();
 		PMEvaporationFromSoilAfterCanopySolverMain PMsoilevaporation = new PMEvaporationFromSoilAfterCanopySolverMain();
 		ProsperoSolverMain Prospero 						= new ProsperoSolverMain();
 		TotalEvapoTranspirationSolverMain TotalEvapoTranspiration = new TotalEvapoTranspirationSolverMain();
