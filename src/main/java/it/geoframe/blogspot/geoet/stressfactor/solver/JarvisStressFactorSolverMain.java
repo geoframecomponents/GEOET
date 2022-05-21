@@ -24,6 +24,9 @@ import oms3.annotations.Execute;
 import oms3.annotations.In;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
+
+import java.util.ArrayList;
+
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress;
@@ -129,15 +132,12 @@ public class JarvisStressFactorSolverMain {
 	@Unit("-")
 	public double[] g;
 	
-	@Description("The stress factor representative of the domain")
-	@Out
-	@Unit("-")
-	public double G;
 	
 	@Description("Representative stress factor in the evaporation layer")
 	@Out
 	@Unit("-")
 	public double evaporationStressWater;
+	
 	
 	@Description("Vector of G and n, for transpiration and evaporation")
 	@Out
@@ -196,7 +196,7 @@ public class JarvisStressFactorSolverMain {
 	public boolean useWaterStress = true;
 	
 	@In
-	public double defaultStress;
+	public double defaultStress=1;
 	
 	@Description("It is needed to iterate on the date")
 	int step;
@@ -213,6 +213,10 @@ public class JarvisStressFactorSolverMain {
 	
 	@In 
 	public boolean  doProcess;
+	
+	@Description("ArrayList of variable to be stored in the buffer writer")
+	@Out
+	public ArrayList<double[]> outputToBuffer;
 	
 	/////////////////////////////////////////////////////////////////////////////
 
@@ -239,11 +243,14 @@ public class JarvisStressFactorSolverMain {
 			
 			zR = totalDepth + etaR;
 			zE = totalDepth + etaE;
+			
+			outputToBuffer = new ArrayList<double[]>();
 		}
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 	
-	
+		outputToBuffer.clear();
+		
 		variables.stressRadiationSun = 1;
         if (useRadiationStress == true) {
         	variables.stressRadiationSun = environmentalStress.computeRadiationStress(variables.shortwaveCanopySun*2.1, alpha, thetaR);
@@ -280,10 +287,10 @@ public class JarvisStressFactorSolverMain {
  
         	}
         
- 
         evaporationStressWater = variables.evaporationStressWater;
+        
         stressSun = defaultStress * variables.stressRadiationSun * variables.stressTemperature * variables.stressWater * variables.stressVPD;
-    
+ 
         stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
         
 		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
@@ -304,6 +311,13 @@ public class JarvisStressFactorSolverMain {
         System.out.println("CELJTh is  = "+ Th);
         System.out.println("CELJT0 is  = "+ T0);*/
 						
+        outputToBuffer.add(g);
+
+        outputToBuffer.add(new double[] {variables.stressWater});
+        outputToBuffer.add(new double[] {variables.evaporationStressWater});
+        outputToBuffer.add(new double[] {stressSun});
+        outputToBuffer.add(new double[] {stressShade});
+        
 		step++;
 		System.out.printf("End JarvisStressFactorSolverMain");	
 	}

@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<class-diagram version="1.2.4" icons="true" always-add-relationships="false" generalizations="true" realizations="true" 
+  associations="true" dependencies="false" nesting-relationships="true" router="FAN">  
+  <package id="1" language="java" name="it.geoframe.blogspot.geoet.stressfactor.solver" project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver" binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="839" y="126"/>    
+    <display autosize="true" stereotype="true" sort-features="false" accessors="true"/>  
+  </package>  
+  <class id="2" language="java" name="it.geoframe.blogspot.geoet.stressfactor.solver.JarvisStressFactorSolverMain" 
+    project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver/JarvisStressFactorSolverMain.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="649" width="235" x="114" y="181"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="3" language="java" name="it.geoframe.blogspot.geoet.stressfactor.solver.ProsperoStressFactorSolverMain" 
+    project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver/ProsperoStressFactorSolverMain.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="307" width="253" x="965" y="182"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="4" language="java" 
+    name="it.geoframe.blogspot.geoet.stressfactor.solver.JarvisNetRadiationStressFactorSolverMain" project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver/JarvisNetRadiationStressFactorSolverMain.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="505" width="312" x="377" y="184"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="5" language="java" name="it.geoframe.blogspot.geoet.stressfactor.solver.PTPMStressFactorSolverMain" 
+    project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver/PTPMStressFactorSolverMain.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="271" width="230" x="715" y="183"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="6" language="java" name="it.geoframe.blogspot.geoet.stressfactor.solver.ProsperoPMStressFactorSolverMain" 
+    project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/solver/ProsperoPMStressFactorSolverMain.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1376" y="457"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="7" language="java" name="it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress" 
+    project="GEOET" file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/methods/EnvironmentalStress.java" 
+    binary="false" corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="887" y="860"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="8" language="java" name="it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress" project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/methods/FaoWaterStress.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="-1" width="-1" x="1432" y="971"/>    
+    <display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <class id="9" language="java" name="it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactor" project="GEOET" 
+    file="/GEOET/src/main/java/it/geoframe/blogspot/geoet/stressfactor/methods/WaterStressFactor.java" binary="false" 
+    corner="BOTTOM_RIGHT">    
+    <position height="317" width="337" x="282" y="868"/>    
+    <display autosize="false" stereotype="true" package="true" initial-value="false" signature="true" 
+      sort-features="false" accessors="true" visibility="true">      
+      <attributes public="true" package="true" protected="true" private="true" static="true"/>      
+      <operations public="true" package="true" protected="true" private="true" static="true"/>    
+    </display>  
+  </class>  
+  <association id="10">    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="11" name="environmentalStress">        
+        <position height="19" width="121" x="760" y="576"/>      
+      </attribute>      
+      <multiplicity id="12" minimum="0" maximum="1">        
+        <position height="17" width="26" x="851" y="756"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="13">    
+    <bendpoint x="360" y="738"/>    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="14" name="environmentalStress"/>      
+      <multiplicity id="15" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="16">    
+    <end type="SOURCE" refId="2" navigable="false">      
+      <attribute id="17" name="stressFactor">        
+        <position height="19" width="78" x="352" y="848"/>      
+      </attribute>      
+      <multiplicity id="18" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="19">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="20" name="faoWaterStress">        
+        <position height="19" width="94" x="1407" y="859"/>      
+      </attribute>      
+      <multiplicity id="21" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="22">    
+    <bendpoint x="455" y="769"/>    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="23" name="stressFactor">        
+        <position height="19" width="78" x="475" y="841"/>      
+      </attribute>      
+      <multiplicity id="24" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="9" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="25">    
+    <bendpoint x="1201" y="728"/>    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="26" name="faoWaterStress">        
+        <position height="19" width="94" x="1253" y="846"/>      
+      </attribute>      
+      <multiplicity id="27" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="28">    
+    <bendpoint x="1106" y="755"/>    
+    <end type="SOURCE" refId="5" navigable="false">      
+      <attribute id="29" name="faoWaterStress">        
+        <position height="19" width="94" x="1152" y="838"/>      
+      </attribute>      
+      <multiplicity id="30" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="8" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="31">    
+    <end type="SOURCE" refId="6" navigable="false">      
+      <attribute id="32" name="environmentalStress">        
+        <position height="19" width="121" x="990" y="750"/>      
+      </attribute>      
+      <multiplicity id="33" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="34">    
+    <end type="SOURCE" refId="3" navigable="false">      
+      <attribute id="35" name="environmentalStress">        
+        <position height="19" width="121" x="887" y="709"/>      
+      </attribute>      
+      <multiplicity id="36" minimum="0" maximum="1">        
+        <position height="17" width="26" x="940" y="722"/>      
+      </multiplicity>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <association id="37">    
+    <end type="SOURCE" refId="4" navigable="false">      
+      <attribute id="38" name="environmentalStress">        
+        <position height="19" width="121" x="631" y="698"/>      
+      </attribute>      
+      <multiplicity id="39" minimum="0" maximum="1"/>    
+    </end>    
+    <end type="TARGET" refId="7" navigable="true"/>    
+    <display labels="true" multiplicity="true"/>  
+  </association>  
+  <classifier-display autosize="true" stereotype="true" package="true" initial-value="false" signature="true" 
+    sort-features="false" accessors="true" visibility="true">    
+    <attributes public="true" package="true" protected="true" private="true" static="true"/>    
+    <operations public="true" package="true" protected="true" private="true" static="true"/>  
+  </classifier-display>  
+  <association-display labels="true" multiplicity="true"/>
+</class-diagram>
