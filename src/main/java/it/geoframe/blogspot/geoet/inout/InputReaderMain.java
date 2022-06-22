@@ -181,7 +181,7 @@ public class InputReaderMain {
 	public int ID;
 	
 	@Out 
-	public boolean  doProcess = false;
+	public boolean  doProcess1 = false;
 
 
 	PressureMethods pressure = new PressureMethods(); 

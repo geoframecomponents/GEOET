@@ -103,8 +103,7 @@ public class ProsperoStressFactorSolverMain {
 	public double stressShade;
 	
 	
-	@In
-	public boolean  doProcess;
+	
 	/////////////////////////////////////////////////////////////////////////////
 
 	EnvironmentalStress environmentalStress	= new EnvironmentalStress();

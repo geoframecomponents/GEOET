@@ -92,6 +92,12 @@ public class PriestleyTaylorActualETSolverMain{
 	
 	@In
 	public boolean  doProcess;
+	
+	@In
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;

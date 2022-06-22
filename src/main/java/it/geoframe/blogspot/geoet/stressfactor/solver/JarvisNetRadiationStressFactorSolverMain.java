@@ -217,6 +217,13 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	@In 
 	public boolean  doProcess;
 	
+
+	@In 
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
+	
 	@Description("ArrayList of variable to be stored in the buffer writer")
 	@Out
 	public ArrayList<double[]> outputToBuffer;

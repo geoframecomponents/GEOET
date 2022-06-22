@@ -149,7 +149,7 @@ public class OutputWriterMain {
 	public boolean doPrintLess = false;
 	
 	@In 
-	public boolean  doProcessOut;
+	public boolean  doProcess7;
 	
 	private ProblemQuantities variables;
 	private InputTimeSeries input;

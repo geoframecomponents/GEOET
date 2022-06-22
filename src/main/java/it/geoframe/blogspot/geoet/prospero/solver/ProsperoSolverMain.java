@@ -46,8 +46,14 @@ public class ProsperoSolverMain {
 	@Out 
 	public boolean  doPro = false;
 	
+	//@In
+	//public boolean  doProcess;
+	
 	@In
-	public boolean  doProcess;
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	@Description("Stress factor for sun canopy")
 	@In

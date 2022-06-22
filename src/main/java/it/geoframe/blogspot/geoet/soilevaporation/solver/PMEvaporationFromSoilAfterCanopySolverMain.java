@@ -47,14 +47,13 @@ public class PMEvaporationFromSoilAfterCanopySolverMain {
 	
 	double nullValue = -9999.0;
 	
-	//@In 
-	//public boolean  doProcess;
+	
 	
 	@In 
-	public boolean  doPro;
+	public boolean  doProcess3;
 	
 	@Out 
-	public boolean  doProcessOut = false;
+	public boolean  doProcess4 = false;
 	
 	
 	

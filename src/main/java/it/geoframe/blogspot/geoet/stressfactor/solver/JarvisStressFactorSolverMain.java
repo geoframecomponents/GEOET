@@ -26,6 +26,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Unit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
@@ -212,7 +213,10 @@ public class JarvisStressFactorSolverMain {
 	public double stressShade;
 	
 	@In 
-	public boolean  doProcess;
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
 	
 	@Description("ArrayList of variable to be stored in the buffer writer")
 	@Out
@@ -272,8 +276,13 @@ public class JarvisStressFactorSolverMain {
         	}
           
         variables.stressWater = 1;
+      //System.out.println("\n\n etaR = "+ etaR);
+      //System.out.println("\n\n zR = "+ zR);
         g = stressFactor.computeStressFactor(theta,zR,zE);
+       // System.out.println("theta = "+ Arrays.toString(g));
 		GnT = representativeSF.computeRepresentativeStressFactor(g,etaR,zR);
+		
+	
 		GnE = representativeSF.computeRepresentativeStressFactor(g,etaE,zE);
         
 		if (useWaterStress == true) {
