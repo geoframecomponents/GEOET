@@ -29,6 +29,7 @@ import oms3.annotations.Keywords;
 import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
+import oms3.annotations.Out;
 //import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
@@ -145,6 +146,12 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
+	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@In
+	public boolean  doProcess;
 	
 	
 	int step;

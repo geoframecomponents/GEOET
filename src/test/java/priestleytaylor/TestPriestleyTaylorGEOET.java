@@ -25,8 +25,8 @@ import it.geoframe.blogspot.geoet.priestleytaylor.*;
 public class TestPriestleyTaylorGEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 09:00";
-        String endDate	= "2014-02-02 11:00";
+		String startDate= "2013-12-15 00:00";
+        String endDate	= "2013-12-15 01:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         

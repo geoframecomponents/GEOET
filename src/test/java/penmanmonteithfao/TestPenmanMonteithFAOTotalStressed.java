@@ -29,7 +29,7 @@ public class TestPenmanMonteithFAOTotalStressed{
     public void Test() throws Exception {
 		String startDate= "2014-01-01 00:00";
         String endDate	= "2015-01-01 00:00";
-        int timeStepMinutes = 60;
+        int timeStepMinutes = 1440;
         String fId = "ID";
 
         //PrintStreamProgressMonitor pm = new PrintStreamProgressMonitor(System.out, System.out);
@@ -104,7 +104,7 @@ public class TestPenmanMonteithFAOTotalStressed{
 		PMstressfactor.Th = 45.0;
 		PMstressfactor.waterWiltingPoint = 0.05;
 		PMstressfactor.waterFieldCapacity = 0.27; 
-		PMstressfactor.rootsDepth = 0.75;
+		PMstressfactor.depth = 0.75;
 		PMstressfactor.depletionFraction = 0.55;
 		PMstressfactor.cropCoefficient = 0.75;
 		

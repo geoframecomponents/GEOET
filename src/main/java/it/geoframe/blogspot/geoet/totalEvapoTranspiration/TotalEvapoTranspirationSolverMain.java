@@ -53,6 +53,11 @@ public class TotalEvapoTranspirationSolverMain {
 	@Unit("W m-2")
 	@Out
 	public double fluxEvapoTranspiration;
+	
+	@In
+	public boolean  doProcess4;
+	@Out
+	public boolean  doProcess5;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;

@@ -23,8 +23,8 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 public class TestProsperoGEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 00:00";
-        String endDate	= "2015-01-01 00:00";
+		String startDate= "2013-12-15 11:00";
+        String endDate	= "2013-12-15 12:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         String lab1 = "_totalstress";
@@ -207,14 +207,14 @@ public class TestProsperoGEOET{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 0.2;
+		Prospero.canopyHeight = 1.26;
 		ProsperoStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		
 		
-		ProsperoStressFactor.useRadiationStress=true;
-		ProsperoStressFactor.useTemperatureStress=true;
-		ProsperoStressFactor.useVDPStress=true;
+		ProsperoStressFactor.useRadiationStress=false;
+		ProsperoStressFactor.useTemperatureStress=false;
+		ProsperoStressFactor.useVDPStress=false;
 		ProsperoStressFactor.useWaterStress=true;
 
 	
@@ -229,9 +229,9 @@ public class TestProsperoGEOET{
 		Prospero.typeOfCanopy="multilayer";
 		ProsperoStressFactor.waterWiltingPoint = 0.08;
 		ProsperoStressFactor.waterFieldCapacity = 0.27; 
-		ProsperoStressFactor.rootsDepth = 0.75;
+		ProsperoStressFactor.rootsDepth = 1;
 		ProsperoStressFactor.depletionFraction = 0.55;
-		ProsperoStressFactor.cropCoefficient = 0.75;
+		ProsperoStressFactor.cropCoefficient = 0.85;
 		
 		while(temperatureReader.doProcess ) {
         	temperatureReader.nextRecord();
