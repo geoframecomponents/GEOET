@@ -39,8 +39,21 @@ public class ProsperoSolverMain {
 	
 	double nullValue = -9999.0;
 	
-	@In 
-	public boolean  doProcess;
+	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@Out 
+	public boolean  doPro = false;
+	
+	//@In
+	//public boolean  doProcess;
+	
+	@In
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	@Description("Stress factor for sun canopy")
 	@In
@@ -98,7 +111,7 @@ public class ProsperoSolverMain {
 		/*System.out.println("stressSun is  = "+ stressSun);
         System.out.println("stressShade is  = "+ stressShade);
         System.out.println("input.longWaveRadiation is  = "+ input.longWaveRadiation);
-        System.out.println("input.airTemperatureis  = "+ input.airTemperature);
+        System.out.println("input.airTemperature is  = "+ input.airTemperature);
         System.out.println("input.time, is  = "+ input.time);
         System.out.println("nullValue is  = "+ nullValue);*/
         

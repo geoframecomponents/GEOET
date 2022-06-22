@@ -57,6 +57,11 @@ public class ProsperoStressFactorSolverMain {
 	@Unit("m")
 	public double rootsDepth;
 	
+	@Description("Evporation depth.")
+	@In 
+	@Unit("m")
+	public double evaporationDepth;
+	
 	@Description("The crop coefficient.")
 	@Unit("[-]")
 	@In
@@ -82,7 +87,7 @@ public class ProsperoStressFactorSolverMain {
 	public boolean useWaterStress = true;
 	
 	@In
-	public double defaultStress;
+	public double defaultStress=1;
 	
 	@Description("It is needed to iterate on the date")
 	int step;
@@ -96,6 +101,8 @@ public class ProsperoStressFactorSolverMain {
 	@Out
 	@Unit("-")
 	public double stressShade;
+	
+	
 	
 	/////////////////////////////////////////////////////////////////////////////
 
@@ -136,7 +143,7 @@ public class ProsperoStressFactorSolverMain {
         variables.stressWater = 1;
         if (useWaterStress == true) {
         	variables.stressWater = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction) * cropCoefficient;
-        	}
+        }
         	            
         stressSun = defaultStress * variables.stressRadiationSun * variables.stressTemperature * variables.stressWater * variables.stressVPD;
     
@@ -144,6 +151,8 @@ public class ProsperoStressFactorSolverMain {
         
 		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
 		//System.out.printf("\nGE = %.5f %n", GnE[0]);
+        //System.out.println("stressSun is  = "+ stressSun);
+        //System.out.println("stressShade is  = "+ stressShade);
 						
 		step++;
 	}

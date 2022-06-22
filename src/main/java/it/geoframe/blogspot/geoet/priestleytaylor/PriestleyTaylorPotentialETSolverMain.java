@@ -31,6 +31,7 @@ import oms3.annotations.Keywords;
 import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
+import oms3.annotations.Out;
 //import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
@@ -77,6 +78,12 @@ public class PriestleyTaylorPotentialETSolverMain{
     double nullValue = -9999.0;
 
 	int step;
+	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@In
+	public boolean  doProcess;
 	
 	private Parameters parameters;
 	private ProblemQuantities variables;

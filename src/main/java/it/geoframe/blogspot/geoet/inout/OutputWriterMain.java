@@ -145,6 +145,12 @@ public class OutputWriterMain {
 	@In
 	public boolean doPrintOutputPM = false;
 	
+	@In
+	public boolean doPrintLess = false;
+	
+	@In 
+	public boolean  doProcess7;
+	
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	
@@ -188,7 +194,7 @@ public class OutputWriterMain {
 		//doPrintOutputPT= false;
 		//doPrintOutputPM= false;
 		
-		if (doPrintOutputPT == false && doPrintOutputPM == false) {
+		if (doPrintOutputPT == false && doPrintOutputPM == false && doPrintLess == false) {
 		
 			if (doFullPrint == true) {
 				storeResultFull(input.ID, variables.latentHeatFluxSun, variables.latentHeatFluxShade, variables.evaporation, variables.transpiration, variables.evapoTranspiration,variables.fluxEvaporation,variables.fluxTranspiration,variables.fluxEvapoTranspiration, 
@@ -197,12 +203,16 @@ public class OutputWriterMain {
 				storeResult(input.ID, variables.latentHeatFluxSun, variables.latentHeatFluxShade, variables.evaporation, variables.transpiration, variables.evapoTranspiration,variables.fluxEvaporation,variables.fluxTranspiration,variables.fluxEvapoTranspiration,variables.leafTemperatureSun, variables.leafTemperatureShade);
 				}}
 		
+		if (doPrintLess == true) {
+			storeResultPRLess(input.ID, variables.transpiration, variables.evaporation, variables.evapoTranspiration);}
 		
 		if (doPrintOutputPT == true) {
 			storeResultPT(input.ID, variables.evapoTranspirationPT, variables.fluxEvapoTranspirationPT);}
 		
 		if (doPrintOutputPM == true) {
 			storeResultPM(input.ID, variables.evapoTranspirationPM, variables.fluxEvapoTranspirationPM);}
+		
+		
 		
 		System.out.print("\nEnd OutputWriterMain");	
 	}
@@ -247,6 +257,14 @@ public class OutputWriterMain {
 		outEvapoTranspiration.put(ID, new double[]{evapoTranspiration});
 		outLeafTemperature.put(ID, new double[]{leafTemperatureSun});
 		outLeafTemperatureShade.put(ID, new double[]{leafTemperatureShadow});
+		}
+	
+	private void storeResultPRLess(int ID,double transpiration,double evaporation,double evapoTranspiration)
+			throws SchemaException {	
+		
+		outTranspiration.put(ID, new double[]{transpiration});
+		outEvaporation.put(ID, new double[]{evaporation});
+		outEvapoTranspiration.put(ID, new double[]{evapoTranspiration});
 		}
 	
 	private void storeResultPT(int ID,double evapoTranspirationPT, double fluxEvapoTranspirationPT) 

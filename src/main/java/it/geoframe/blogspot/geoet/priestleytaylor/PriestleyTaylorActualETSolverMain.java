@@ -54,20 +54,6 @@ import it.geoframe.blogspot.geoet.inout.*;
 
 public class PriestleyTaylorActualETSolverMain{
 
-	//@Description("Switch that defines if it is hourly.")
-	//@In
-	//public boolean doHourly;
-
-	//@Description("The mean hourly air temperature.")
-    //@In
-    //@Unit("C")
-    //public HashMap<Integer, double[]> inAirTemperature;
-
-    //@Description("The temperature default value in case of missing data.")
-    //@In
-    //@Unit("C")
-    //public double defaultAirTemperature = 15.0;
-
 	@Description("The alpha parameter.")
 	@In
 	@Unit("-")
@@ -80,47 +66,11 @@ public class PriestleyTaylorActualETSolverMain{
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
-	
-	//@Description("The net Radiation at the grass surface in W/m2 for the current hour.")
-    //@In
-    //@Unit("MJ m-2 hour-1")
-    //public HashMap<Integer, double[]> inNetRadiation;
 
-    //@Description("The net Radiation default value in case of missing data.")
-    //@In
-    //@Unit("MJ m-2 hour-1")
-    //public double defaultNetRadiation = 2.0;
-
-    //@Description("The hourly net Radiation default value in case of missing data.")
-    //@In
-    //@Unit("Watt m-2")
-    //public double defaultHourlyNetradiation = 0.0;
-
-    //@Description("The atmospheric pressure in kPa.")
-    //@In
-    //@Unit("KPa")
-    //public HashMap<Integer, double[]> inAtmosphericPressure;
-
-    //@Description("The pressure default value in case of missing data.")
-    //@In
-    //@Unit("KPa")
-    //public double defaultAtmosphericPressure;
-	
-    //@Description("The soilflux.")
-    //@In
-    //@Unit("W m-2")
-    //public HashMap<Integer, double[]> inSoilFlux;
-    
 	@Description("The soilflux default value in case of missing data.")
 	@In
 	@Unit("W m-2")
 	public double defaultSoilFlux = 0.0;
-
-	//@Description("The mean hourly air temperature.")
-	//@In
-	//public String tStartDate;
-	
-	//double latentHeatEvaporation = 2.45*pow(10,6);
 
     double nullValue = -9999.0;
     
@@ -129,29 +79,25 @@ public class PriestleyTaylorActualETSolverMain{
 	@Unit("-")
 	public double stressFactor;
 
-  
-	
-    //@Description("the linked HashMap with the coordinate of the stations")
-	//LinkedHashMap<Integer, Coordinate> stationCoordinates;
-
-	//@Description("The latent heat.")
-	//@Unit("W/m2")
-	//@Out
-	//public HashMap<Integer, double[]> outLatentHeatPt;
-	
 	@Description("The evapotranspiration.")
 	@Unit("mm time-1")
 	@Out
 	public double evapoTranspirationPT ;
-	
-	//@Description("The time step of the simulation.")
-	//@In
-	//public int temporalStep;
-
-	//private DateTimeFormatter formatter = JGTConstants.utcDateFormatterYYYYMMDDHHMM;
 
 	int step;
 	//public int time;
+	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@In
+	public boolean  doProcess;
+	
+	@In
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;
@@ -167,45 +113,9 @@ public class PriestleyTaylorActualETSolverMain{
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
-		
-		//if (doHourly == true) {time =temporalStep*60;} 
-		//else {time = temporalStep;}
-		
-		//time =temporalStep*60;
-		
-		//DateTime startDateTime = formatter.parseDateTime(tStartDate);
-		//DateTime date=(doHourly==false)?startDateTime.plusDays(step).plusHours(12):startDateTime.plusMinutes(temporalStep*step);
-
-		//DateTime date=startDateTime.plusMinutes(temporalStep*step);
-		
-		
-		//outLatentHeatPt = new HashMap<Integer, double[]>();
-		//outEvapotranspirationPt = new HashMap<Integer, double[]>();
-
-		//Set<Entry<Integer, double[]>> entrySet = inAirTemperature.entrySet();
-		//for( Entry<Integer, double[]> entry : entrySet ) {
-            //Integer basinId = entry.getKey();
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 		
-            
-		//double airTemperature = inAirTemperature.get(basinId)[0];
-		//if (airTemperature == (nullValue)) {airTemperature = defaultAirTemperature;}		
-			
-		//double netRadiation = inNetRadiation.get(basinId)[0];
-		//if (netRadiation == (nullValue)) {netRadiation = defaultNetRadiation;}
-		//netRadiation = netRadiation * 86400/1E6;
-				
-		//double soilFlux = defaultSoilFlux;
-		//if (inSoilFlux != null){soilFlux = inSoilFlux.get(basinId)[0];}
-		//if (soilFlux == nullValue) {soilFlux = defaultSoilFlux;}
-		//soilFlux = soilFlux * 86400/1E6;			
-						
-		//double atmosphericPressure = defaultAtmosphericPressure;
-		//if (inAtmosphericPressure != null){atmosphericPressure = inAtmosphericPressure.get(basinId)[0]/1000;}
-		//if (atmosphericPressure == (nullValue/1000)) {atmosphericPressure = defaultAtmosphericPressure;}
-
-		//DateTime date = input.date;
 		
 		int hourOfDay = variables.date.getHourOfDay();
 		boolean isLigth = false;

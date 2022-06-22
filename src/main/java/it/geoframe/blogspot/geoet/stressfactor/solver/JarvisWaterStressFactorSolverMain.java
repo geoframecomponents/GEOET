@@ -161,6 +161,9 @@ public class JarvisWaterStressFactorSolverMain {
 	@Description("It is needed to iterate on the date")
 	int step;
 	
+	@In
+	public boolean  doProcess;
+	
 	/////////////////////////////////////////////////////////////////////////////
 	
 	@Description("Object dealing with stress factor model for each control volumes")

@@ -90,7 +90,7 @@ public class TestActualPriestleyTaylorGEOET{
         //PtEt.defaultAtmosphericPressure = 101.3;
         //PtEt.stressFactor = 0.5;
         
-        PTstressfactor.defaultStress = 1.0;
+       // PTstressfactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		
 		
@@ -106,7 +106,7 @@ public class TestActualPriestleyTaylorGEOET{
 		PTstressfactor.Th = 45.0;
 		PTstressfactor.waterWiltingPoint = 0.15;
 		PTstressfactor.waterFieldCapacity = 0.27; 
-		PTstressfactor.rootsDepth = 0.75;
+		PTstressfactor.depth = 0.75;
 		PTstressfactor.depletionFraction = 0.55;
 		PTstressfactor.cropCoefficient = 0.90;
         

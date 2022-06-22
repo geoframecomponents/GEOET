@@ -149,6 +149,18 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@In
 	public double soilFluxParameterNight;
 	
+	@Out 
+	public boolean  doProcessOut = false;
+	
+	@In
+	public boolean  doProcess;
+	
+	@In
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
+	
 	int step;
 	//public int time;
 	

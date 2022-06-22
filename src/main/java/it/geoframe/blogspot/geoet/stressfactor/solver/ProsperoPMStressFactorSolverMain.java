@@ -29,12 +29,13 @@ import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress;
 import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
 
-@Description("This class is used to compute stress factors for Priestley Taylori and Penman Monteith evapotranspiration model")
+@Description("This class is used to compute Prospero stress factors according to Macfarlane et al. (2004)"
+		+ "with the water stress factor based on the soil moisture proposed by FAO approach (Allen,1986)")
 @Documentation("")
 @Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
 
 
-public class PTPMStressFactorSolverMain {
+public class ProsperoPMStressFactorSolverMain {
 	
 	@Description("Wilting point")
 	@In 
@@ -54,7 +55,12 @@ public class PTPMStressFactorSolverMain {
 	@Description("Depth of the root.")
 	@In 
 	@Unit("m")
-	public double depth;
+	public double rootsDepth;
+	
+	@Description("Evporation depth.")
+	@In 
+	@Unit("m")
+	public double evaporationDepth;
 	
 	@Description("The crop coefficient.")
 	@Unit("[-]")
@@ -72,19 +78,16 @@ public class PTPMStressFactorSolverMain {
 	@In public double depletionFraction;
 	
 	@In
-	public boolean useRadiationStress = false;
+	public boolean useRadiationStress = true;
 	@In
-	public boolean useTemperatureStress = false;
+	public boolean useTemperatureStress = true;
 	@In
-	public boolean useVDPStress = false;
+	public boolean useVDPStress = true;
 	@In
-	public boolean useWaterStress = false;
+	public boolean useWaterStress = true;
 	
 	@In
-	public double defaultStress = 1;
-	
-	@In
-	public boolean  doProcess;
+	public double defaultStress=1;
 	
 	@Description("It is needed to iterate on the date")
 	int step;
@@ -94,11 +97,18 @@ public class PTPMStressFactorSolverMain {
 	@Unit("-")
 	public double stressSun;
 	
-	//@Description("Stress factor for shade canopy")
-	//@Out
-	//@Unit("-")
-	//public double stressShade;
+	@Description("Stress factor for shade canopy")
+	@Out
+	@Unit("-")
+	public double stressShade;
 	
+	@Description("Stress factor for evaporation")
+	@Out
+	@Unit("-")
+	public double evaporationStress=1;
+	
+	@In
+	public boolean  doProcess;
 	/////////////////////////////////////////////////////////////////////////////
 
 	EnvironmentalStress environmentalStress	= new EnvironmentalStress();
@@ -116,13 +126,13 @@ public class PTPMStressFactorSolverMain {
 	
 		variables.stressRadiationSun = 1;
         if (useRadiationStress == true) {
-        	variables.stressRadiationSun = environmentalStress.computeRadiationStress(input.netRadiation*2.1, alpha, theta);
+        	variables.stressRadiationSun = environmentalStress.computeRadiationStress(variables.shortwaveCanopySun*2.1, alpha, theta);
         	}
         
-       /* variables.stressRadiationShade = 1;
+        variables.stressRadiationShade = 1;
         if (useRadiationStress == true) {
-        	variables.stressRadiationShade = environmentalStress.computeRadiationStress(input.netRadiation*2.1, alpha, theta);
-        	}*/
+        	variables.stressRadiationShade = environmentalStress.computeRadiationStress(variables.shortwaveCanopyShade*2.1, alpha, theta);
+        	}
         
         
         variables.stressTemperature = 1;
@@ -137,15 +147,18 @@ public class PTPMStressFactorSolverMain {
           
         variables.stressWater = 1;
         if (useWaterStress == true) {
-        	variables.stressWater = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, depth, depletionFraction) * cropCoefficient;
-        	}
+        	variables.stressWater = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction) * cropCoefficient;
+        	evaporationStress = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, evaporationDepth, depletionFraction);
+        }
         	            
         stressSun = defaultStress * variables.stressRadiationSun * variables.stressTemperature * variables.stressWater * variables.stressVPD;
     
-        //stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
+        stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
         
 		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
 		//System.out.printf("\nGE = %.5f %n", GnE[0]);
+        //System.out.println("stressSun is  = "+ stressSun);
+        //System.out.println("stressShade is  = "+ stressShade);
 						
 		step++;
 	}
