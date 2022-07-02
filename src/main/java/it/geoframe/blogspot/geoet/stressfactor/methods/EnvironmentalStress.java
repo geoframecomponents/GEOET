@@ -19,6 +19,7 @@ public class EnvironmentalStress {
 		double sqr = sqr1+sqr2;
 		double result = (1/(2*theta))*(alpha*shortWaveRadiationMicroMol+1-Math.sqrt((sqr))) ;
 		
+		if (Double.isNaN(result)) {result = 0;}
 		if (result <= 0) {result = 0;}
 	    if (result >= 1) {result = 1;}
 	    
@@ -30,6 +31,8 @@ public class EnvironmentalStress {
 		double c = (Th-T0)/(T0-Tl);
 		double b = 1/((T0-Tl)*Math.pow((Th-T0),c));
 		double result = b* (airTemperature - Tl)* Math.pow((Th-airTemperature),c);
+		
+		if (Double.isNaN(result)) {result = 0;}
 		
 		if (result <= 0) {result = 0;}
 	    if (result >= 1) {result = 1;}
@@ -43,6 +46,7 @@ public class EnvironmentalStress {
 		
 		double result = Math.exp(-variables.vapourPressureDeficit/VPD0);
 		
+		if (Double.isNaN(result)) {result = 0;}
 		if (result <= 0) {result = 0;}
 	    if (result >= 1) {result = 1;}
 	    
