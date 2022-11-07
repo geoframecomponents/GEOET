@@ -25,8 +25,8 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 public class TestActualPriestleyTaylorGEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 00:00";
-        String endDate	= "2015-01-01 00:00";
+		String startDate= "2013-12-15 00:00";
+        String endDate	= "2015-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -44,10 +44,10 @@ public class TestActualPriestleyTaylorGEOET{
 		String inPathToPressure		="resources/Input/dataET_point/1/Pres_1.csv";
         String inPathToSoilHeatFlux ="resources/Input/dataET_point/1/GHF_1.csv";
         String inPathToCentroids 	="resources/Input/dataET_point/1/centroids_ID_1.shp";
-        String inPathToSoilMoisture	="resources/Input/dataET_point/1/SoilMoisture18.csv";
+        String inPathToSoilMoisture	="resources/Input/dataET_point/1/SoilMoisture_1.csv";
 
-		String pathToLatentHeatPT	="resources/Output/actualLatentHeatPT.csv";
-		String pathToEvapotranspirationPT ="resources/Output/actualETPrestleyTaylor.csv";
+		String pathToLatentHeatPT	="resources/Output/Ire_actualLatentHeatPT.csv";
+		String pathToEvapotranspirationPT ="resources/Output/Ire_actualETPrestleyTaylor.csv";
         
 		OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader netradReader = getTimeseriesReader(inPathToNetRad, fId, startDate, endDate, timeStepMinutes);
@@ -94,21 +94,21 @@ public class TestActualPriestleyTaylorGEOET{
 		//Prospero.doIterative = false;
 		
 		
-        PTstressfactor.useRadiationStress=true;
-        PTstressfactor.useTemperatureStress=true;
+        PTstressfactor.useRadiationStress=false;
+        PTstressfactor.useTemperatureStress=false;
         PTstressfactor.useVDPStress=false;
-        PTstressfactor.useWaterStress=false;
+        PTstressfactor.useWaterStress=true;
         PTstressfactor.alpha = 0.005;
-        PTstressfactor.theta = 0.9;
+        PTstressfactor.theta = 0.85;
         PTstressfactor.VPD0 = 5.0;
         PTstressfactor.Tl = -5.0;
-        PTstressfactor.T0 = 20.0;
-		PTstressfactor.Th = 45.0;
-		PTstressfactor.waterWiltingPoint = 0.15;
-		PTstressfactor.waterFieldCapacity = 0.27; 
-		PTstressfactor.depth = 0.75;
-		PTstressfactor.depletionFraction = 0.55;
-		PTstressfactor.cropCoefficient = 0.90;
+        PTstressfactor.T0 = 15.0;
+		PTstressfactor.Th = 30.0;
+		PTstressfactor.waterWiltingPoint = 0.22;
+		PTstressfactor.waterFieldCapacity = 0.36; 
+		PTstressfactor.depth = 1.0;
+		PTstressfactor.depletionFraction = 0.35;
+		PTstressfactor.cropCoefficient = 1.00;
         
 
         while(tempReader.doProcess ) {
