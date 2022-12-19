@@ -53,7 +53,7 @@ public class PMEvaporationFromSoilAfterCanopySolverMain {
 	public boolean  doProcess3;
 	
 	@Out 
-	public boolean  doProcess4 = false;
+	public boolean  doProcess4;
 	
 	
 	

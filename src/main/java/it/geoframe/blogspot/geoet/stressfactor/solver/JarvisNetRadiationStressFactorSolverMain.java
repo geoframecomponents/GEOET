@@ -214,8 +214,8 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	@Unit("-")
 	public double stressShade;
 	
-	@In 
-	public boolean  doProcess;
+	//@In 
+	//public boolean  doProcess;
 	
 
 	@In 

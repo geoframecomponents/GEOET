@@ -40,11 +40,11 @@ public class ProsperoSolverMain {
 	double nullValue = -9999.0;
 	
 	
-	@Out 
-	public boolean  doProcessOut = false;
+	//@Out 
+	//public boolean  doProcessOut = false;
 	
-	@Out 
-	public boolean  doPro = false;
+	//@Out 
+	//public boolean  doPro = false;
 	
 	//@In
 	//public boolean  doProcess;

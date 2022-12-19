@@ -48,8 +48,8 @@ import it.geoframe.blogspot.geoet.prospero.methods.*;
 
 @Description("")
 
-@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
-@Keywords("Evapotranspiration")
+@Author(name = "Concetta D'Amato, Michele Bottazzi", contact = "concetta.damato@unitn.it")
+@Keywords("Reading input")
 @Label("")
 @Name("")
 @Status(Status.CERTIFIED)
@@ -171,10 +171,6 @@ public class InputReaderMain {
 	DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").withZone(DateTimeZone.UTC);
 
 	
-	//@Description("Switch that defines if it is hourly.")
-	//@In
-	//public boolean doHourly = true;
-	
 	@Description("The station ID in the timeseries file")
 	@In
 	@Unit ("-")
@@ -192,8 +188,7 @@ public class InputReaderMain {
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	
-	
-	
+
 	
 	@Execute
 	public void process() throws Exception {
@@ -204,15 +199,9 @@ public class InputReaderMain {
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
-		//input.doHourly = doHourly;
-		
-		//if (doHourly == true) {input.time = temporalStep*60;
-		//	} else {input.time = 86400;} //questo è da cambiare perchè se è sotto l'ora e quindi mettiamo falso il time è 86400 e non è cosi 
-		
 		input.time = temporalStep*60;
 		
 		DateTime startDateTime = formatter.parseDateTime(tStartDate);
-		//variables.date=(doHourly==false)?startDateTime.plusDays(step).plusHours(12):startDateTime.plusMinutes(temporalStep*step);
 		variables.date=startDateTime.plusMinutes(temporalStep*step);
 		
 		//System.out.println("data inizio = "+ (startDateTime));
@@ -239,14 +228,10 @@ public class InputReaderMain {
 			System.out.printf("\ndata   " + variables.date);
 			
 			input.airTemperature = inAirTemperature.get(ID)[0]+273.15;
-			if (input.airTemperature == (nullValue+273.15)) {input.airTemperature = parameters.defaultAirTemperature;}
-			//if (input.airTemperature == (nullValue+273.0)) {input.airTemperature = nullValue;}		
+			if (input.airTemperature == (nullValue+273.15)) {input.airTemperature = parameters.defaultAirTemperature;}		
 			variables.leafTemperatureSun = input.airTemperature;
 			variables.leafTemperatureShade = input.airTemperature;
-	
-			
 			//System.out.println("\nair temperature  = "+ input.airTemperature);
-			
 			
 			input.leafAreaIndex = parameters.defaultLeafAreaIndex;
 			if (inLeafAreaIndex != null){input.leafAreaIndex = inLeafAreaIndex.get(ID)[0];}
@@ -259,8 +244,7 @@ public class InputReaderMain {
 			if (input.shortWaveRadiationDiffuse == nullValue) {input.shortWaveRadiationDiffuse = 0.159*input.shortWaveRadiationDirect;} 						
 			
 			if (inLongWaveRadiation != null) {input.longWaveRadiation = inLongWaveRadiation.get(ID)[0];}
-			if (input.longWaveRadiation == nullValue) {input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 4);}	
-			//input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 
+			if (input.longWaveRadiation == nullValue) {input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 4);}	 
 			
 			if (inNetRadiation != null) {input.netRadiation = inNetRadiation.get(ID)[0];}
 			if (input.netRadiation == nullValue) {input.netRadiation = defaultNetRadiation;}	

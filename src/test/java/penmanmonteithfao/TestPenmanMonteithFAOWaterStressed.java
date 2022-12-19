@@ -25,7 +25,7 @@ public class TestPenmanMonteithFAOWaterStressed{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2014-01-01 00:00";
-        String endDate	= "2014-01-01 23:00";
+        String endDate	= "2014-01-01 01:00";
         int timeStepMinutes = 60;
         String fId = "ID";
 
@@ -76,7 +76,7 @@ public class TestPenmanMonteithFAOWaterStressed{
 		writerLatentHeatFAO.tTimestep = timeStepMinutes;
 		writerLatentHeatFAO.fileNovalue="-9999";
 
-        PenmanMonteithFAOWaterStressedSolverMain PmFAO = new PenmanMonteithFAOWaterStressedSolverMain();
+        PenmanMonteithFAOSolverMain PmFAO = new PenmanMonteithFAOSolverMain();
         InputReaderMain Input 		= new InputReaderMain();
         OutputWriterMain Output 	= new OutputWriterMain();
         

@@ -1,10 +1,23 @@
 package it.geoframe.blogspot.geoet.inout;
 
 import org.joda.time.DateTime;
+
+import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.In;
+import oms3.annotations.Keywords;
+import oms3.annotations.Label;
+import oms3.annotations.License;
+import oms3.annotations.Name;
+import oms3.annotations.Status;
 import oms3.annotations.Unit;
-
+@Description("")
+@Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
+@Keywords("Reading input")
+@Label("")
+@Name("")
+@Status(Status.CERTIFIED)
+@License("General Public License Version 3 (GPLv3)")
 public class InputTimeSeries {
 	
 	private static InputTimeSeries uniqueInstance;

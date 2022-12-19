@@ -161,8 +161,14 @@ public class JarvisWaterStressFactorSolverMain {
 	@Description("It is needed to iterate on the date")
 	int step;
 	
-	@In
-	public boolean  doProcess;
+	//@In
+	//public boolean  doProcess;
+	
+	@In 
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
 	
 	/////////////////////////////////////////////////////////////////////////////
 	

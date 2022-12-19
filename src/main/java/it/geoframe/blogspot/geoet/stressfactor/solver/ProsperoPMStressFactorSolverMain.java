@@ -107,8 +107,14 @@ public class ProsperoPMStressFactorSolverMain {
 	@Unit("-")
 	public double evaporationStress=1;
 	
-	@In
-	public boolean  doProcess;
+	//@In
+	//public boolean  doProcess;
+	
+	@In 
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
 	/////////////////////////////////////////////////////////////////////////////
 
 	EnvironmentalStress environmentalStress	= new EnvironmentalStress();

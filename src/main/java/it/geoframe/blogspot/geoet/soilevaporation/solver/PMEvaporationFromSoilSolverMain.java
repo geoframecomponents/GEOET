@@ -47,11 +47,17 @@ public class PMEvaporationFromSoilSolverMain {
 	
 	double nullValue = -9999.0;
 	
+	//@In 
+	//public boolean  doProcess;
+	
+	//@Out 
+	//public boolean  doProcessOut = false;
+	
 	@In 
-	public boolean  doProcess;
+	public boolean  doProcess3;
 	
 	@Out 
-	public boolean  doProcessOut = false;
+	public boolean  doProcess4;
 	
 	
 	/*@Description("Stress factor for sun canopy")

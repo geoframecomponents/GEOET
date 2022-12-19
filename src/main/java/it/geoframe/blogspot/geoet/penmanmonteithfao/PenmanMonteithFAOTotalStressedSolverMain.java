@@ -54,88 +54,6 @@ import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 
 public class PenmanMonteithFAOTotalStressedSolverMain {
 
-    /*@Description("The net Radiation at the grass surface in W/m2 for the current hour.")
-    @In
-    @Unit("MJ m-2 hour-1")
-    public HashMap<Integer, double[]> inNetRadiation;
-
-    @Description("The net Radiation default value in case of missing data.")
-    @In
-    @Unit("MJ m-2 hour-1")
-    public double defaultNetRadiation = 2.0;
-
-    @Description("The average hourly wind speed.")
-    @In
-    @Unit("m s-1")
-    public HashMap<Integer, double[]> inWindVelocity;
-
-    @Description("The wind default value in case of missing data.")
-    @In
-    @Unit("m s-1")
-    public double defaultWindVelocity = 0.5;
-
-    @Description("The mean hourly air temperature.")
-    @In
-    @Unit("C")
-    public HashMap<Integer, double[]> inAirTemperature;
-
-    @Description("The temperature default value in case of missing data.")
-    @In
-    @Unit("C")
-    public double defaultAirTemperature = 15.0;
-
-    @Description("The average air hourly relative humidity.")
-    @In
-    @Unit("%")
-    public HashMap<Integer, double[]> inRelativeHumidity;
-
-    @Description("The humidity default value in case of missing data.")
-    @In
-    @Unit("%")
-    public double defaultRelativeHumidity = 70.0;
-
-    @Description("The atmospheric pressure in kPa.")
-    @In
-    @Unit("KPa")
-    public HashMap<Integer, double[]> inAtmosphericPressure;
-
-    @Description("The pressure default value in case of missing data.")
-    @In
-    @Unit("KPa")
-    public double defaultAtmosphericPressure;
-    
-	@Description("The soilflux.")
-	@In
-	@Unit("W m-2")
-	public HashMap<Integer, double[]> inSoilFlux;
-    
-	@Description("The soilflux default value in case of missing data.")
-	@In
-	@Unit("W m-2")
-	public double defaultSoilFlux = 0.0;
-
-    @Description("The reference evapotranspiration.")
-    @Unit("mm hour-1")
-    @Out
-    public HashMap<Integer, double[]> outEvapotranspirationFao;
-    
-    @Description("The latent heat.")
-    @Unit("W m-2")
-    @Out
-    public HashMap<Integer, double[]> outLatentHeatFao;
-        
-	@Description("Switch that defines if it is hourly.")
-	@In
-	public boolean doHourly;
-	
-	@Description("The mean hourly air temperature.")
-	@In
-	public String tStartDate;
-	
-	@Description("The first day of the simulation.")
-	@In
-	public int temporalStep;
-	*/
 	@Description("The soilflux default value in case of missing data.")
 	@In
 	@Unit("W m-2")
@@ -149,11 +67,11 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@In
 	public double soilFluxParameterNight;
 	
-	@Out 
-	public boolean  doProcessOut = false;
+	//@Out 
+	//public boolean  doProcessOut = false;
 	
-	@In
-	public boolean  doProcess;
+	//@In
+	//public boolean  doProcess;
 	
 	@In
 	public boolean  doProcess2;

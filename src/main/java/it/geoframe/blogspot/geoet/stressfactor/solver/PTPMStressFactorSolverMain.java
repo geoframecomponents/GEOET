@@ -83,8 +83,14 @@ public class PTPMStressFactorSolverMain {
 	@In
 	public double defaultStress = 1;
 	
-	@In
-	public boolean  doProcess;
+	//@In
+	//public boolean  doProcess;
+	
+	@In 
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
 	
 	@Description("It is needed to iterate on the date")
 	int step;

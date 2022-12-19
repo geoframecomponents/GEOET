@@ -79,11 +79,17 @@ public class PriestleyTaylorPotentialETSolverMain{
 
 	int step;
 	
-	@Out 
-	public boolean  doProcessOut = false;
+	//@Out 
+	//public boolean  doProcessOut = false;
+	
+	//@In
+	//public boolean  doProcess;
 	
 	@In
-	public boolean  doProcess;
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	private Parameters parameters;
 	private ProblemQuantities variables;

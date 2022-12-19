@@ -102,6 +102,12 @@ public class ProsperoStressFactorSolverMain {
 	@Unit("-")
 	public double stressShade;
 	
+	@In 
+	public boolean  doProcess1;
+	
+	@Out 
+	public boolean  doProcess2;
+	
 	
 	
 	/////////////////////////////////////////////////////////////////////////////
