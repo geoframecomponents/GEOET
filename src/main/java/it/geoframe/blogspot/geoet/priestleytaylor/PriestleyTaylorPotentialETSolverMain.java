@@ -125,8 +125,8 @@ public class PriestleyTaylorPotentialETSolverMain{
 		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT * (input.time/parameters.latentHeatEvaporation);
 	    variables.evapoTranspirationPT =(variables.evapoTranspirationPT<0)?0:variables.evapoTranspirationPT;
 		
-	    System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
-	    System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
+	    //System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
+	    //System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
 	    
 		    
 		}

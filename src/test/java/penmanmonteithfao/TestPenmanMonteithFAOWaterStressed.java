@@ -24,8 +24,8 @@ public class TestPenmanMonteithFAOWaterStressed{
 	
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 00:00";
-        String endDate	= "2014-01-01 01:00";
+		String startDate= "2014-01-01 06:00";
+        String endDate	= "2014-01-01 08:00";
         int timeStepMinutes = 60;
         String fId = "ID";
 
@@ -43,7 +43,7 @@ public class TestPenmanMonteithFAOWaterStressed{
         String inPathToRelativeHumidity 	="resources/Input/dataET_point/1/RH_1.csv";
         String inPathToNetRad 				="resources/Input/dataET_point/1/Net_1.csv";
         String inPathToPressure 			="resources/Input/dataET_point/1/Pres_1.csv";
-        String inPathToSoilHeatFlux 		="resources/Input/dataET_point/1/GHF_1.csv";
+        String inPathToSoilHeatFlux 		="resources/Input/dataET_point/1/nan.csv";
         String inPathToSoilMoisture 		="resources/Input/dataET_point/1/SoilMoisture18.csv";
         String inPathToCentroids 			="resources/Input/dataET_point/1/centroids_ID_1.shp";
         
@@ -86,10 +86,10 @@ public class TestPenmanMonteithFAOWaterStressed{
 		Input.inDem = digitalElevationModel;
         
         PmFAO.cropCoefficient = 0.75; //0.75
-        PmFAO.waterWiltingPoint = 0.05;
-        PmFAO.waterFieldCapacity = 0.27; 
+       // PmFAO.waterWiltingPoint = 0.05;
+        //PmFAO.waterFieldCapacity = 0.27; 
         PmFAO.rootsDepth = 0.75;
-        PmFAO.depletionFraction = 0.55;
+        //PmFAO.depletionFraction = 0.55;
         PmFAO.canopyHeight = 0.12;
         PmFAO.soilFluxParameterDay = 0.35;
         PmFAO.soilFluxParameterNight = 0.75;

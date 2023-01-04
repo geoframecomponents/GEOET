@@ -1,0 +1,271 @@
+//notebook: 04 prospero
+
+import static oms3.SimBuilder.instance as OMS3
+import static oms3.SimBuilder.*
+def home = oms_prj
+
+def startDate	= "2018-01-01 00:00"
+def endDate		= "2019-01-01 00:00"
+def basin 		= "cavalese"
+def ID			= 1
+def timestep 	= 60
+def lab         = "totalstress" // potential  -  totalstress  -  environmentalstress  -  waterstress  scelgo quale voglio
+def site="cavalese"
+def year= 1819
+OMS3.sim {
+     resource "$oms_prj/lib"
+     model(while:"readerAirTemperature.doProcess")	{
+        components {
+				
+			//Input-Output components
+			"input"     "it.geoframe.blogspot.geoet.inout.InputReaderMain"
+			"output"    "it.geoframe.blogspot.geoet.inout.OutputWriterMain"
+			
+			//GEOET components
+			"prospero"             	"it.geoframe.blogspot.geoet.prospero.solver.ProsperoSolverMain"//prospero scelgo
+			"stressfactor"			"it.geoframe.blogspot.geoet.stressfactor.solver.ProsperoStressFactorSolverMain"
+				
+			"readerAirTemperature"              "org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerWindVelocity"             	"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerRelativeHumidity"            "org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerShortWaveDirectRadiation"	"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerShortWaveDiffuseRadiation"	"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerLongWaveRadiation"			"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerNetRadiation"				"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerLeafAreaIndex"				"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerAtmosphericPressure"         "org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"
+			"readerSoilHeatFlux"                "org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"	
+			"readerSoilMoisture"                "org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader"	
+			"readerCentroids"				    "org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader"		       
+			"readerDem"							"org.hortonmachine.gears.io.rasterreader.OmsRasterReader" 
+			
+			"writerLatentHeat"							"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"  
+			"writerLatentHeatShade"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"   
+			"writerFluxTranspiration"					"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"
+			"writerTranspiration"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"
+			"writerSensibleHeat"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"  
+			"writerSensibleHeatShade"					"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"  
+			"writerLeafTemperature"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter" 
+			"writerLeafTemperatureShade"				"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter" 
+			"writerCanopy"								"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"      
+			"writerRadiation"							"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"           
+			"writerRadiationShade"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"
+			"writerRadiationSoil"						"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"
+			"writerVPD"									"org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter"	
+	 
+			}
+			parameter{		
+
+				// GEOgraphy PARAMETERS
+				"readerDem.file"			"${home}/data/${basin}/${year}/dem_${ID}.tif"	 
+				"readerCentroids.file"		"${home}/data/${basin}/${year}/centroids_ID_${ID}.shp"
+				"input.idCentroids"			"ID"
+				"input.centroidElevation"	"Elevation"
+
+				// PARAMETERS
+				"prospero.canopyHeight"			30 //altezza vegetazione!!!
+				"prospero.typeOfCanopy" 		"multilayer" //considero la vegetazione costituita da diversi layer di foglie, quindi la radiazione al suolo è schermata. LASCIA COSI
+		        
+		        "output.doFullPrint"			true
+				"input.tStartDate"				"${startDate}"
+				"input.temporalStep"			"${timestep}"
+				
+				//Parameters for the Radiation Stress
+				"stressfactor.useRadiationStress" true //false se devo fare la potenziale
+				  
+				"stressfactor.alpha" 		0.005
+				"stressfactor.theta" 		0.85
+				
+				//Parameter for the Vapour Pressure Deficit Stress
+				"stressfactor.useVDPStress" true
+				
+				"stressfactor.VPD0" 	5.0 
+				
+				//Parameters for the Temperature Stress
+				"stressfactor.useTemperatureStress" true    
+				   	
+				"stressfactor.Tl" 		"-5.0"
+				"stressfactor.T0" 		20.0
+				"stressfactor.Th" 		45.0 
+				
+				//Parameters for the Water Stress 
+				"stressfactor.useWaterStress" true
+				     	
+				"stressfactor.waterWiltingPoint"	0.18   //FAO Table 19 - http://www.fao.org/3/X0490E/x0490e0c.htm#TopOfPage
+				"stressfactor.waterFieldCapacity"	0.25
+				"stressfactor.rootsDepth"  		1.80
+				"stressfactor.depletionFraction" 	0.7   //FAO Table 22 - http://www.fao.org/3/X0490E/x0490e0e.htm#TopOfPage
+				"stressfactor.cropCoefficient" 	0.95   //FAO Table 12
+								
+				//	READERS				
+				"readerAirTemperature.file"         			"${home}/data/${basin}/${year}/airT_${site}_${year}.csv"
+				"readerAirTemperature.idfield"          		"ID"		
+				"readerAirTemperature.tStart"           		"${startDate}"
+				"readerAirTemperature.tEnd"         			"${endDate}"
+				"readerAirTemperature.tTimestep"            	"${timestep}"
+				"readerAirTemperature.fileNovalue"          	"-9999.0"
+								
+				"readerWindVelocity.file"                       "${home}/data/${basin}/${year}/Wind_${site}_${year}.csv"	
+				"readerWindVelocity.idfield"                    "ID"		
+				"readerWindVelocity.tStart"                     "${startDate}"
+				"readerWindVelocity.tEnd"                       "${endDate}"
+				"readerWindVelocity.tTimestep"                  "${timestep}"
+				"readerWindVelocity.fileNovalue"                "-9999.0"
+								
+				"readerRelativeHumidity.file"                   "${home}/data/${basin}/${year}/RH1hmean_${site}_${year}.csv"
+				"readerRelativeHumidity.idfield"                "ID"		
+				"readerRelativeHumidity.tStart"                 "${startDate}"
+				"readerRelativeHumidity.tEnd"                   "${endDate}"
+				"readerRelativeHumidity.tTimestep"              "${timestep}"
+				"readerRelativeHumidity.fileNovalue"            "-9999.0"
+								
+				"readerShortWaveDirectRadiation.file"			"${home}/data/${basin}/${year}/ShortwaveDirect_${site}_${year}.csv" 
+				"readerShortWaveDirectRadiation.idfield"		"ID"
+				"readerShortWaveDirectRadiation.tStart"			"${startDate}"
+				"readerShortWaveDirectRadiation.tEnd"			"${endDate}"
+				"readerShortWaveDirectRadiation.tTimestep"		"${timestep}"
+				"readerShortWaveDirectRadiation.fileNovalue"	"-9999.0"				
+						
+				"readerShortWaveDiffuseRadiation.file"			"${home}/data/${basin}/${year}/ShortwaveDiffuse_${site}_${year}.csv" 
+				"readerShortWaveDiffuseRadiation.idfield"		"ID"
+				"readerShortWaveDiffuseRadiation.tStart"		"${startDate}"
+				"readerShortWaveDiffuseRadiation.tEnd"			"${endDate}"
+				"readerShortWaveDiffuseRadiation.tTimestep"		"${timestep}"
+				"readerShortWaveDiffuseRadiation.fileNovalue"	"-9999.0"				
+					
+				"readerLongWaveRadiation.file"        			"${home}/data/${basin}/${year}/LongDownwelling_${site}_${year}.csv" 
+				"readerLongWaveRadiation.idfield"     			"ID"
+				"readerLongWaveRadiation.tStart"      			"${startDate}"
+				"readerLongWaveRadiation.tEnd"        			"${endDate}"
+				"readerLongWaveRadiation.tTimestep"   			"${timestep}"  
+				"readerLongWaveRadiation.fileNovalue" 			"-9999.0"
+							
+				"readerNetRadiation.file"        				"${home}/data/${basin}/${year}/Net_${site}_${year}.csv" 
+				"readerNetRadiation.idfield"     				"ID"
+				"readerNetRadiation.tStart"      				"${startDate}"
+				"readerNetRadiation.tEnd"        				"${endDate}"
+				"readerNetRadiation.tTimestep"   				"${timestep}"  
+				"readerNetRadiation.fileNovalue" 				"-9999.0"
+						
+				"readerAtmosphericPressure.file"                "${home}/data/${basin}/${year}/Pressure_${site}_${year}.csv"
+				"readerAtmosphericPressure.idfield"             "ID"		
+				"readerAtmosphericPressure.tStart"              "${startDate}"
+				"readerAtmosphericPressure.tEnd"                "${endDate}"
+				"readerAtmosphericPressure.tTimestep"           "${timestep}"
+				"readerAtmosphericPressure.fileNovalue"         "-9999.0"
+								
+				"readerSoilHeatFlux.file"                       "${home}/data/${basin}/${year}/GHF_${site}_${year}.csv"	//flusso di clore dal suolo
+                "readerSoilHeatFlux.idfield"                    "ID"		
+                "readerSoilHeatFlux.tStart"                     "${startDate}"
+                "readerSoilHeatFlux.tEnd"                       "${endDate}"
+                "readerSoilHeatFlux.tTimestep"                  "${timestep}"
+                "readerSoilHeatFlux.fileNovalue"                "-9999.0"
+                
+                "readerLeafAreaIndex.file"         				"${home}/data/${basin}/${year}/LAI_${site}_${year}.csv" // indice che dice quante foglie per unità di area, varia in base al tipo
+				"readerLeafAreaIndex.idfield"      				"ID"                                                   //di vegetazione, quindi da modificare
+				"readerLeafAreaIndex.tStart"       				"${startDate}"
+				"readerLeafAreaIndex.tEnd"         				"${endDate}"
+				"readerLeafAreaIndex.tTimestep"    				"${timestep}"
+				"readerLeafAreaIndex.fileNovalue"  				"-9999.0" 			
+		
+				"readerSoilMoisture.file"                       "${home}/data/${basin}/${year}/Soil_moisture_${site}_${year}.csv"	//contenuto di acqua nel suolo, importante per il water stress
+                "readerSoilMoisture.idfield"                    "ID"		
+                "readerSoilMoisture.tStart"                     "${startDate}"
+                "readerSoilMoisture.tEnd"                       "${endDate}"
+                "readerSoilMoisture.tTimestep"                  "${timestep}"
+                "readerSoilMoisture.fileNovalue"                "-9999.0"																				
+	
+                //	WRITERS				              
+				"writerLatentHeat.file"        				"${home}/output/${basin}/${year}/LH_Sun_${site}_${year}_${lab}.csv" 
+				"writerLatentHeat.tStart"       			"${startDate}"
+				"writerLatentHeat.tTimestep"   				"${timestep}"
+					
+				"writerLatentHeatShade.file"        		"${home}/output/${basin}/${year}/LH_Shade_${site}_${year}_${lab}.csv" 
+				"writerLatentHeatShade.tStart"       		"${startDate}"
+				"writerLatentHeatShade.tTimestep"   		"${timestep}"
+
+				"writerTranspiration.file"        			"${home}/output/${basin}/${year}/Transpiration_${site}_${year}_${lab}.csv" 
+				"writerTranspiration.tStart"       			"${startDate}"
+				"writerTranspiration.tTimestep"   			"${timestep}"
+				
+				"writerFluxTranspiration.file"        		"${home}/output/${basin}/${year}/FluxTranspiration_${site}_${year}_${lab}.csv" 
+				"writerFluxTranspiration.tStart"       		"${startDate}"
+				"writerFluxTranspiration.tTimestep"			"${timestep}"
+				   					        					        					        					        	
+			      					        					        					        					        	      					        					        					        					        	      					        					        					        					        	
+				"writerLeafTemperature.file"				"${home}/output/${basin}/${year}/LT_Sun_${site}_${year}_${lab}.csv" 
+				"writerLeafTemperature.tStart"				"${startDate}"
+				"writerLeafTemperature.tTimestep"			"${timestep}"       
+					
+				"writerLeafTemperatureShade.file"			"${home}/output/${basin}/${year}/LT_Shade_${site}_${year}_${lab}.csv" 
+				"writerLeafTemperatureShade.tStart"			"${startDate}"
+				"writerLeafTemperatureShade.tTimestep"		"${timestep}"       
+					
+				"writerRadiation.file"						"${home}/output/${basin}/${year}/RadiationCanopySun_${site}_${year}_${lab}.csv" 
+				"writerRadiation.tStart"					"${startDate}"
+				"writerRadiation.tTimestep"					"${timestep}"       
+					
+				"writerRadiationShade.file"					"${home}/output/${basin}/${year}/RadiationCanopyShade_${site}_${year}_${lab}.csv" 
+				"writerRadiationShade.tStart"				"${startDate}"
+				"writerRadiationShade.tTimestep"			"${timestep}"       
+				
+				"writerRadiationSoil.file"					"${home}/output/${basin}/${year}/RadiationSoil_${site}_${year}_${lab}.csv" 
+				"writerRadiationSoil.tStart"				"${startDate}"
+				"writerRadiationSoil.tTimestep"				"${timestep}"       
+					
+				"writerCanopy.file"							"${home}/output/${basin}/${year}/canopy_${site}_${year}_${lab}.csv" 
+				"writerCanopy.tStart"						"${startDate}"
+				"writerCanopy.tTimestep"					"${timestep}"       
+					
+				"writerSensibleHeat.file"					"${home}/output/${basin}/${year}/SH_Sun_${site}_${year}_${lab}.csv" 
+				"writerSensibleHeat.tStart"					"${startDate}"
+				"writerSensibleHeat.tTimestep"				"${timestep}"       
+				
+				"writerSensibleHeatShade.file"				"${home}/output/${basin}/${year}/SH_Shade_${site}_${year}_${lab}.csv" 
+				"writerSensibleHeatShade.tStart"			"${startDate}"
+				"writerSensibleHeatShade.tTimestep"			"${timestep}" 
+				
+				"writerVPD.file"							"${home}/output/${basin}/${year}/VPD_${site}_${year}_${lab}.csv" 
+				"writerVPD.tStart"							"${startDate}"
+				"writerVPD.tTimestep"						"${timestep}"
+				
+            }
+            connect	{
+                "input.doProcess"                   	"prospero.doProcess" 
+                "input.doProcess"                   	"stressfactor.doProcess" 
+				"prospero.doProcessOut"        			"output.doProcessOut"
+                
+                "readerAirTemperature.outData"					"input.inAirTemperature"
+				"readerWindVelocity.outData"		 			"input.inWindVelocity"
+				"readerRelativeHumidity.outData"		 		"input.inRelativeHumidity"
+				"readerShortWaveDirectRadiation.outData"		"input.inShortWaveRadiationDirect"
+				"readerShortWaveDiffuseRadiation.outData"		"input.inShortWaveRadiationDiffuse"
+				"readerLongWaveRadiation.outData"				"input.inLongWaveRadiation"
+				"readerNetRadiation.outData"					"input.inNetRadiation"
+				"readerAtmosphericPressure.outData"				"input.inAtmosphericPressure"
+				"readerLeafAreaIndex.outData"					"input.inLeafAreaIndex"	
+				"readerSoilHeatFlux.outData"					"input.inSoilFlux"	
+				"readerSoilMoisture.outData"					"input.inSoilMoisture"
+				
+				"stressfactor.stressSun"				"prospero.stressSun"  // passa al modello prospero la variabile di stress sun
+				"stressfactor.stressShade"				"prospero.stressShade"
+				
+				"readerCentroids.geodata"				"input.inCentroids"
+				"readerDem.outRaster"					"input.inDem"
+				 									
+				"output.outLatentHeatSun"					"writerLatentHeat.inData"	        			        	
+				"output.outLatentHeatShade"					"writerLatentHeatShade.inData"      		
+				"output.outFluxTranspiration"				"writerFluxTranspiration.inData" 
+				"output.outTranspiration"					"writerTranspiration.inData"         		
+				"output.outSensibleHeat"					"writerSensibleHeat.inData"
+				"output.outSensibleHeatShade"				"writerSensibleHeatShade.inData"
+				"output.outLeafTemperature"					"writerLeafTemperature.inData"
+				"output.outLeafTemperatureShade"			"writerLeafTemperatureShade.inData"
+				"output.outRadiation"						"writerRadiation.inData"
+				"output.outRadiationShade"					"writerRadiationShade.inData"
+				"output.outRadiationSoil"					"writerRadiationSoil.inData"
+				"output.outCanopy"							"writerCanopy.inData"
+				"output.outVapourPressureDeficit"			"writerVPD.inData"
+			}
+			}
+		}

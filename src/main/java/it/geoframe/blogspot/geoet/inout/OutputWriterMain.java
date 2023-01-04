@@ -152,7 +152,7 @@ public class OutputWriterMain {
 
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart OutputWriterMain");
+		//System.out.print("\n\nStart OutputWriterMain");
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
@@ -207,7 +207,7 @@ public class OutputWriterMain {
 		
 		
 		
-		System.out.print("\nEnd OutputWriterMain");	
+		//System.out.print("\nEnd OutputWriterMain");	
 	}
 	
 	
