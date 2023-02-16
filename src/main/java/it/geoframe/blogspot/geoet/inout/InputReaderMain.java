@@ -48,7 +48,7 @@ import it.geoframe.blogspot.geoet.prospero.methods.*;
 
 @Description("")
 
-@Author(name = "Concetta D'Amato, Michele Bottazzi", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("Reading input")
 @Label("")
 @Name("")
@@ -192,7 +192,7 @@ public class InputReaderMain {
 	
 	@Execute
 	public void process() throws Exception {
-		//System.out.print("\nStart InputReaderMain");
+		System.out.print("\nStart InputReaderMain");
 		
 		leafparameters = Leaf.getInstance();
 		parameters = Parameters.getInstance();
@@ -228,7 +228,8 @@ public class InputReaderMain {
 			//System.out.printf("\ndata   " + variables.date);
 			
 			input.airTemperature = inAirTemperature.get(ID)[0]+273.15;
-			if (input.airTemperature == (nullValue+273.15)) {input.airTemperature = parameters.defaultAirTemperature;}		
+			if (input.airTemperature == (nullValue+273.15)) 
+			{input.airTemperature = parameters.defaultAirTemperature;}		
 			variables.leafTemperatureSun = input.airTemperature;
 			variables.leafTemperatureShade = input.airTemperature;
 			//System.out.println("\nair temperature  = "+ input.airTemperature);
@@ -237,7 +238,9 @@ public class InputReaderMain {
 			if (inLeafAreaIndex != null){input.leafAreaIndex = inLeafAreaIndex.get(ID)[0];}
 			if (input.leafAreaIndex == nullValue) {input.leafAreaIndex = parameters.defaultLeafAreaIndex;}
 			
-			if (inShortWaveRadiationDirect != null) {input.shortWaveRadiationDirect = inShortWaveRadiationDirect.get(ID)[0];}
+			if (inShortWaveRadiationDirect != null) 
+			
+			{input.shortWaveRadiationDirect = inShortWaveRadiationDirect.get(ID)[0];}
 			if (input.shortWaveRadiationDirect == nullValue) {input.shortWaveRadiationDirect = parameters.defaultShortWaveRadiationDirect;}
 			
 			if (inShortWaveRadiationDiffuse != null) {input.shortWaveRadiationDiffuse = inShortWaveRadiationDiffuse.get(ID)[0];}
@@ -273,7 +276,8 @@ public class InputReaderMain {
 		}
 		
 		step++;
-		//System.out.print("\n\nEnd InputReaderMain");
+		//System.out.println("\nairTinputReader  = "+input.airTemperature+ " ID ="+ID);
+		System.out.print("\n\nEnd InputReaderMain");
 	}
 
 	private Point[] getPoint(Coordinate coordinate, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)

@@ -20,12 +20,18 @@ package it.geoframe.blogspot.geoet.stressfactor.methods;
 
 import static java.lang.Math.pow;
 
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
 
 /**
  * Computation of the representaive stress factor as the weighted average of g as a function of dx from each control volumes
  * 
  * @author Concetta D'Amato
  */
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public class SizeWeightedSF extends GeneralSF {
 

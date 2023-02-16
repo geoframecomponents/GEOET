@@ -19,14 +19,14 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 
 /**
  * Test ActualPrestleyTaylorModel.
- * 
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
 public class TestActualPriestleyTaylorGEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
-        String endDate	= "2015-12-16 00:00";
+        String endDate	= "2013-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -46,8 +46,8 @@ public class TestActualPriestleyTaylorGEOET{
         String inPathToCentroids 	="resources/Input/dataET_point/1/centroids_ID_1.shp";
         String inPathToSoilMoisture	="resources/Input/dataET_point/1/SoilMoisture_1.csv";
 
-		String pathToLatentHeatPT	="resources/Output/Ire_actualLatentHeatPT.csv";
-		String pathToEvapotranspirationPT ="resources/Output/Ire_actualETPrestleyTaylor.csv";
+		String pathToLatentHeatPT	="resources/Output/ActualLatentHeatPTnew.csv";
+		String pathToEvapotranspirationPT ="resources/Output/ActualETPrestleyTaylornew.csv";
         
 		OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader netradReader = getTimeseriesReader(inPathToNetRad, fId, startDate, endDate, timeStepMinutes);
@@ -94,9 +94,9 @@ public class TestActualPriestleyTaylorGEOET{
 		//Prospero.doIterative = false;
 		
 		
-        PTstressfactor.useRadiationStress=false;
-        PTstressfactor.useTemperatureStress=false;
-        PTstressfactor.useVDPStress=false;
+        PTstressfactor.useRadiationStress=true;
+        PTstressfactor.useTemperatureStress=true;
+        PTstressfactor.useVDPStress=true;
         PTstressfactor.useWaterStress=true;
         PTstressfactor.alpha = 0.005;
         PTstressfactor.theta = 0.85;

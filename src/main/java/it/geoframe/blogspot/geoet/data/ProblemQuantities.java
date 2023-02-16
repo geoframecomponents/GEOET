@@ -2,6 +2,12 @@ package it.geoframe.blogspot.geoet.data;
 
 import org.joda.time.DateTime;
 
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
+
 public class ProblemQuantities {
 	
 	private static ProblemQuantities uniqueInstance;
@@ -81,6 +87,8 @@ public class ProblemQuantities {
 	public double soilFluxparameter;
 	
 	public double windAtZ; //windAtZ_AboveGroundSurface 
+	
+	public double windSpeedH;
 	
 	
 }

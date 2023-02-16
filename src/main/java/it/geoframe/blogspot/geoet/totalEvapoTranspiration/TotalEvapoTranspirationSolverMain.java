@@ -55,9 +55,9 @@ public class TotalEvapoTranspirationSolverMain {
 	public double fluxEvapoTranspiration;
 	
 	@In
-	public boolean  doProcess4;
-	@Out
 	public boolean  doProcess5;
+	@Out
+	public boolean  doProcess6;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;

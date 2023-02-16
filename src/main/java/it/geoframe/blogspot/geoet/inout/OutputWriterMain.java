@@ -16,7 +16,7 @@ import oms3.annotations.Status;
 import oms3.annotations.Unit;
 @Description("")
 
-@Author(name = "Concetta D'Amato, Michele Bottazzi", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("Output writer")
 @Label("")
 @Name("")
@@ -144,8 +144,9 @@ public class OutputWriterMain {
 	public boolean doPrintLess = false;
 	
 	@In 
-	public boolean  doProcess7;
+	public boolean  doProcess8;
 	
+
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	

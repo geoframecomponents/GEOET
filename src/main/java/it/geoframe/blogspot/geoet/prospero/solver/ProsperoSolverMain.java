@@ -17,10 +17,10 @@ import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.*;
 import it.geoframe.blogspot.geoet.prospero.data.*;
 import it.geoframe.blogspot.geoet.prospero.methods.*;
+import it.geoframe.blogspot.geoet.radiation.methods.RadiationMethod;
 import it.geoframe.blogspot.geoet.stressfactor.methods.*;
 
-@Description("The Prospero model for computing actual evapotranspiration. The transpiration model is based on Schymansky and Or (2017), "
-		+ "with the water stress factor based on the soil moisture proposed by FAO approach (Allen,1986) ")
+@Description("The Prospero model for computing actual evapotranspiration. The transpiration model is based on Schymansky and Or (2017)")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("Evapotranspiration")
@@ -50,10 +50,10 @@ public class ProsperoSolverMain {
 	//public boolean  doProcess;
 	
 	@In
-	public boolean  doProcess2;
+	public boolean  doProcess3;
 	
 	@Out
-	public boolean  doProcess3;
+	public boolean  doProcess4;
 	
 	@Description("Stress factor for sun canopy")
 	@In
@@ -98,7 +98,7 @@ public class ProsperoSolverMain {
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
-				
+		//input.leafAreaIndex= input.leafAreaIndex/2.5;		
 				
 		//computeQuantitiesProspero.computeQuantitiesProspero(input.windVelocity, canopyHeight, input.airTemperature, input.relativeHumidity, input.atmosphericPressure, variables.date, input.latitude, input.longitude, input.doHourly, input.time, input.leafAreaIndex, typeOfCanopy, input.shortWaveRadiationDirect, input.shortWaveRadiationDiffuse, input.netRadiation);
 

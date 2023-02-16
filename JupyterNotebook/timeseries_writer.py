@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Created on 10/29/2019
+Last modified on 19/12/2022
 
 This is used to create timeseries input for OMS simulations
 
@@ -11,7 +12,7 @@ import pandas as pd
 import numpy as np
 
 
-def write_timeseries_csv(dataframe, file_name):
+def write_timeseries_csv(dataframe, file_name, basin):
 	'''
 	Save a timeseries dataframe to .csv file with OMS format
 	
@@ -28,8 +29,8 @@ def write_timeseries_csv(dataframe, file_name):
 	double = []
 	commas = []
 	for i in range(0,number_column):
-		value.append(',value_'+str(i+1))
-		ID.append(','+str(i+1))
+		value.append(',value_'+ str(basin))
+		ID.append(','+ str(basin))
 		double.append(',double')
 		commas.append(',')
     

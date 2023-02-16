@@ -22,6 +22,7 @@ import oms3.annotations.Description;
 import oms3.annotations.Documentation;
 import oms3.annotations.Execute;
 import oms3.annotations.In;
+import oms3.annotations.License;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
@@ -32,7 +33,8 @@ import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
 @Description("This class is used to compute Prospero stress factors according to Macfarlane et al. (2004)"
 		+ "with the water stress factor based on the soil moisture proposed by FAO approach (Allen,1986)")
 @Documentation("")
-@Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 
 public class ProsperoStressFactorSolverMain {
@@ -102,11 +104,11 @@ public class ProsperoStressFactorSolverMain {
 	@Unit("-")
 	public double stressShade;
 	
-	@In 
-	public boolean  doProcess1;
-	
-	@Out 
+	@In
 	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	
 	

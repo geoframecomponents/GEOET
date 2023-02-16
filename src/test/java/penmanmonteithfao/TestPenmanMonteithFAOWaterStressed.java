@@ -17,15 +17,15 @@ import it.geoframe.blogspot.geoet.penmanmonteithfao.*;
 /**
  * Test FAO Hourly evapotranspiration.
  * 
- * @author Andrea Antonello (www.hydrologis.com)
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
 public class TestPenmanMonteithFAOWaterStressed{
 	
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 06:00";
-        String endDate	= "2014-01-01 08:00";
+		String startDate= "2014-01-01 00:00";
+        String endDate	= "2014-01-02 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
 
@@ -47,8 +47,8 @@ public class TestPenmanMonteithFAOWaterStressed{
         String inPathToSoilMoisture 		="resources/Input/dataET_point/1/SoilMoisture18.csv";
         String inPathToCentroids 			="resources/Input/dataET_point/1/centroids_ID_1.shp";
         
-        String pathToEvapotranspirationFAO	="resources/Output/2ETwaterStressedFAO.csv";
-        String pathToLatentHeatFAO			="resources/Output/2FluxETwaterStressedFAO.csv";
+        String pathToEvapotranspirationFAO	="resources/Output/ETwaterStressedFAO.csv";
+        String pathToLatentHeatFAO			="resources/Output/FluxETwaterStressedFAO.csv";
 
 
         OmsTimeSeriesIteratorReader tempReader 			= getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);

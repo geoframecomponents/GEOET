@@ -23,6 +23,7 @@ import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.data.WindProfile;
 import it.geoframe.blogspot.geoet.prospero.methods.*;
+import it.geoframe.blogspot.geoet.radiation.methods.RadiationMethod;
 import oms3.annotations.Author;
 import oms3.annotations.Bibliography;
 import oms3.annotations.Description;

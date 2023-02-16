@@ -20,6 +20,12 @@ package it.geoframe.blogspot.geoet.stressfactor.methods;
 
 import static java.lang.Math.pow;
 
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 /**
  * Computation of the representaive stress factor as the average of stress factor from control volumes 

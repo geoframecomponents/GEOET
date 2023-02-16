@@ -20,7 +20,7 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.PTPMStressFactorSolverMain
 /**
  * Test FAO Hourly evapotranspiration.
  * 
- * @author Andrea Antonello (www.hydrologis.com)
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
 public class TestPenmanMonteithFAOTotalStressed{
@@ -28,8 +28,8 @@ public class TestPenmanMonteithFAOTotalStressed{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2014-01-01 00:00";
-        String endDate	= "2015-01-01 00:00";
-        int timeStepMinutes = 1440;
+		String endDate	= "2014-01-02 00:00";
+        int timeStepMinutes = 60;
         String fId = "ID";
 
         //PrintStreamProgressMonitor pm = new PrintStreamProgressMonitor(System.out, System.out);
@@ -92,9 +92,9 @@ public class TestPenmanMonteithFAOTotalStressed{
         Input.temporalStep = timeStepMinutes;
 		
         PMstressfactor.defaultStress = 1.0;
-        PMstressfactor.useRadiationStress=true;
-        PMstressfactor.useTemperatureStress=false;
-        PMstressfactor.useVDPStress=false;
+        PMstressfactor.useRadiationStress=false;
+        PMstressfactor.useTemperatureStress=true;
+        PMstressfactor.useVDPStress=true;
         PMstressfactor.useWaterStress=true;
         PMstressfactor.alpha = 0.005;
         PMstressfactor.theta = 0.9;

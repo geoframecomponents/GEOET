@@ -18,8 +18,7 @@ import it.geoframe.blogspot.geoet.inout.*;
 import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 import it.geoframe.blogspot.geoet.soilevaporation.solver.*;
 /**
- * Test LysProspero-Schymanski & Or evapotranspiration.
- * @author D'Amato Concetta, Michele Bottazzi (concetta.damato@unitn.it)
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 public class TestPMStressedEvaporationFromSoilGEOET{
 	@Test

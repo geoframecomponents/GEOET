@@ -46,7 +46,7 @@ import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
 
 @Description("Calculates evapotranspiration at any timestep using FAO Penman-Monteith equation and water stress factor according FAO formulation")
-@Author(name = "Concetta D'Amato, Michele Bottazzi", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
 @Label("")
 @Name("PenmanMonteithFAO Evapotranspiration")
@@ -94,10 +94,10 @@ public class PenmanMonteithFAOSolverMain {
 	public double soilFluxParameterNight;
 	
 	@In
-	public boolean  doProcess2;
+	public boolean  doProcess3;
 	
 	@Out
-	public boolean  doProcess3;
+	public boolean  doProcess4;
 	
 	int step;
 
@@ -107,7 +107,11 @@ public class PenmanMonteithFAOSolverMain {
 	public double canopyHeight;
 	
     double nullValue = -9999.0;
-   
+    
+    
+    WindProfile windAtZ = new WindProfile();
+    PenmanMonteithFAOmodel_v139 FAO = new PenmanMonteithFAOmodel_v139();
+    FaoWaterStress waterStress = new FaoWaterStress();
     
     
     private Parameters parameters;
@@ -122,46 +126,48 @@ public class PenmanMonteithFAOSolverMain {
 		input = InputTimeSeries.getInstance();
     	
 		input.airTemperatureC = input.airTemperature - 273.15;
-    	
-    	
  
-			variables.hourOfDay = variables.date.getHourOfDay();
-			variables.isLigth = false;
-			if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {variables.isLigth = true;}
+		variables.hourOfDay = variables.date.getHourOfDay();
+		variables.isLigth = false;
+		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {variables.isLigth = true;}
 		
-			if (variables.isLigth == true) {variables.soilFluxparameter = soilFluxParameterDay;}
-			else {variables.soilFluxparameter = soilFluxParameterNight;}
+		if (variables.isLigth == true) {variables.soilFluxparameter = soilFluxParameterDay;}
+		else {variables.soilFluxparameter = soilFluxParameterNight;}
 		    
-			if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
+		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
     	
 		
 	
-			WindProfile windAtZ = new WindProfile();
-            variables.windAtZ = windAtZ.computeWindProfile(canopyHeight, input.windVelocity);
-   
-            PenmanMonteithFAOmodel FAO = new PenmanMonteithFAOmodel();
-            FaoWaterStress waterStress = new FaoWaterStress();
-           
-            
-            if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
-            	 variables.stressWater =1;}
-            else 
-            	variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction);
+		
+        variables.windAtZ = windAtZ.computeWindProfile(canopyHeight, input.windVelocity);
+    
+        if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
+            variables.stressWater =1;}
+        else 
+        	variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction);
             
                    
-            FAO.setNumber(input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.relativeHumidity, input.soilFlux, variables.windAtZ);
+            //FAO.setNumber(input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.relativeHumidity, input.soilFlux, variables.windAtZ);
+
 	    	
-	    	variables.evapoTranspirationPMdaily = FAO.doET()*variables.stressWater*cropCoefficient; // --> mm/day
+            /*variables.evapoTranspirationPMdaily = FAO.doET()*variables.stressWater*cropCoefficient; // --> mm/day
 	    	
 	    	variables.evapoTranspirationPM = variables.evapoTranspirationPMdaily * input.time/86400;
 	    	
 	    	variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPMdaily * parameters.latentHeatEvaporation / 86400; 
+	    	*/
+            
+////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
+        variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * variables.stressWater * cropCoefficient;// --> mm/time
 	    	
-	    	if (variables.evapoTranspirationPM < 0) {variables.evapoTranspirationPM = 0;}
-	    	if (variables.fluxEvapoTranspirationPM < 0) {variables.fluxEvapoTranspirationPM = 0;}
+	  	variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation / input.time;
+
+            
+	    if (variables.evapoTranspirationPM < 0) {variables.evapoTranspirationPM = 0;}
+	    if (variables.fluxEvapoTranspirationPM < 0) {variables.fluxEvapoTranspirationPM = 0;}
 	    			
-	    	//System.out.println("\netp   "+variables.evapoTranspirationPM);
-	    	//System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
+	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
+	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
             
  
 

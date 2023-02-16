@@ -1,10 +1,15 @@
 package it.geoframe.blogspot.geoet.data;
 
-import static java.lang.Math.pow;
 
+import static java.lang.Math.pow;
+import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.In;
+import oms3.annotations.License;
 import oms3.annotations.Unit;
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public class Parameters {
 	
@@ -24,7 +29,7 @@ public class Parameters {
 	public double boltzmannConstant = 1.38066*pow(10,-23);
 	public double criticalReynoldsNumber = 3000; 	//fixed
 	public double gravityConstant = 9.80665;
-	public double latentHeatEvaporation = 2.45*pow(10,6);
+	public double latentHeatEvaporation = 2.45*pow(10,6); // J/kg
 	public double massAirMolecule = 29*1.66054*pow(10,-27);
 	public double molarGasConstant = 8.314472;
 	public double molarVolume = 0.023;
@@ -75,5 +80,23 @@ public class Parameters {
 	
 	@In
 	public double defaultStress = 1;
+	
+	@Description("Coefficient Cp eq. Penman-Monteith FAO equal to 900 in the case of a daily time step and equal to 37 in the case of a hourly time step")
+	public double Cp = 900; 
+	
+	@Description("Coefficient Cd eq. Penman-Monteith FAO equal to 0.34")
+	public double Cd = 0.34; 
+	
+	@Description("Coefficient alpha eq. Priestley-Taylor")
+	public double alpha = 1.26; 
+	
+	@Description("Radiation parameter k'Pd")
+	public double diffuseExtinctionCoefficient = 0.719;
+	
+	public double leafScatteringCoefficient = 0.2;
+	
+	@Description("Radiation parameter ρcdP")
+	public double canopyReflectionCoefficientDiffuse = 0.036;
+	
 	
 }

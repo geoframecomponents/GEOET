@@ -12,7 +12,7 @@ import oms3.annotations.Name;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 @Description("")
-@Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("Reading input")
 @Label("")
 @Name("")
@@ -24,9 +24,9 @@ public class InputTimeSeries {
 
 	public static InputTimeSeries getInstance() {
 		if (uniqueInstance == null) {
-			uniqueInstance = new InputTimeSeries();
-		}
-		return uniqueInstance;
+		uniqueInstance = new InputTimeSeries();
+	}
+	return uniqueInstance;
 	}
 	public double airTemperature;
 	
