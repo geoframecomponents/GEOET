@@ -1,11 +1,8 @@
 package it.geoframe.blogspot.geoet.inout;
 
 import java.util.HashMap;
-
 import org.geotools.feature.SchemaException;
-
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
-//import it.geoframe.blogspot.geoet.prospero.data.*;
 import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
@@ -17,12 +14,10 @@ import oms3.annotations.Name;
 import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
-
-
 @Description("")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
-@Keywords("Evapotranspiration")
+@Keywords("Output writer")
 @Label("")
 @Name("")
 @Status(Status.CERTIFIED)
@@ -149,15 +144,16 @@ public class OutputWriterMain {
 	public boolean doPrintLess = false;
 	
 	@In 
-	public boolean  doProcess7;
+	public boolean  doProcess8;
 	
+
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	
 
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart OutputWriterMain");
+		//System.out.print("\n\nStart OutputWriterMain");
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
@@ -190,9 +186,7 @@ public class OutputWriterMain {
 			outCanopy 			= new HashMap<Integer, double[]>();
 			outVapourPressureDeficit = new HashMap<Integer, double[]>();
 			}
-		
-		//doPrintOutputPT= false;
-		//doPrintOutputPM= false;
+	
 		
 		if (doPrintOutputPT == false && doPrintOutputPM == false && doPrintLess == false) {
 		
@@ -214,7 +208,7 @@ public class OutputWriterMain {
 		
 		
 		
-		System.out.print("\nEnd OutputWriterMain");	
+		//System.out.print("\nEnd OutputWriterMain");	
 	}
 	
 	

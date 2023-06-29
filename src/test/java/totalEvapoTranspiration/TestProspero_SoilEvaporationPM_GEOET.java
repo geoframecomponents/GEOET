@@ -19,7 +19,7 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 import it.geoframe.blogspot.geoet.totalEvapoTranspiration.*;
 
 /**
- * Test GEOET Prospero-transpiration and Penman Monteith-soil evaporation version (04/2022)
+ * Test GEOET Prospero-transpiration and Penman Monteith-soil evaporation version
  * @author D'Amato Concetta, Michele Bottazzi (concetta.damato@unitn.it)
  */
 public class TestProspero_SoilEvaporationPM_GEOET{
@@ -210,7 +210,7 @@ public class TestProspero_SoilEvaporationPM_GEOET{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 1.26;
+		Input.canopyHeight = 1.26;
 		ProsperoPMStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		

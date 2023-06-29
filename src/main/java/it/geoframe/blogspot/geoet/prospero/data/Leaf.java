@@ -2,6 +2,11 @@ package it.geoframe.blogspot.geoet.prospero.data;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.pow;
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public class Leaf {
 	

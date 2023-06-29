@@ -17,12 +17,6 @@
  */
 package it.geoframe.blogspot.geoet.priestleytaylor;
 
-//import static java.lang.Math.pow;
-//import java.util.HashMap;
-//import java.util.LinkedHashMap;
-//import java.util.Map.Entry;
-//import java.util.Set;
-
 import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
@@ -32,20 +26,14 @@ import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
 import oms3.annotations.Out;
-//import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.*;
-//import org.jgrasstools.gears.libs.modules.JGTConstants;
-//import org.jgrasstools.gears.libs.modules.JGTModel;
-//import org.joda.time.DateTime;
-//import org.joda.time.format.DateTimeFormatter;
-//import com.vividsolutions.jts.geom.Coordinate;
 
 @Description("Calculate evapotraspiration based on the Priestley Taylor model")
-@Author(name = "Giuseppe Formetta, Silvia Franceschi, Andrea Antonello & Concetta D'Amato", contact = "maryban@hotmail.it, concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
 @Label("")
 @Name("ptetp")
@@ -87,17 +75,17 @@ public class PriestleyTaylorActualETSolverMain{
 	int step;
 	//public int time;
 	
-	@Out 
-	public boolean  doProcessOut = false;
+	//@Out 
+	//public boolean  doProcessOut = false;
+	
+	//@In
+	//public boolean  doProcess;
 	
 	@In
-	public boolean  doProcess;
-	
-	@In
-	public boolean  doProcess2;
+	public boolean  doProcess3;
 	
 	@Out
-	public boolean  doProcess3;
+	public boolean  doProcess4;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;
@@ -115,6 +103,7 @@ public class PriestleyTaylorActualETSolverMain{
 		
 
 		input.airTemperatureC = input.airTemperature - 273.15;
+		parameters.alpha = alpha;
 		
 		
 		int hourOfDay = variables.date.getHourOfDay();
@@ -128,22 +117,25 @@ public class PriestleyTaylorActualETSolverMain{
 	    
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = soilFluxparameter * input.netRadiation;}
 	
-	    ETPriestleyTaylor PT = new ETPriestleyTaylor();
-	    PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
+	    PriestleyTaylorModel PT = new PriestleyTaylorModel();
+	    //PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
 	   
 	    
-	    variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET()* stressFactor ;
+	    variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET(input.netRadiation)* stressFactor ;
 	    variables.fluxEvapoTranspirationPT =(variables.fluxEvapoTranspirationPT<0)?0:variables.fluxEvapoTranspirationPT;
 	    
 		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT * (input.time/parameters.latentHeatEvaporation);
 	    variables.evapoTranspirationPT =(variables.evapoTranspirationPT<0)?0:variables.evapoTranspirationPT;
 		
-	    System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
-	    System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
+	   // System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
+	   // System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
 	    
 	    evapoTranspirationPT = variables.evapoTranspirationPT;
 	    //outEvapotranspirationPt.put((Integer)  basinId, new double[]{petp * time / 86400});
 	    //outLatentHeatPt.put((Integer)  basinId, new double[]{petp * latentHeatEvaporation / 86400});
+	    
+	    //System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
+	    
 	    System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");	
 			//step++;
 		}

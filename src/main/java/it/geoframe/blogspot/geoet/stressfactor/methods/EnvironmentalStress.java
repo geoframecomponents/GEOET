@@ -1,52 +1,78 @@
 package it.geoframe.blogspot.geoet.stressfactor.methods;
 import java.lang.Math;
-
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
-import it.geoframe.blogspot.geoet.prospero.methods.PressureMethods;
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public class EnvironmentalStress {
 	
 	private ProblemQuantities variables;
-	PressureMethods pressure = new PressureMethods();
 	
+	private double radiationStress = 1;
+	private double first;
+	private double sqr1;
+	private double sqr2;
+	private double sqr;
+	private double temperatureStress = 1;
+	private double c;
+	private double b;
+	private double vapourPressureStress = 1;
+
 	
 	public double computeRadiationStress(double shortWaveRadiation, double alpha, double theta) {
-		double shortWaveRadiationMicroMol=(shortWaveRadiation);
-		double first = (alpha*shortWaveRadiationMicroMol)+1;
-
-		double sqr1 = Math.pow(first, 2);
-		double sqr2 = - 4*theta*alpha*shortWaveRadiationMicroMol;
-		double sqr = sqr1+sqr2;
-		double result = (1/(2*theta))*(alpha*shortWaveRadiationMicroMol+1-Math.sqrt((sqr))) ;
 		
-		if (result <= 0) {result = 0;}
-	    if (result >= 1) {result = 1;}
-	    
-		return result;	
-	}
+		//double radiationStress = 1;
+		
+		//if(shortWaveRadiation <= 0) {radiationStress = 1;}
+		if(shortWaveRadiation <= 0) {radiationStress = 0.15;}
+		
+		else {
+			//double shortWaveRadiationMicroMol=(shortWaveRadiation);
+			first = (alpha*shortWaveRadiation)+1;
+
+			sqr1 = Math.pow(first, 2);
+			sqr2 = - 4*theta*alpha*shortWaveRadiation;
+			sqr = sqr1+sqr2;
+			radiationStress = (1/(2*theta))*(alpha*shortWaveRadiation+1-Math.sqrt((sqr))) ;
+		
+			if (Double.isNaN(radiationStress)) {radiationStress = 0;}
+			if (radiationStress <= 0) {radiationStress = 0;}
+			if (radiationStress >= 1) {radiationStress = 1;}
+		}
+		
+		return radiationStress;}
+	
+	
 	
 	public double computeTemperatureStress(double airTemperature, double Tl, double Th, double T0) {
-		airTemperature = airTemperature -273;
-		double c = (Th-T0)/(T0-Tl);
-		double b = 1/((T0-Tl)*Math.pow((Th-T0),c));
-		double result = b* (airTemperature - Tl)* Math.pow((Th-airTemperature),c);
 		
-		if (result <= 0) {result = 0;}
-	    if (result >= 1) {result = 1;}
+		airTemperature = airTemperature - 273.15;
+		c = (Th-T0)/(T0-Tl);
+		b = 1/((T0-Tl)*Math.pow((Th-T0),c));
+		
+		temperatureStress = b * (airTemperature - Tl) * Math.pow((Th - airTemperature),c);
+		
+		if (Double.isNaN(temperatureStress)) {temperatureStress = 0;}
+		if (temperatureStress <= 0) {temperatureStress = 0;}
+	    if (temperatureStress >= 1) {temperatureStress = 1;}
 	    
-		return result;	
+		return temperatureStress;	
 	}
 	
 	public double computeVapourPressureStress(double airTemperature, double VPD0) {
 		
 		variables = ProblemQuantities.getInstance();
 		
-		double result = Math.exp(-variables.vapourPressureDeficit/VPD0);
+		vapourPressureStress = Math.exp(-variables.vapourPressureDeficit/VPD0);
 		
-		if (result <= 0) {result = 0;}
-	    if (result >= 1) {result = 1;}
+		if (Double.isNaN(vapourPressureStress)) {vapourPressureStress = 0;}
+		if (vapourPressureStress <= 0) {vapourPressureStress = 0;}
+	    if (vapourPressureStress >= 1) {vapourPressureStress = 1;}
 	    
-		return result;	
+		return vapourPressureStress;	
 	}
 	
 }

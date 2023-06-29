@@ -17,10 +17,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package it.geoframe.blogspot.geoet.stressfactor.methods;
+
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
 /**
  * The stress factor abstract class.
  * @author Concetta D'Amato
  */
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public abstract class GeneralSF {
 	

@@ -49,7 +49,7 @@ import it.geoframe.blogspot.geoet.prospero.methods.*;
 @Description("")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
-@Keywords("Evapotranspiration")
+@Keywords("Reading input")
 @Label("")
 @Name("")
 @Status(Status.CERTIFIED)
@@ -115,6 +115,61 @@ public class InputReaderMain {
 	@Unit("m2 m-2")
 	public HashMap<Integer, double[]> inLeafAreaIndex;
 	
+	@Description("Root Depth.")
+	@In
+	@Unit("m")
+	public HashMap<Integer, double[]> inRootDepth;
+	
+	
+	@Description("Root depth.")
+	@In
+	public double rootDepth;
+	
+	@Description("Root depth.")
+	@Out
+	public double defRootDepth;
+	
+	@Description("Root Depth can be evaluated in different way"
+		    + " costantValue - rootGrowth")
+	@In
+	public String rootType = "costantValue";
+	
+	
+	
+	@In public double canopyHeight;
+	
+	@Description("Canopy height.")
+	@In
+	@Unit("m")
+	public HashMap<Integer, double[]> inCanopyHeight;
+	
+	@In
+	public String typeOfCanopy;
+	
+	
+	@Description("Canopy Height can be evaluated in different way: costantValue - canopyHeightGrowth")
+	@In
+	public String canopyHeightType = "costantValue";
+	
+	/////////////////////	/////////////////////	/////////////////////	/////////////////////	/////////////////////
+	
+	@Description("z coordinate read from grid NetCDF file.")
+	@In
+	@Unit("m")
+	public double[] z;
+	
+	@Description("Vector of Initial Condition for root density")
+	@In
+	@Unit("-")
+	public double[] rootIC;
+	
+	@Description("Growth Rate of the Root in each control volume")
+	@In
+	@Unit("-")
+	public double growthRateRoot = 0.01;
+	
+	/////////////////////	/////////////////////	/////////////////////	/////////////////////	/////////////////////
+	
 	@Description("Input soil moisture.")
 	@In
 	@Unit("m3 m-3")
@@ -143,10 +198,7 @@ public class InputReaderMain {
 	@Description("Final target CRS")
 	CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
 	
-	@In public double canopyHeight;
 	
-	@In
-	public String typeOfCanopy;
 	
 	
 	@Description("Type of transpiring area")
@@ -171,10 +223,6 @@ public class InputReaderMain {
 	DateTimeFormatter formatter = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").withZone(DateTimeZone.UTC);
 
 	
-	//@Description("Switch that defines if it is hourly.")
-	//@In
-	//public boolean doHourly = true;
-	
 	@Description("The station ID in the timeseries file")
 	@In
 	@Unit ("-")
@@ -192,8 +240,7 @@ public class InputReaderMain {
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 	
-	
-	
+
 	
 	@Execute
 	public void process() throws Exception {
@@ -204,15 +251,15 @@ public class InputReaderMain {
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
-		//input.doHourly = doHourly;
-		
-		//if (doHourly == true) {input.time = temporalStep*60;
-		//	} else {input.time = 86400;} //questo è da cambiare perchè se è sotto l'ora e quindi mettiamo falso il time è 86400 e non è cosi 
-		
+		//input.rootType = rootType;
+		input.rootDepth=rootDepth;
+		input.canopyHeight = canopyHeight;
 		input.time = temporalStep*60;
+		input.z = z;
+		input.rootDensityIC = rootIC;
+		input.growthRateRoot = growthRateRoot;
 		
 		DateTime startDateTime = formatter.parseDateTime(tStartDate);
-		//variables.date=(doHourly==false)?startDateTime.plusDays(step).plusHours(12):startDateTime.plusMinutes(temporalStep*step);
 		variables.date=startDateTime.plusMinutes(temporalStep*step);
 		
 		//System.out.println("data inizio = "+ (startDateTime));
@@ -221,46 +268,71 @@ public class InputReaderMain {
 		stationCoordinates = getCoordinate(0,inCentroids, idCentroids);
 		Iterator<Integer> idIterator = stationCoordinates.keySet().iterator();
 		CoordinateReferenceSystem sourceCRS = inDem.getCoordinateReferenceSystem2D();
-
-		
+			
 		Set<Entry<Integer, double[]>> entrySet = inAirTemperature.entrySet();
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			
 			Integer ID = entry.getKey();
 			Coordinate coordinate = (Coordinate) stationCoordinates.get(idIterator.next());
-			Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);
-						
+			Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);	
+				
+			if(step==0){
+			
 			input.elevation = coordinate.z;
 			input.longitude = (idPoint[0].getX());
 			input.latitude = Math.toRadians(idPoint[0].getY());
-			input.ID = ID;
+			input.ID = ID;}
 				
 	///////////////////////////////////////////// INPUT READER /////////////////////////////////////////////
-			System.out.printf("\ndata   " + variables.date);
+			//System.out.printf("\ndata   " + variables.date);
 			
 			input.airTemperature = inAirTemperature.get(ID)[0]+273.15;
-			if (input.airTemperature == (nullValue+273.15)) {input.airTemperature = parameters.defaultAirTemperature;}
-			//if (input.airTemperature == (nullValue+273.0)) {input.airTemperature = nullValue;}		
+			if (input.airTemperature == (nullValue+273.15)) 
+			{input.airTemperature = parameters.defaultAirTemperature;}		
 			variables.leafTemperatureSun = input.airTemperature;
 			variables.leafTemperatureShade = input.airTemperature;
-	
-			
 			//System.out.println("\nair temperature  = "+ input.airTemperature);
-			
 			
 			input.leafAreaIndex = parameters.defaultLeafAreaIndex;
 			if (inLeafAreaIndex != null){input.leafAreaIndex = inLeafAreaIndex.get(ID)[0];}
 			if (input.leafAreaIndex == nullValue) {input.leafAreaIndex = parameters.defaultLeafAreaIndex;}
 			
-			if (inShortWaveRadiationDirect != null) {input.shortWaveRadiationDirect = inShortWaveRadiationDirect.get(ID)[0];}
+			//////////////////////////////////Root////////////////////////////////////////////////
+			
+			if(step==0){
+				variables.rootDepth = input.rootDepth;
+				if (input.rootDepth == nullValue) {variables.rootDepth = parameters.defaultRootDepth;}}
+
+			if ("rootGrowth".equals(rootType)) {
+				if (inRootDepth != null){variables.rootDepth = inRootDepth.get(ID)[0];}
+				if (variables.rootDepth == nullValue) {variables.rootDepth = parameters.defaultRootDepth;}}
+	
+			defRootDepth = variables.rootDepth;
+			
+			/////////////////////////////////////canopyHeight/////////////////////////////////////////////
+			
+			
+			if(step==0){
+				variables.canopyHeight = input.canopyHeight;
+				if (input.canopyHeight == nullValue) {variables.canopyHeight = parameters.defaultCanopyHeigth;}}
+			
+			if ("canopyHeightGrowth".equals(canopyHeightType)) {
+				if (inCanopyHeight != null){variables.canopyHeight = inCanopyHeight.get(ID)[0];}
+				if (variables.canopyHeight == nullValue) {variables.canopyHeight = parameters.defaultCanopyHeigth;}}
+			
+			
+			//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			if (inShortWaveRadiationDirect != null) 
+			
+			{input.shortWaveRadiationDirect = inShortWaveRadiationDirect.get(ID)[0];}
 			if (input.shortWaveRadiationDirect == nullValue) {input.shortWaveRadiationDirect = parameters.defaultShortWaveRadiationDirect;}
 			
 			if (inShortWaveRadiationDiffuse != null) {input.shortWaveRadiationDiffuse = inShortWaveRadiationDiffuse.get(ID)[0];}
 			if (input.shortWaveRadiationDiffuse == nullValue) {input.shortWaveRadiationDiffuse = 0.159*input.shortWaveRadiationDirect;} 						
 			
 			if (inLongWaveRadiation != null) {input.longWaveRadiation = inLongWaveRadiation.get(ID)[0];}
-			if (input.longWaveRadiation == nullValue) {input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 4);}	
-			//input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 
+			if (input.longWaveRadiation == nullValue) {input.longWaveRadiation = leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow (input.airTemperature, 4);}	 
 			
 			if (inNetRadiation != null) {input.netRadiation = inNetRadiation.get(ID)[0];}
 			if (input.netRadiation == nullValue) {input.netRadiation = defaultNetRadiation;}	
@@ -289,6 +361,7 @@ public class InputReaderMain {
 		}
 		
 		step++;
+		//System.out.println("\nairTinputReader  = "+input.airTemperature+ " ID ="+ID);
 		System.out.print("\n\nEnd InputReaderMain");
 	}
 

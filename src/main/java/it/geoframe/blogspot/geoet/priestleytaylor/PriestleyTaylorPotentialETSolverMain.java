@@ -48,7 +48,7 @@ import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 
 @Description("Calculate evapotraspiration based on the Priestley Taylor model")
-@Author(name = "Giuseppe Formetta, Silvia Franceschi, Andrea Antonello & Concetta D'Amato", contact = "maryban@hotmail.it, concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
 @Label("")
 @Name("ptetp")
@@ -79,11 +79,20 @@ public class PriestleyTaylorPotentialETSolverMain{
 
 	int step;
 	
-	@Out 
-	public boolean  doProcessOut = false;
+	//@In
+	//public int ID;
+	
+	//@Out 
+	//public boolean  doProcessOut = false;
+	
+	//@In
+	//public boolean  doProcess;
 	
 	@In
-	public boolean  doProcess;
+	public boolean  doProcess3;
+	
+	@Out
+	public boolean  doProcess4;
 	
 	private Parameters parameters;
 	private ProblemQuantities variables;
@@ -91,6 +100,7 @@ public class PriestleyTaylorPotentialETSolverMain{
 
 	@Execute
 	public void process() throws Exception {
+		System.out.printf("\n\nStart PriestleyTaylorETSolverMain");
 		
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -98,7 +108,7 @@ public class PriestleyTaylorPotentialETSolverMain{
 		
 			
 		input.airTemperatureC = input.airTemperature - 273.15;
-		
+		parameters.alpha = alpha;
 				
 		variables.hourOfDay = variables.date.getHourOfDay();
 		variables.isLigth = false;
@@ -110,17 +120,25 @@ public class PriestleyTaylorPotentialETSolverMain{
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
 					
 
-		ETPriestleyTaylor PT = new ETPriestleyTaylor();
-		PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
+		PriestleyTaylorModel PT = new PriestleyTaylorModel();
+		//PT.setNumber(parameters.alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
 		   
-		variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET();
+		variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET(input.netRadiation);
 		variables.fluxEvapoTranspirationPT =(variables.fluxEvapoTranspirationPT<0)?0:variables.fluxEvapoTranspirationPT;
 		
 		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT * (input.time/parameters.latentHeatEvaporation);
 	    variables.evapoTranspirationPT =(variables.evapoTranspirationPT<0)?0:variables.evapoTranspirationPT;
 		
-	    System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
-	    System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
+	   // System.out.println("\ndata  = "+variables.date+ " ID ="+ID);
+
+	    //System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
+	   // System.out.println("\nairTpriestleyTaylor  = "+input.airTemperature+ " ID ="+ID);
+	    //System.out.println("\natmosphericPressure  = "+input.atmosphericPressure);
+	    //System.out.println("\nnetRadiation  = "+input.netRadiation);
+	    //System.out.println("\nsoilFlux  = "+input.soilFlux);
+	    //System.out.println("\nsoilFluxparameter  = "+variables.soilFluxparameter);
+	    
+	    System.out.printf("\n\nEnd PriestleyTaylorETSolverMain");	
 	    
 		    
 		}

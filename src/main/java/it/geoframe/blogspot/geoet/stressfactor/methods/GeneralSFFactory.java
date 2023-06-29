@@ -18,10 +18,15 @@
  */
 package it.geoframe.blogspot.geoet.stressfactor.methods;
 
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
 /**
  * A simple design factory for creating a StressFactor object
  * @author Concetta D'Amato
  */
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 public class GeneralSFFactory {
 	/**
@@ -41,6 +46,9 @@ public class GeneralSFFactory {
 			generalSF = new AverageSF(z,deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
 		else if(type.equalsIgnoreCase("SizeWeightedMethod") || type.equalsIgnoreCase("SizeWeightedMethod")){
 			generalSF = new SizeWeightedSF(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+		else if(type.equalsIgnoreCase("RootDensityWeightedMethod") || type.equalsIgnoreCase("RootDensityWeightedMethod")){
+			generalSF = new RootDensityWeightedSF(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+		
 		return generalSF;
 	}	
 }

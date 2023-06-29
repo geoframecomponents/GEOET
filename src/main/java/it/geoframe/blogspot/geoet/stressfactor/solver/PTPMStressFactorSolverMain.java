@@ -22,6 +22,7 @@ import oms3.annotations.Description;
 import oms3.annotations.Documentation;
 import oms3.annotations.Execute;
 import oms3.annotations.In;
+import oms3.annotations.License;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
@@ -29,9 +30,10 @@ import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress;
 import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
 
-@Description("This class is used to compute stress factors for Priestley Taylori and Penman Monteith evapotranspiration model")
+@Description("This class is used to compute stress factors for Priestley Taylor and Penman Monteith evapotranspiration model")
 @Documentation("")
-@Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 
 public class PTPMStressFactorSolverMain {
@@ -83,8 +85,14 @@ public class PTPMStressFactorSolverMain {
 	@In
 	public double defaultStress = 1;
 	
+	//@In
+	//public boolean  doProcess;
+	
 	@In
-	public boolean  doProcess;
+	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	@Description("It is needed to iterate on the date")
 	int step;
@@ -146,7 +154,13 @@ public class PTPMStressFactorSolverMain {
         
 		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
 		//System.out.printf("\nGE = %.5f %n", GnE[0]);
-						
+		
+       // System.out.printf("\n\nstressSun= %.5f %n", stressSun);
+        
+       // System.out.printf("\ntheta= %.5f %n", input.soilMoisture);
+        
+        
+        
 		step++;
 	}
 }

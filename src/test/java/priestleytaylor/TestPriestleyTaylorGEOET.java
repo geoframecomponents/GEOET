@@ -19,14 +19,14 @@ import it.geoframe.blogspot.geoet.priestleytaylor.*;
 
 /**
  * Test PrestleyTaylorModel.
- * 
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
 public class TestPriestleyTaylorGEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
-        String endDate	= "2013-12-15 01:00";
+        String endDate	= "2013-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
         
@@ -45,8 +45,8 @@ public class TestPriestleyTaylorGEOET{
 		String inPathToCentroids 	="resources/Input/dataET_point/1/centroids_ID_1.shp";
         String inPathToSoilHeatFlux ="resources/Input/dataET_point/1/GHF_1.csv";
 
-		String pathToLatentHeatPT	="resources/Output/latentHeatPt.csv";
-		String pathToEvapotranspirationPT ="resources/Output/etp_PrestleyTaylor.csv";
+		String pathToLatentHeatPT	="resources/Output/latentHeatPtnew.csv";
+		String pathToEvapotranspirationPT ="resources/Output/etp_PrestleyTaylornew.csv";
         OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader netradReader = getTimeseriesReader(inPathToNetRad, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader pressureReader = getTimeseriesReader(inPathToPressure, fId, startDate, endDate, timeStepMinutes);      
@@ -81,6 +81,8 @@ public class TestPriestleyTaylorGEOET{
 		PtEt.alpha = 1.26;
         PtEt.soilFluxParameterDay = 0.35;
         PtEt.soilFluxParameterNight = 0.75;
+
+        
         //PtEt.doHourly = true;
         Input.temporalStep = timeStepMinutes;
         //PtEt.defaultAtmosphericPressure = 101.3;

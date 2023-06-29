@@ -19,8 +19,8 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 import it.geoframe.blogspot.geoet.totalEvapoTranspiration.*;
 
 /**
- * Test LysProspero-Schymanski & Or evapotranspiration.
- * @author D'Amato Concetta, Michele Bottazzi (concetta.damato@unitn.it)
+ * 
+ * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 public class TestMinutesProspero_SoilEvaporationPM_GEOET{
 	@Test
@@ -210,7 +210,7 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 0.2;
+		Input.canopyHeight = 0.2;
 		ProsperoStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		

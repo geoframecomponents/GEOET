@@ -22,6 +22,7 @@ import oms3.annotations.Description;
 import oms3.annotations.Documentation;
 import oms3.annotations.Execute;
 import oms3.annotations.In;
+import oms3.annotations.License;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
 
@@ -38,7 +39,8 @@ import it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactorFactory;
 
 @Description("This class is used to compute Jarvis stress factors considering net radiation for the environmental stress")
 @Documentation("")
-@Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
 
 
 public class JarvisNetRadiationStressFactorSolverMain {
@@ -58,10 +60,10 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	@Unit ("-")
 	public double[] theta;
 	
-	@Description("Depth of the root.")
-	@In 
-	@Unit("m")
-	public double etaR;
+	//@Description("Depth of the root.")
+	//@In 
+	//@Unit("m")
+	//public double etaR;
 	
 	//@Description("Depth of the Evaporation layer.")
 	//@In 
@@ -214,15 +216,15 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	@Unit("-")
 	public double stressShade;
 	
-	@In 
-	public boolean  doProcess;
+	//@In 
+	//public boolean  doProcess;
 	
 
-	@In 
-	public boolean  doProcess1;
-	
-	@Out 
+	@In
 	public boolean  doProcess2;
+	
+	@Out
+	public boolean  doProcess3;
 	
 	@Description("ArrayList of variable to be stored in the buffer writer")
 	@Out
@@ -251,7 +253,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
 			GeneralSFFactory representativeSFFactory= new GeneralSFFactory();
 			representativeSF = representativeSFFactory.createRepresentativeStressFactor(representativeStressFactorModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 			
-			zR = totalDepth + etaR;
+			//zR = totalDepth + etaR;
 			//zE = totalDepth + etaE;
 			
 			outputToBuffer = new ArrayList<double[]>();
@@ -260,6 +262,8 @@ public class JarvisNetRadiationStressFactorSolverMain {
 		input = InputTimeSeries.getInstance();
 	
 		outputToBuffer.clear();
+		
+		zR = totalDepth + variables.rootDepth;
 	
 		variables.stressRadiationSun = 1;
         if (useRadiationStress == true) {
@@ -283,7 +287,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
           
         variables.stressWater = 1;
         g = stressFactor.computeStressFactor(theta,zR,zE);
-		GnT = representativeSF.computeRepresentativeStressFactor(g,etaR,zR);
+		GnT = representativeSF.computeRepresentativeStressFactor(g,variables.rootDepth,zR);
         
         if (useWaterStress == true) {
         	

@@ -17,11 +17,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package it.geoframe.blogspot.geoet.stressfactor.methods;
+
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
 //import computeStressFactor.LinearStressFactor;
 /**
  * A simple design factory for creating a StressFactor objects.
  * @author Concetta D'Amato
  */
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
+
 public class WaterStressFactorFactory {
 
 	/**

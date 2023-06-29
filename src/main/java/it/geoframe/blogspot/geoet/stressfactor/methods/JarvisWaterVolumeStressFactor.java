@@ -20,10 +20,17 @@ package it.geoframe.blogspot.geoet.stressfactor.methods;
 
 import static java.lang.Math.pow;
 
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
 /**
  * Computation of the stress factor by the linear formulation of Jarvis 1976 
  * @author Concetta D'Amato
  */
+
+@Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
+
 
 public class JarvisWaterVolumeStressFactor extends WaterStressFactor{
 
@@ -35,7 +42,7 @@ public class JarvisWaterVolumeStressFactor extends WaterStressFactor{
 			
 	for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
 
-		if(z[i] > zR || z[i] > zE) {
+		if(z[i] >= zR || z[i] >= zE) {
 			stressFactor[i]=(theta[i]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i])/(thetaFc[ID[i]]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i]);
 			stressFactor[i]=((stressFactor[i]>0)?stressFactor[i]:0);				
 			stressFactor[i]=((stressFactor[i]<1)?stressFactor[i]:1);
