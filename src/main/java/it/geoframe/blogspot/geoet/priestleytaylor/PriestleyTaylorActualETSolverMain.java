@@ -17,12 +17,6 @@
  */
 package it.geoframe.blogspot.geoet.priestleytaylor;
 
-//import static java.lang.Math.pow;
-//import java.util.HashMap;
-//import java.util.LinkedHashMap;
-//import java.util.Map.Entry;
-//import java.util.Set;
-
 import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
@@ -32,17 +26,11 @@ import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
 import oms3.annotations.Out;
-//import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.*;
-//import org.jgrasstools.gears.libs.modules.JGTConstants;
-//import org.jgrasstools.gears.libs.modules.JGTModel;
-//import org.joda.time.DateTime;
-//import org.joda.time.format.DateTimeFormatter;
-//import com.vividsolutions.jts.geom.Coordinate;
 
 @Description("Calculate evapotraspiration based on the Priestley Taylor model")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -129,7 +117,7 @@ public class PriestleyTaylorActualETSolverMain{
 	    
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = soilFluxparameter * input.netRadiation;}
 	
-	    ETPriestleyTaylor PT = new ETPriestleyTaylor();
+	    PriestleyTaylorModel PT = new PriestleyTaylorModel();
 	    //PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
 	   
 	    
@@ -145,6 +133,9 @@ public class PriestleyTaylorActualETSolverMain{
 	    evapoTranspirationPT = variables.evapoTranspirationPT;
 	    //outEvapotranspirationPt.put((Integer)  basinId, new double[]{petp * time / 86400});
 	    //outLatentHeatPt.put((Integer)  basinId, new double[]{petp * latentHeatEvaporation / 86400});
+	    
+	    //System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
+	    
 	    System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");	
 			//step++;
 		}

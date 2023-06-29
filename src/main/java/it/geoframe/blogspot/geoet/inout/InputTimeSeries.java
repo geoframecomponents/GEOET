@@ -34,6 +34,10 @@ public class InputTimeSeries {
 	
 	public double leafAreaIndex;
 	
+	public double rootDepth;
+	
+	public double canopyHeight;
+	
 	public double shortWaveRadiationDirect;
 	
 	public double shortWaveRadiationDiffuse;
@@ -54,6 +58,8 @@ public class InputTimeSeries {
 	
 	public DateTime date; 
 	
+	//public String rootType;
+	
 	@Description("The elevation of the centroid.")
 	@In
 	@Unit("m")
@@ -72,6 +78,16 @@ public class InputTimeSeries {
 	public int time;
 	
 	public int ID;
+	
+	@Description("z coordinate read from grid NetCDF file.")
+	@Unit("m")
+	public double[] z;
+	
+	@Description("Vector of Initial Condition for root density")
+	@Unit("-")
+	public double[] rootDensityIC;
+	
+	public double growthRateRoot;
 	
 	//@Description("Switch that defines if it is hourly.")
 	//@In

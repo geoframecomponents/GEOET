@@ -3,6 +3,9 @@ package it.geoframe.blogspot.geoet.prospero.methods;
 import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 
+import it.geoframe.blogspot.geoet.data.Parameters;
+import it.geoframe.blogspot.geoet.data.ProblemQuantities;
+import it.geoframe.blogspot.geoet.prospero.data.Leaf;
 import oms3.annotations.Author;
 import oms3.annotations.License;
 
@@ -21,12 +24,20 @@ public class PressureMethods {
 	private double t;
 	private double expo;
 	private double vapourPressureDeficit;
+	private double vapourPressureDelta;
+	private double factor1;
+	private double factor2;
+	
+	
+	private ProblemQuantities variables;
+	private Leaf leafparameters;		
+	private Parameters parameters;
 	
 	
 	
 	public double computeSaturationVaporPressure(double airTemperature, double waterMolarMass, double latentHeatEvaporation, double molarGasConstant) {
 		 // Computation of the saturation vapor pressure at air temperature [Pa]
-		saturationVaporPressure = 611.0 * exp((waterMolarMass*latentHeatEvaporation/molarGasConstant)*((1.0/273.0)-(1.0/airTemperature)));
+		saturationVaporPressure = 611.0 * exp((waterMolarMass*latentHeatEvaporation/molarGasConstant)*((1.0/273.15)-(1.0/airTemperature)));
 		return saturationVaporPressure;}
 	
 	
@@ -34,7 +45,7 @@ public class PressureMethods {
 		// Computation of delta [Pa K-1]
 		// Slope of saturation vapor pressure at air temperature
 		numerator = 611 * waterMolarMass * latentHeatEvaporation;
-		deltaexponential = exp((waterMolarMass * latentHeatEvaporation / molarGasConstant)*((1/273.0)-(1/airTemperature)));
+		deltaexponential = exp((waterMolarMass * latentHeatEvaporation / molarGasConstant)*((1/273.15)-(1/airTemperature)));
 		denominator = (molarGasConstant * pow(airTemperature,2));
 		delta = numerator * deltaexponential / denominator;
 		return delta;}
@@ -60,4 +71,25 @@ public class PressureMethods {
 	public double computeVapourPressureDeficit(double vaporPressure, double vaporPressureDew) {
 		vapourPressureDeficit = (vaporPressure - vaporPressureDew)/1000;
 		return vapourPressureDeficit;}
+	
+	
+	public double computeVapourPressureDelta(double absorbedRadiation, double canopyArea, double airTemperature, double stress, double atmosphericPressure, double residual) {
+		
+		leafparameters = Leaf.getInstance();
+		parameters = Parameters.getInstance();
+		variables = ProblemQuantities.getInstance();
+		
+		factor1=(leafparameters.leafSide*canopyArea*(leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant*pow (airTemperature, 3)) + 2*variables.convectiveTransferCoefficient*canopyArea)/(leafparameters.leafSide*canopyArea*(leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant*pow (airTemperature, 3)) + 2*variables.convectiveTransferCoefficient*canopyArea + 2*parameters.latentHeatEvaporation*stress*canopyArea*0.622/atmosphericPressure*variables.delta);
+		
+		factor2= (absorbedRadiation -leafparameters.leafSide*canopyArea*(leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant*pow (airTemperature, 4)) - residual)/(leafparameters.leafSide*canopyArea*(leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant*pow (airTemperature, 3)) + 2*variables.convectiveTransferCoefficient*canopyArea + 2*parameters.latentHeatEvaporation*stress*canopyArea*0.622/atmosphericPressure*variables.delta);
+		
+		vapourPressureDelta= factor1 *(variables.saturationVaporPressure-variables.vaporPressure) + factor2 * variables.delta;
+				
+		return vapourPressureDelta;}
+	
+	
+	
+	
+	
+	
 }

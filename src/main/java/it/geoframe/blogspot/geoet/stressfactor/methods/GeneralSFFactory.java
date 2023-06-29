@@ -46,6 +46,9 @@ public class GeneralSFFactory {
 			generalSF = new AverageSF(z,deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
 		else if(type.equalsIgnoreCase("SizeWeightedMethod") || type.equalsIgnoreCase("SizeWeightedMethod")){
 			generalSF = new SizeWeightedSF(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+		else if(type.equalsIgnoreCase("RootDensityWeightedMethod") || type.equalsIgnoreCase("RootDensityWeightedMethod")){
+			generalSF = new RootDensityWeightedSF(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+		
 		return generalSF;
 	}	
 }

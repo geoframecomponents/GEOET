@@ -42,7 +42,7 @@ public class JarvisWaterVolumeStressFactor extends WaterStressFactor{
 			
 	for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
 
-		if(z[i] > zR || z[i] > zE) {
+		if(z[i] >= zR || z[i] >= zE) {
 			stressFactor[i]=(theta[i]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i])/(thetaFc[ID[i]]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i]);
 			stressFactor[i]=((stressFactor[i]>0)?stressFactor[i]:0);				
 			stressFactor[i]=((stressFactor[i]<1)?stressFactor[i]:1);

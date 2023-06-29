@@ -60,10 +60,10 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	@Unit ("-")
 	public double[] theta;
 	
-	@Description("Depth of the root.")
-	@In 
-	@Unit("m")
-	public double etaR;
+	//@Description("Depth of the root.")
+	//@In 
+	//@Unit("m")
+	//public double etaR;
 	
 	//@Description("Depth of the Evaporation layer.")
 	//@In 
@@ -253,7 +253,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
 			GeneralSFFactory representativeSFFactory= new GeneralSFFactory();
 			representativeSF = representativeSFFactory.createRepresentativeStressFactor(representativeStressFactorModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 			
-			zR = totalDepth + etaR;
+			//zR = totalDepth + etaR;
 			//zE = totalDepth + etaE;
 			
 			outputToBuffer = new ArrayList<double[]>();
@@ -262,6 +262,8 @@ public class JarvisNetRadiationStressFactorSolverMain {
 		input = InputTimeSeries.getInstance();
 	
 		outputToBuffer.clear();
+		
+		zR = totalDepth + variables.rootDepth;
 	
 		variables.stressRadiationSun = 1;
         if (useRadiationStress == true) {
@@ -285,7 +287,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
           
         variables.stressWater = 1;
         g = stressFactor.computeStressFactor(theta,zR,zE);
-		GnT = representativeSF.computeRepresentativeStressFactor(g,etaR,zR);
+		GnT = representativeSF.computeRepresentativeStressFactor(g,variables.rootDepth,zR);
         
         if (useWaterStress == true) {
         	

@@ -27,8 +27,8 @@ public class TestPenmanMonteithFAOTotalStressed{
 	
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 00:00";
-		String endDate	= "2014-01-02 00:00";
+		String startDate= "2013-12-15 00:00";
+        String endDate	= "2015-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
 
@@ -41,17 +41,17 @@ public class TestPenmanMonteithFAOTotalStressed{
 		DEMreader.process();
 		GridCoverage2D digitalElevationModel = DEMreader.outRaster;
 
-        String inPathToTemperature 			="resources/Input/dataET_point/1/airT_1.csv";
-        String inPathToWind 				="resources/Input/dataET_point/1/Wind_1.csv";
-        String inPathToRelativeHumidity 	="resources/Input/dataET_point/1/RH_1.csv";
-        String inPathToNetRad 				="resources/Input/dataET_point/1/Net_1.csv";
-        String inPathToPressure 			="resources/Input/dataET_point/1/Pres_1.csv";
-        String inPathToSoilHeatFlux 		="resources/Input/dataET_point/1/GHF_1.csv";
-        String inPathToCentroids 			="resources/Input/dataET_point/1/centroids_ID_1.shp";
-        String inPathToSoilMosture 			="resources/Input/dataET_point/1/SoilMoisture18.csv";
+        String inPathToTemperature 			="resources/Input/dataET_point/Cavone/1/airT_1.csv";
+        String inPathToWind 				="resources/Input/dataET_point/Cavone/1/Wind_1.csv";
+        String inPathToRelativeHumidity 	="resources/Input/dataET_point/Cavone/1/RH_1.csv";
+        String inPathToNetRad 				="resources/Input/dataET_point/Cavone/1/Net_1.csv";
+        String inPathToPressure 			="resources/Input/dataET_point/Cavone/1/Pres_1.csv";
+        String inPathToSoilHeatFlux 		="resources/Input/dataET_point/Cavone/1/GHF_1.csv";
+        String inPathToCentroids 			="resources/Input/dataET_point/Cavone/1/centroids_ID_1.shp";
+        String inPathToSoilMosture 			="resources/Input/dataET_point/Cavone/1/SoilMoisture18.csv";
         
-        String pathToEvapotranspirationFAO	="resources/Output/ETtotalStressedFAO.csv";
-        String pathToLatentHeatFAO			="resources/Output/FluxETtotalStressedFAO.csv";
+        String pathToEvapotranspirationFAO	="resources/Output/ETPotentialFAOCavone.csv";
+        String pathToLatentHeatFAO			="resources/Output/FluxETPotentialFAOCavone.csv";
 
 
         OmsTimeSeriesIteratorReader tempReader 			= getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
@@ -93,22 +93,22 @@ public class TestPenmanMonteithFAOTotalStressed{
 		
         PMstressfactor.defaultStress = 1.0;
         PMstressfactor.useRadiationStress=false;
-        PMstressfactor.useTemperatureStress=true;
-        PMstressfactor.useVDPStress=true;
-        PMstressfactor.useWaterStress=true;
+        PMstressfactor.useTemperatureStress=false;
+        PMstressfactor.useVDPStress=false;
+        PMstressfactor.useWaterStress=false;
         PMstressfactor.alpha = 0.005;
-        PMstressfactor.theta = 0.9;
+        PMstressfactor.theta = 0.85;
         PMstressfactor.VPD0 = 5.0;
         PMstressfactor.Tl = -5.0;
-        PMstressfactor.T0 = 20.0;
-		PMstressfactor.Th = 45.0;
-		PMstressfactor.waterWiltingPoint = 0.05;
-		PMstressfactor.waterFieldCapacity = 0.27; 
-		PMstressfactor.depth = 0.75;
-		PMstressfactor.depletionFraction = 0.55;
-		PMstressfactor.cropCoefficient = 0.75;
+        PMstressfactor.T0 = 15.0;
+		PMstressfactor.Th = 35.0;
+		PMstressfactor.waterWiltingPoint = 0.10;
+		PMstressfactor.waterFieldCapacity = 0.25; 
+		PMstressfactor.depth = 1.30;
+		PMstressfactor.depletionFraction = 0.70;
+		PMstressfactor.cropCoefficient = 0.95;
 		
-		PmFAO.canopyHeight = 0.12;
+		PmFAO.canopyHeight = 1.30;
         PmFAO.soilFluxParameterDay = 0.35;
         PmFAO.soilFluxParameterNight = 0.75;
         

@@ -24,7 +24,7 @@ public class Parameters {
 	
 	
 	
-	public double airSpecificHeat = 1010;
+	public double airSpecificHeat = 1010; // J kg-1 K-1
 	public double airDensity = 1.2690;
 	public double boltzmannConstant = 1.38066*pow(10,-23);
 	public double criticalReynoldsNumber = 3000; 	//fixed
@@ -41,7 +41,7 @@ public class Parameters {
 	@Description("The air temperature default value in case of missing data.")
 	@In
 	@Unit("K")
-	public double defaultAirTemperature = 15.0+273.0;
+	public double defaultAirTemperature = 15.0+273.15;
 	  
 	@Description("The wind default value in case of missing data.")
 	@In
@@ -90,13 +90,32 @@ public class Parameters {
 	@Description("Coefficient alpha eq. Priestley-Taylor")
 	public double alpha = 1.26; 
 	
-	@Description("Radiation parameter k'Pd")
+	@Description("extinction coefficient for diffuse and scattered diffuse PAR k'Pd")
 	public double diffuseExtinctionCoefficient = 0.719;
 	
+	@Description("Leaf scattering coefficient for PAR σPAR")
 	public double leafScatteringCoefficient = 0.2;
 	
-	@Description("Radiation parameter ρcdP")
+	@Description("Canopy reflectance for diffuse PAR ρcdP")
 	public double canopyReflectionCoefficientDiffuse = 0.036;
+	
+	@Description("Soil reflectance for PAR ρsP")
+	public double soilReflectance = 0.11; // Derived from [Sellers et al., 1996] except for WSA, SAV, BSV and OSH [Asner et al., 1998; Roberts et al., 1993]. 
+	
+	@Description("Extinction coefficient for longwave radiation k'L")
+	public double extinctionCoefficientLongRadiation = 0.78; // [Goudriaan, 1977]
+	
+	@Description("Emissivity of the leaf ɛl")
+	public double leafEmissivity = 0.98; 
+	
+	@Description("Emissivity of the soil ɛs")
+	public double soilEmissivity = 0.94; 
+	
+	public double defaultRootDepth = 0.5;
+	
+	public double defaultCanopyHeigth = 0.3;
+	
+	
 	
 	
 }

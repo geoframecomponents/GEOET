@@ -207,7 +207,7 @@ public class TestProsperoGEOET_Cavone{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 30;
+		Input.canopyHeight = 30;
 		ProsperoStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		

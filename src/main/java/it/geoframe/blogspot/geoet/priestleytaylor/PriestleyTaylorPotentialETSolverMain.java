@@ -120,7 +120,7 @@ public class PriestleyTaylorPotentialETSolverMain{
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
 					
 
-		ETPriestleyTaylor PT = new ETPriestleyTaylor();
+		PriestleyTaylorModel PT = new PriestleyTaylorModel();
 		//PT.setNumber(parameters.alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
 		   
 		variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET(input.netRadiation);

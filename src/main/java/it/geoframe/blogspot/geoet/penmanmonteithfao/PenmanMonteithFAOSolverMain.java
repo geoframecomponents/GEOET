@@ -110,7 +110,7 @@ public class PenmanMonteithFAOSolverMain {
     
     
     WindProfile windAtZ = new WindProfile();
-    PenmanMonteithFAOmodel_v139 FAO = new PenmanMonteithFAOmodel_v139();
+    PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
     FaoWaterStress waterStress = new FaoWaterStress();
     
     
@@ -120,6 +120,8 @@ public class PenmanMonteithFAOSolverMain {
 
     @Execute
     public void process() throws Exception {
+    	
+    	System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
     	
     	parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -139,23 +141,13 @@ public class PenmanMonteithFAOSolverMain {
 		
 	
 		
-        variables.windAtZ = windAtZ.computeWindProfile(canopyHeight, input.windVelocity);
+        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,canopyHeight);
     
         if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
             variables.stressWater =1;}
         else 
         	variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction);
             
-                   
-            //FAO.setNumber(input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.relativeHumidity, input.soilFlux, variables.windAtZ);
-
-	    	
-            /*variables.evapoTranspirationPMdaily = FAO.doET()*variables.stressWater*cropCoefficient; // --> mm/day
-	    	
-	    	variables.evapoTranspirationPM = variables.evapoTranspirationPMdaily * input.time/86400;
-	    	
-	    	variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPMdaily * parameters.latentHeatEvaporation / 86400; 
-	    	*/
             
 ////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
         variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * variables.stressWater * cropCoefficient;// --> mm/time
@@ -169,7 +161,7 @@ public class PenmanMonteithFAOSolverMain {
 	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
 	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
             
- 
+	    System.out.printf("\nEnd PenmanMonteithFAOSolverMain"); 
 
     }
 

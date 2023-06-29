@@ -3,7 +3,9 @@ package it.geoframe.blogspot.geoet.data;
 import org.joda.time.DateTime;
 
 import oms3.annotations.Author;
+import oms3.annotations.Description;
 import oms3.annotations.License;
+import oms3.annotations.Unit;
 
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
@@ -56,14 +58,30 @@ public class ProblemQuantities {
 	public double stressTemperature;
 	public double stressVPD;
 	public double stressWater;
-	public double evaporationStressWater;
+	public double evaporationStressWater=1;
 	
+	public double longwaveCanopySun;
+	public double longwaveCanopyShade;
+	public double absorbedRadiationCanopySun;
+	public double absorbedRadiationCanopyShade;
+	public double deltaTemperatureSun;
+	public double deltaTemperatureShade;
+	public double leafRadiativeFeedbackSun;
+	public double leafRadiativeFeedbackShade;
+	
+	public double rootDepth;
+	public double canopyHeight;
 	
 	public double vaporPressure;
 	public double vapourPressureDeficit;
 	public double vaporPressureDew;
 	public double windInCanopy;
 	public double windSoil;
+	
+	public double vapourPressureDeltaSun1;
+	public double vapourPressureDeltaSun2;
+	public double vapourPressureDeltaShade1;
+	public double vapourPressureDeltaShade2;
 	
 	public double leafTemperatureSun;
 	public double leafTemperatureShade;
@@ -89,6 +107,43 @@ public class ProblemQuantities {
 	public double windAtZ; //windAtZ_AboveGroundSurface 
 	
 	public double windSpeedH;
+	
+	public double directAbsorbedRadiationReflectedSoilSunlit;
+	public double directAbsorbedRadiationReflectedSoilShadow;
+	public double absorbedLongwaveRadiationSunlit;
+	public double absorbedLongwaveRadiationShadow;
+	
+	public double airEmissivity;
+	public double precipitableWater;
+	public double radiativeConductance;
+	
+	public double soilTemperature;
+	public double longRadiationFromSoil;
+	
+	
+	public double longRadiationFromShadeLeaf;
+	public double NewincidentSolarRadiationSoil;
+	
+	@Description("Number of control volume for domain discetrization")
+	@Unit ("-")
+	public int NUM_CONTROL_VOLUMES;
+	
+	@Description("Vector of root density")
+	@Unit("-")
+	public double [] rootDensity;
+	
+	public double sumRootDensity;
+	
+	public double step;
+	
+	@Description("Depth of the domain")
+	@Unit("m")
+	public double totalDepth;
+	
+	@Description("Depth of the root from the bottom.")
+	@Unit("m")
+	public double zR;
+	
 	
 	
 }

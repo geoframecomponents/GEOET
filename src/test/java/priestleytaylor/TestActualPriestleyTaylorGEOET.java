@@ -26,9 +26,10 @@ public class TestActualPriestleyTaylorGEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
-        String endDate	= "2013-12-16 00:00";
+        String endDate	= "2013-12-15 01:00";
         int timeStepMinutes = 60;
         String fId = "ID";
+        String lab1 = "Coser_waterstress2";
         
         //PrintStreamProgressMonitor pm = new PrintStreamProgressMonitor(System.out, System.out);
         OmsRasterReader DEMreader = new OmsRasterReader();
@@ -39,15 +40,15 @@ public class TestActualPriestleyTaylorGEOET{
 		DEMreader.process();
 		GridCoverage2D digitalElevationModel = DEMreader.outRaster;
 		
-        String inPathToNetRad 		="resources/Input/dataET_point/1/Net_1.csv";
-		String inPathToTemperature 	="resources/Input/dataET_point/1/airT_1.csv";
-		String inPathToPressure		="resources/Input/dataET_point/1/Pres_1.csv";
-        String inPathToSoilHeatFlux ="resources/Input/dataET_point/1/GHF_1.csv";
-        String inPathToCentroids 	="resources/Input/dataET_point/1/centroids_ID_1.shp";
-        String inPathToSoilMoisture	="resources/Input/dataET_point/1/SoilMoisture_1.csv";
+		String inPathToNetRad 					="resources/Input/dataET_point/Cavone/1/Net_1.csv";
+		String inPathToTemperature 				="resources/Input/dataET_point/Cavone/1/airT_1.csv";
+		String inPathToPressure 				="resources/Input/dataET_point/Cavone/1/Pres_1.csv";
+		 String inPathToSoilHeatFlux 			="resources/Input/dataET_point/Cavone/1/GHF_1.csv";
+        String inPathToCentroids 	="resources/Input/dataET_point/Cavone/1/centroids_ID_1.shp";
+        String inPathToSoilMoisture 			="resources/Input/dataET_point/Cavone/1/Soil_Moisture_Esercitazione_A.csv";
 
-		String pathToLatentHeatPT	="resources/Output/ActualLatentHeatPTnew.csv";
-		String pathToEvapotranspirationPT ="resources/Output/ActualETPrestleyTaylornew.csv";
+		String pathToLatentHeatPT	="resources/Output/LatentHeatPT_"+lab1+".csv";
+		String pathToEvapotranspirationPT ="resources/Output/ETPrestleyTaylor_"+lab1+".csv";
         
 		OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader netradReader = getTimeseriesReader(inPathToNetRad, fId, startDate, endDate, timeStepMinutes);
@@ -94,21 +95,21 @@ public class TestActualPriestleyTaylorGEOET{
 		//Prospero.doIterative = false;
 		
 		
-        PTstressfactor.useRadiationStress=true;
-        PTstressfactor.useTemperatureStress=true;
-        PTstressfactor.useVDPStress=true;
+        PTstressfactor.useRadiationStress=false;
+        PTstressfactor.useTemperatureStress=false;
+        PTstressfactor.useVDPStress=false;
         PTstressfactor.useWaterStress=true;
         PTstressfactor.alpha = 0.005;
         PTstressfactor.theta = 0.85;
         PTstressfactor.VPD0 = 5.0;
         PTstressfactor.Tl = -5.0;
         PTstressfactor.T0 = 15.0;
-		PTstressfactor.Th = 30.0;
-		PTstressfactor.waterWiltingPoint = 0.22;
-		PTstressfactor.waterFieldCapacity = 0.36; 
-		PTstressfactor.depth = 1.0;
-		PTstressfactor.depletionFraction = 0.35;
-		PTstressfactor.cropCoefficient = 1.00;
+		PTstressfactor.Th = 35.0;
+		PTstressfactor.waterWiltingPoint = 0.20;
+		PTstressfactor.waterFieldCapacity = 0.35; 
+		PTstressfactor.depth = 1.50;
+		PTstressfactor.depletionFraction = 0.45;
+		PTstressfactor.cropCoefficient = 0.59;
         
 
         while(tempReader.doProcess ) {

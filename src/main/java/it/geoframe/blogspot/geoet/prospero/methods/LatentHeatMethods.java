@@ -63,7 +63,7 @@ public class LatentHeatMethods {
 		latentHeatTransferCoefficient = (waterMolarMass * latentHeatEvaporation * molarTotalConductance) / atmosphericPressure;
 		return latentHeatTransferCoefficient;	
 		}
-	public double computeLatentHeatFlux(double delta, double leafTemperature, double airTemperature, double latentHeatTransferCoefficient,double sensibleHeatTransferCoefficient, double vaporPressure, double saturationVaporPressure) {
+	public double computeLatentHeatFlux(double delta, double leafTemperature, double airTemperature, double latentHeatTransferCoefficient, double vaporPressure, double saturationVaporPressure) {
 		 // Computation of the latent heat flux from leaf [J m-2 s-1]
 		//double latentHeatFlux = (sensibleHeatTransferCoefficient* (delta * (leafTemperature - airTemperature) + saturationVaporPressure - vaporPressure))/(sensibleHeatTransferCoefficient/latentHeatTransferCoefficient);
 		

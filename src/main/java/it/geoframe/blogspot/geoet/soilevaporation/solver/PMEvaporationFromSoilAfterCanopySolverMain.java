@@ -71,7 +71,7 @@ public class PMEvaporationFromSoilAfterCanopySolverMain {
 
 	
 	// METHODS FROM CLASSES		
-	PenmanMonteithFAOmodel_v139 soilevaporation 		= new PenmanMonteithFAOmodel_v139();
+	PenmanMonteithFAOModel soilevaporation 		= new PenmanMonteithFAOModel();
 	WindProfile windAtSoil = new WindProfile();
 
 	private Parameters parameters;	

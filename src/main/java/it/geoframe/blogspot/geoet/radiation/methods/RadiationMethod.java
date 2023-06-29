@@ -2,8 +2,6 @@ package it.geoframe.blogspot.geoet.radiation.methods;
 import static java.lang.Math.pow;
 import it.geoframe.blogspot.geoet.data.Parameters;
 import oms3.annotations.Author;
-import oms3.annotations.Bibliography;
-import oms3.annotations.Keywords;
 import oms3.annotations.License;
 
 import static java.lang.Math.exp;
@@ -19,6 +17,7 @@ public class RadiationMethod {
 	
 	//Queste due righe le ho aggiunte nperchè stavo iniziando a fare la modifica di restyle del modello
 	private Parameters parameters;
+	//private ProblemQuantities variables;
 	private double longWaveRadiation;
 	private double directExtinctionCoefficientInCanopy;
 	private double scatteredExtinctionCoefficient;
@@ -33,12 +32,16 @@ public class RadiationMethod {
 	private double sunlitLeafAreaIndex;
 	
 	
+	
+	
+	
 	public double computeLongWaveRadiationBalance(double leafSide, double longWaveEmittance, double airTemperature, double leafTemperature, double stefanBoltzmannConstant) {
 		// Compute the net long wave radiation i.e. the incoming minus outgoing [J m-2 s-1]
 		longWaveRadiation = 4 * leafSide * longWaveEmittance * stefanBoltzmannConstant * (((pow (airTemperature, 3))*leafTemperature - (pow (airTemperature, 4))));
 		return longWaveRadiation;}
+	//QUESTO SAREBBE IL FEEDBACK RADIATIVO - la radiazione ad onda lunga incoming calcolata con la Ta
 	
-	public double computeAbsordebRadiationSunlit (double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,double shortWaveRadiationDiffuse) {
+	public double computeAbsorbedRadiationSunlit (double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,double shortWaveRadiationDiffuse) {
 		parameters = Parameters.getInstance();
     	
 		//Ryu et all 2011
@@ -68,7 +71,7 @@ public class RadiationMethod {
 	    return absordebRadiationSunlit;}
 	
 	
-	public double computeAbsordebRadiationShadow (double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,double shortWaveRadiationDiffuse) {
+	public double computeAbsorbedRadiationShadow (double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,double shortWaveRadiationDiffuse) {
 		parameters = Parameters.getInstance();
 		
     	directExtinctionCoefficientInCanopy = 0.5/solarElevationAngle;

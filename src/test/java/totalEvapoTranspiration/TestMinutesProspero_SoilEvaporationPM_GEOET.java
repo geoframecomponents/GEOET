@@ -210,7 +210,7 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET{
 		Input.inDem = digitalElevationModel; 
 
 
-		Prospero.canopyHeight = 0.2;
+		Input.canopyHeight = 0.2;
 		ProsperoStressFactor.defaultStress = 1.0;
 		//Prospero.doIterative = false;
 		

@@ -54,20 +54,11 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	@In
 	public double soilFluxParameterNight;
 	
-	//@Out 
-	//public boolean  doProcessOut = false;
-	
-	//@In
-	//public boolean  doProcess;
-	
 	@In
 	public boolean  doProcess3;
 	
 	@Out
 	public boolean  doProcess4;
-	
-	
-	//int step;
 	
 	@Description("Height of the canopy.")
 	@Unit("[m]")
@@ -77,7 +68,7 @@ public class PenmanMonteithFAOPotentialETSolverMain {
     //double nullValue = -9999.0;
 	
 	WindProfile windAtZ = new WindProfile();
-	PenmanMonteithFAOmodel_v139 FAO = new PenmanMonteithFAOmodel_v139();
+	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
 
     private Parameters parameters;
 	private ProblemQuantities variables;
@@ -85,6 +76,8 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	
     @Execute
     public void process() throws Exception {
+    	
+    	System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
     	
     	parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -102,27 +95,17 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 		    
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
     	
-            
-        
-        variables.windAtZ = windAtZ.computeWindProfile(canopyHeight, input.windVelocity);
-        
+
+        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,canopyHeight);
         
         variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation);// --> mm/time
         
         variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation / input.time;
-   
-        //FAO.setNumber(input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.relativeHumidity, input.soilFlux, variables.windAtZ);
-	    	
-	    /*variables.evapoTranspirationPMdaily = FAO.doET(); // --> mm/day
-	    	
-	    variables.evapoTranspirationPM = variables.evapoTranspirationPMdaily * input.time/86400;
-	    	
-	    variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPMdaily * parameters.latentHeatEvaporation / 86400; 
-	    */
 	   		
 	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
 	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
-
+        
+        System.out.printf("\nEnd PenmanMonteithFAOPotentialETSolverMain"); 
 
     }
 

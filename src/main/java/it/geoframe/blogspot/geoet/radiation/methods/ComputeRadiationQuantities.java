@@ -40,25 +40,15 @@ import oms3.annotations.License;
 
 
 public class ComputeRadiationQuantities {
-	
-	//private Leaf leafparameters;
-	//private Parameters parameters;
+
 	private ProblemQuantities variables;
-	SensibleHeatMethods sensibleHeat 	= new SensibleHeatMethods();
-	LatentHeatMethods latentHeat 		= new LatentHeatMethods();
-	PressureMethods pressure 			= new PressureMethods(); 
 	RadiationMethod radiationMethods 	= new RadiationMethod();
 	SolarGeometry solarGeometry 		= new SolarGeometry();
 	
 	
-	//public void computeQuantitiesProspero(double windVelocity, double canopyHeight, double airTemperature, double relativeHumidity, double atmosphericPressure, DateTime date, double latitude, double longitude, 
-			//boolean doHourly, double time, double leafAreaIndex, String typeOfCanopy, double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
-	
 	public void computeRadiationQuantities(DateTime date, double latitude, double longitude,double time, double leafAreaIndex, String typeOfCanopy, 
 			double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
 		
-		//leafparameters = Leaf.getInstance();
-		//parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
 		
 		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude,longitude,time);
@@ -69,10 +59,10 @@ public class ComputeRadiationQuantities {
 		
 		else{
 		// RADIATION SUN		
-			variables.shortwaveCanopySun = radiationMethods.computeAbsordebRadiationSunlit(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+			variables.shortwaveCanopySun = radiationMethods.computeAbsorbedRadiationSunlit(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
 
 		// RADIATION SHADOW
-			variables.shortwaveCanopyShade = radiationMethods.computeAbsordebRadiationShadow(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+			variables.shortwaveCanopyShade = radiationMethods.computeAbsorbedRadiationShadow(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
 			}
 				
 		// Compute the area in sunlight and shadow
@@ -97,7 +87,7 @@ public class ComputeRadiationQuantities {
 			}
 				
 					
-		variables.netLong = shortWaveRadiationDirect-netRadiation; // quando la direct è nulla questo veniva negativo
+		variables.netLong = shortWaveRadiationDirect-netRadiation;
 		variables.netLong=(variables.netLong<0)?0:variables.netLong;
 				
 		variables.incidentSolarRadiationSoil = shortWaveRadiationDirect + shortWaveRadiationDiffuse - variables.shortwaveCanopySun - variables.shortwaveCanopyShade-variables.netLong;

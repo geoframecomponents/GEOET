@@ -115,6 +115,61 @@ public class InputReaderMain {
 	@Unit("m2 m-2")
 	public HashMap<Integer, double[]> inLeafAreaIndex;
 	
+	@Description("Root Depth.")
+	@In
+	@Unit("m")
+	public HashMap<Integer, double[]> inRootDepth;
+	
+	
+	@Description("Root depth.")
+	@In
+	public double rootDepth;
+	
+	@Description("Root depth.")
+	@Out
+	public double defRootDepth;
+	
+	@Description("Root Depth can be evaluated in different way"
+		    + " costantValue - rootGrowth")
+	@In
+	public String rootType = "costantValue";
+	
+	
+	
+	@In public double canopyHeight;
+	
+	@Description("Canopy height.")
+	@In
+	@Unit("m")
+	public HashMap<Integer, double[]> inCanopyHeight;
+	
+	@In
+	public String typeOfCanopy;
+	
+	
+	@Description("Canopy Height can be evaluated in different way: costantValue - canopyHeightGrowth")
+	@In
+	public String canopyHeightType = "costantValue";
+	
+	/////////////////////	/////////////////////	/////////////////////	/////////////////////	/////////////////////
+	
+	@Description("z coordinate read from grid NetCDF file.")
+	@In
+	@Unit("m")
+	public double[] z;
+	
+	@Description("Vector of Initial Condition for root density")
+	@In
+	@Unit("-")
+	public double[] rootIC;
+	
+	@Description("Growth Rate of the Root in each control volume")
+	@In
+	@Unit("-")
+	public double growthRateRoot = 0.01;
+	
+	/////////////////////	/////////////////////	/////////////////////	/////////////////////	/////////////////////
+	
 	@Description("Input soil moisture.")
 	@In
 	@Unit("m3 m-3")
@@ -143,10 +198,7 @@ public class InputReaderMain {
 	@Description("Final target CRS")
 	CoordinateReferenceSystem targetCRS = DefaultGeographicCRS.WGS84;
 	
-	@In public double canopyHeight;
 	
-	@In
-	public String typeOfCanopy;
 	
 	
 	@Description("Type of transpiring area")
@@ -199,7 +251,13 @@ public class InputReaderMain {
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
 		
+		//input.rootType = rootType;
+		input.rootDepth=rootDepth;
+		input.canopyHeight = canopyHeight;
 		input.time = temporalStep*60;
+		input.z = z;
+		input.rootDensityIC = rootIC;
+		input.growthRateRoot = growthRateRoot;
 		
 		DateTime startDateTime = formatter.parseDateTime(tStartDate);
 		variables.date=startDateTime.plusMinutes(temporalStep*step);
@@ -210,19 +268,20 @@ public class InputReaderMain {
 		stationCoordinates = getCoordinate(0,inCentroids, idCentroids);
 		Iterator<Integer> idIterator = stationCoordinates.keySet().iterator();
 		CoordinateReferenceSystem sourceCRS = inDem.getCoordinateReferenceSystem2D();
-
-		
+			
 		Set<Entry<Integer, double[]>> entrySet = inAirTemperature.entrySet();
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			
 			Integer ID = entry.getKey();
 			Coordinate coordinate = (Coordinate) stationCoordinates.get(idIterator.next());
-			Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);
-						
+			Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);	
+				
+			if(step==0){
+			
 			input.elevation = coordinate.z;
 			input.longitude = (idPoint[0].getX());
 			input.latitude = Math.toRadians(idPoint[0].getY());
-			input.ID = ID;
+			input.ID = ID;}
 				
 	///////////////////////////////////////////// INPUT READER /////////////////////////////////////////////
 			//System.out.printf("\ndata   " + variables.date);
@@ -237,6 +296,32 @@ public class InputReaderMain {
 			input.leafAreaIndex = parameters.defaultLeafAreaIndex;
 			if (inLeafAreaIndex != null){input.leafAreaIndex = inLeafAreaIndex.get(ID)[0];}
 			if (input.leafAreaIndex == nullValue) {input.leafAreaIndex = parameters.defaultLeafAreaIndex;}
+			
+			//////////////////////////////////Root////////////////////////////////////////////////
+			
+			if(step==0){
+				variables.rootDepth = input.rootDepth;
+				if (input.rootDepth == nullValue) {variables.rootDepth = parameters.defaultRootDepth;}}
+
+			if ("rootGrowth".equals(rootType)) {
+				if (inRootDepth != null){variables.rootDepth = inRootDepth.get(ID)[0];}
+				if (variables.rootDepth == nullValue) {variables.rootDepth = parameters.defaultRootDepth;}}
+	
+			defRootDepth = variables.rootDepth;
+			
+			/////////////////////////////////////canopyHeight/////////////////////////////////////////////
+			
+			
+			if(step==0){
+				variables.canopyHeight = input.canopyHeight;
+				if (input.canopyHeight == nullValue) {variables.canopyHeight = parameters.defaultCanopyHeigth;}}
+			
+			if ("canopyHeightGrowth".equals(canopyHeightType)) {
+				if (inCanopyHeight != null){variables.canopyHeight = inCanopyHeight.get(ID)[0];}
+				if (variables.canopyHeight == nullValue) {variables.canopyHeight = parameters.defaultCanopyHeigth;}}
+			
+			
+			//////////////////////////////////////////////////////////////////////////////////////////////
 			
 			if (inShortWaveRadiationDirect != null) 
 			

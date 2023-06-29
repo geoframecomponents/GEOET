@@ -26,7 +26,8 @@ public class EnvironmentalStress {
 		
 		//double radiationStress = 1;
 		
-		if(shortWaveRadiation <= 0) {radiationStress = 1;}
+		//if(shortWaveRadiation <= 0) {radiationStress = 1;}
+		if(shortWaveRadiation <= 0) {radiationStress = 0.15;}
 		
 		else {
 			//double shortWaveRadiationMicroMol=(shortWaveRadiation);

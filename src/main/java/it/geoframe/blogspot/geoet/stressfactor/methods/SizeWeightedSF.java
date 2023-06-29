@@ -45,7 +45,7 @@ public class SizeWeightedSF extends GeneralSF {
 			G = 0;}
 		else{
 			for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
-				if (z[i] > zRef) {
+				if (z[i] >= zRef) {
 					G = G + g[i]*deltaZ[i];}}
 					G = G/-etaRef;}
 			
