@@ -122,11 +122,11 @@ public class JarvisStressFactorSolverMain {
 	@In
 	public String stressFactorModel;
 	
-	@Description("Representative Stress Factor can be evaluated in different way"
+	/*@Description("Representative Stress Factor can be evaluated in different way"
 			    + " Average method --> AverageMetod"
 			    + " Weighted average method --> SizeWightedMetod")
 	@In
-	public String representativeStressFactorModel;
+	public String representativeStressFactorModel;*/
 	
 	@Description("Representative Stress Factor can be evaluated in different way"
 		    + " Average method --> AverageMetod"
@@ -183,7 +183,7 @@ public class JarvisStressFactorSolverMain {
 	WaterStressFactor stressFactor;
 	
 	@Description("Object dealing with stress factor model representative of the domain")
-	GeneralSF representativeSF;
+	//GeneralSF representativeSF;
 	GeneralSF representativeTranspirationSF;
 	GeneralSF representativeEvaporationSF;
 	
