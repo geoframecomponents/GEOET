@@ -27,12 +27,14 @@ import oms3.annotations.Out;
 import oms3.annotations.Unit;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress;
-import it.geoframe.blogspot.geoet.stressfactor.methods.GeneralSFFactory;
+import it.geoframe.blogspot.geoet.stressfactor.methods.RepresentativeSFFactory;
 //import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
-import it.geoframe.blogspot.geoet.stressfactor.methods.GeneralSF;
+import it.geoframe.blogspot.geoet.stressfactor.methods.RepresentativeSF;
 import it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactor;
 import it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactorFactory;
 
@@ -184,8 +186,8 @@ public class JarvisStressFactorSolverMain {
 	
 	@Description("Object dealing with stress factor model representative of the domain")
 	//GeneralSF representativeSF;
-	GeneralSF representativeTranspirationSF;
-	GeneralSF representativeEvaporationSF;
+	RepresentativeSF representativeTranspirationSF;
+	RepresentativeSF representativeEvaporationSF;
 	
 	
 	
@@ -258,7 +260,7 @@ public class JarvisStressFactorSolverMain {
 			WaterStressFactorFactory stressFactorFactory= new WaterStressFactorFactory();
 			stressFactor = stressFactorFactory.createStressFactor(stressFactorModel, thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 		
-			GeneralSFFactory representativeSFFactory= new GeneralSFFactory();
+			RepresentativeSFFactory representativeSFFactory= new RepresentativeSFFactory();
 			representativeTranspirationSF = representativeSFFactory.createRepresentativeStressFactor(representativeTranspirationSFModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 			
 			representativeEvaporationSF = representativeSFFactory.createRepresentativeStressFactor(representativeEvaporationSFModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
@@ -296,10 +298,9 @@ public class JarvisStressFactorSolverMain {
         	}
           
         variables.stressWater = 1;
-      //System.out.println("\n\n etaR = "+ etaR);
-      //System.out.println("\n\n zR = "+ zR);
+      
         g = stressFactor.computeStressFactor(theta,zR,zE);
-       // System.out.println("theta = "+ Arrays.toString(g));
+       
 		GnT = representativeTranspirationSF.computeRepresentativeStressFactor(g,variables.rootDepth,zR);
 		
 	
@@ -309,8 +310,7 @@ public class JarvisStressFactorSolverMain {
     		variables.stressWater = GnT[0];
     		variables.evaporationStressWater = GnE[0];
     		
-    		//System.out.println("theta = "+ Arrays.toString(theta));
-    		//System.out.println("\n\nG  = "+ G);
+    		
     		System.out.printf("\nG = %.5f %n", GnT[0]);
     		System.out.printf("GE = %.5f %n", GnE[0]);
  
@@ -339,6 +339,12 @@ public class JarvisStressFactorSolverMain {
         System.out.println("CELJTl is  = "+ Tl);
         System.out.println("CELJTh is  = "+ Th);
         System.out.println("CELJT0 is  = "+ T0);*/
+        
+     // System.out.println("\nvariables.rootDepth = "+ variables.rootDepth);
+      //System.out.println("\n\n zR = "+ zR);
+     //System.out.println("\nwaterstress = "+ Arrays.toString(g));
+     //System.out.println("\ntheta = "+ Arrays.toString(theta));
+	  
 						
         outputToBuffer.add(g);
 

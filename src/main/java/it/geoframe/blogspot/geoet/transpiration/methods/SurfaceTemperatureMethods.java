@@ -1,10 +1,10 @@
-package it.geoframe.blogspot.geoet.prospero.methods;
+package it.geoframe.blogspot.geoet.transpiration.methods;
 
 import static java.lang.Math.pow;
 
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
-import it.geoframe.blogspot.geoet.prospero.data.Leaf;
+import it.geoframe.blogspot.geoet.transpiration.data.Leaf;
 import oms3.annotations.Author;
 import oms3.annotations.License;
 

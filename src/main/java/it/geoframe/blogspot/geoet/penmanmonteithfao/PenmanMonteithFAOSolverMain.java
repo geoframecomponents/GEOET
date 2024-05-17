@@ -101,10 +101,10 @@ public class PenmanMonteithFAOSolverMain {
 	
 	int step;
 
-	@Description("Height of the canopy.")
-	@Unit("[m]")
-	@In
-	public double canopyHeight;
+	//@Description("Height of the canopy.")
+	//@Unit("[m]")
+	//@In
+	//public double canopyHeight;
 	
     double nullValue = -9999.0;
     
@@ -141,7 +141,7 @@ public class PenmanMonteithFAOSolverMain {
 		
 	
 		
-        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,canopyHeight);
+        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
     
         if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
             variables.stressWater =1;}

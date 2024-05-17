@@ -40,9 +40,8 @@ import org.locationtech.jts.geom.Point;
 
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
-import it.geoframe.blogspot.geoet.prospero.data.*;
-import it.geoframe.blogspot.geoet.prospero.methods.*;
-//import it.geoframe.blogspot.geoet.stressfactor.methods.*;
+import it.geoframe.blogspot.geoet.transpiration.data.*;
+import it.geoframe.blogspot.geoet.transpiration.methods.*;
 
 
 
@@ -134,6 +133,20 @@ public class InputReaderMain {
 	@In
 	public String rootType = "costantValue";
 	
+	@Description("Elevation of the point.")
+	@In
+	@Unit("m")
+	public double elevation=Double.NaN;
+	
+	@Description("Latitude of the point.")
+	@In
+	@Unit("°")
+	public double latitude=Double.NaN;
+	
+	@Description("Longitude of the point.")
+	@In
+	@Unit("°")
+	public double longitude=Double.NaN;
 	
 	
 	@In public double canopyHeight;
@@ -143,8 +156,8 @@ public class InputReaderMain {
 	@Unit("m")
 	public HashMap<Integer, double[]> inCanopyHeight;
 	
-	@In
-	public String typeOfCanopy;
+	//@In
+	//public String typeOfCanopy;
 	
 	
 	@Description("Canopy Height can be evaluated in different way: costantValue - canopyHeightGrowth")
@@ -167,6 +180,16 @@ public class InputReaderMain {
 	@In
 	@Unit("-")
 	public double growthRateRoot = 0.01;
+	
+	@Description("CO2 assimilation rate.")
+	@In
+	@Unit("-")
+	public HashMap<Integer, double[]> inAssimilationRate;
+	
+	@Description("Empirical parameter for Medlyn stress")
+	@In
+	@Unit("-")
+	public double g1 = 5.25; //Value of Plantform Grass according to Lin et al 2015
 	
 	/////////////////////	/////////////////////	/////////////////////	/////////////////////	/////////////////////
 	
@@ -228,8 +251,12 @@ public class InputReaderMain {
 	@Unit ("-")
 	public int ID;
 	
+	@In
+	public boolean  doProcess0;
+	
 	@Out 
-	public boolean  doProcess1 = false;
+	public boolean  doProcess1;
+	
 
 
 	PressureMethods pressure = new PressureMethods(); 
@@ -258,6 +285,7 @@ public class InputReaderMain {
 		input.z = z;
 		input.rootDensityIC = rootIC;
 		input.growthRateRoot = growthRateRoot;
+		input.g1 = g1;
 		
 		DateTime startDateTime = formatter.parseDateTime(tStartDate);
 		variables.date=startDateTime.plusMinutes(temporalStep*step);
@@ -265,23 +293,37 @@ public class InputReaderMain {
 		//System.out.println("data inizio = "+ (startDateTime));
 		//System.out.println("data variabile = "+ (variables.date));
 		
-		stationCoordinates = getCoordinate(0,inCentroids, idCentroids);
-		Iterator<Integer> idIterator = stationCoordinates.keySet().iterator();
-		CoordinateReferenceSystem sourceCRS = inDem.getCoordinateReferenceSystem2D();
-			
+		
+		
 		Set<Entry<Integer, double[]>> entrySet = inAirTemperature.entrySet();
 		for( Entry<Integer, double[]> entry : entrySet ) {
 			
-			Integer ID = entry.getKey();
-			Coordinate coordinate = (Coordinate) stationCoordinates.get(idIterator.next());
-			Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);	
-				
-			if(step==0){
+		Integer ID = entry.getKey();
+		if(step==0){
 			
-			input.elevation = coordinate.z;
-			input.longitude = (idPoint[0].getX());
-			input.latitude = Math.toRadians(idPoint[0].getY());
-			input.ID = ID;}
+			input.ID = ID;
+			input.elevation = elevation;
+			input.latitude = Math.toRadians(latitude);
+			input.longitude = longitude;
+		
+
+			if (inCentroids != null) {
+				stationCoordinates = getCoordinate(0,inCentroids, idCentroids);
+				Iterator<Integer> idIterator = stationCoordinates.keySet().iterator();
+				Coordinate coordinate = (Coordinate) stationCoordinates.get(idIterator.next());
+				input.elevation = coordinate.z;
+			
+		
+				if (inDem != null){
+					CoordinateReferenceSystem sourceCRS = inDem.getCoordinateReferenceSystem2D();
+					Point [] idPoint= getPoint(coordinate,sourceCRS, targetCRS);
+					input.longitude = (idPoint[0].getX());
+					input.latitude = Math.toRadians(idPoint[0].getY());}
+			}
+		
+		}
+			
+			
 				
 	///////////////////////////////////////////// INPUT READER /////////////////////////////////////////////
 			//System.out.printf("\ndata   " + variables.date);
@@ -297,6 +339,8 @@ public class InputReaderMain {
 			if (inLeafAreaIndex != null){input.leafAreaIndex = inLeafAreaIndex.get(ID)[0];}
 			if (input.leafAreaIndex == nullValue) {input.leafAreaIndex = parameters.defaultLeafAreaIndex;}
 			
+		
+			
 			//////////////////////////////////Root////////////////////////////////////////////////
 			
 			if(step==0){
@@ -308,6 +352,7 @@ public class InputReaderMain {
 				if (variables.rootDepth == nullValue) {variables.rootDepth = parameters.defaultRootDepth;}}
 	
 			defRootDepth = variables.rootDepth;
+			//System.out.println("\ndefRootDepth = "+ defRootDepth);
 			
 			/////////////////////////////////////canopyHeight/////////////////////////////////////////////
 			
@@ -357,6 +402,13 @@ public class InputReaderMain {
 			input.soilMoisture = parameters.defaultSoilMoisture;
 			if (inSoilMoisture != null){input.soilMoisture = inSoilMoisture.get(ID)[0];}
 			if (input.soilMoisture == nullValue) {input.soilMoisture = parameters.defaultSoilMoisture;}
+			
+			
+	//////////////////////////////////////////////////////////////////////////////////////////////
+			
+			input.assimilationRate = parameters.defaultAssimilationRate;
+			if (inAssimilationRate != null){input.assimilationRate = inAssimilationRate.get(ID)[0];}
+			if (input.assimilationRate == nullValue) {input.assimilationRate = parameters.defaultAssimilationRate;}
 				
 		}
 		

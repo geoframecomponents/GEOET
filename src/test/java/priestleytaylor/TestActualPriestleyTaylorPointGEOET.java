@@ -22,7 +22,7 @@ import it.geoframe.blogspot.geoet.stressfactor.solver.*;
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
-public class TestActualPriestleyTaylorGEOET{
+public class TestActualPriestleyTaylorPointGEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
@@ -32,13 +32,7 @@ public class TestActualPriestleyTaylorGEOET{
         String lab1 = "test";
         
         
-        
-    
-        OmsRasterReader DEMreader = new OmsRasterReader();
-        DEMreader.file = "resources/Input/dataET_point/Cavone/1/dem_1.tif";
-		  DEMreader.process();
-		  GridCoverage2D digitalElevationModel = DEMreader.outRaster;
-        
+           
 		
 		String inPathToNetRad 					="resources/Input/dataET_point/Cavone/1/Net_1.csv";
 		String inPathToTemperature 				="resources/Input/dataET_point/Cavone/1/airT_1.csv";
@@ -55,11 +49,6 @@ public class TestActualPriestleyTaylorGEOET{
         OmsTimeSeriesIteratorReader soilHeatFluxReader 	= getTimeseriesReader(inPathToSoilHeatFlux, fId, startDate, endDate,timeStepMinutes);
         OmsTimeSeriesIteratorReader soilMoistureReader 	= getTimeseriesReader(inPathToSoilMoisture, fId, startDate, endDate,timeStepMinutes);
         
-        String inPathToCentroids ="resources/Input/dataET_point/Cavone/1/centroids_ID_1.shp";
-        OmsShapefileFeatureReader centroidsReader 		= new OmsShapefileFeatureReader();
-        centroidsReader.file = inPathToCentroids;
-		centroidsReader.readFeatureCollection();
-		SimpleFeatureCollection stationsFC = centroidsReader.geodata;
 		
         OmsTimeSeriesIteratorWriter writerLatentHeatPT = new OmsTimeSeriesIteratorWriter();
         writerLatentHeatPT.file = pathToLatentHeatPT;
@@ -78,21 +67,19 @@ public class TestActualPriestleyTaylorGEOET{
         PTPMStressFactorSolverMain PTstressfactor = new PTPMStressFactorSolverMain();
         OutputWriterMain Output 	= new OutputWriterMain();
 		
-      
         
         
-		Input.inCentroids = stationsFC;
-		Input.idCentroids= "ID";
-		Input.centroidElevation="Elevation";
-		Input.inDem = digitalElevationModel;
-		
+        Input.elevation= 579;
+		//Input.latitude = 37.97;
+		//Input.longitude= 13.57;
+        
 
 		
 		PtEt.alpha = 1.26;
         PtEt.soilFluxParameterDay = 0.35;
         PtEt.soilFluxParameterNight = 0.75;
         Input.temporalStep = timeStepMinutes;
-		
+
 		
         PTstressfactor.useRadiationStress=false;
         PTstressfactor.useTemperatureStress=false;

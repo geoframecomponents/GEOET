@@ -29,7 +29,7 @@ import oms3.annotations.License;
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-public abstract class GeneralSF {
+public abstract class RepresentativeSF {
 	
 	public double[] z;   			// z coordinate read from grid NetCDF file
 	public double[] deltaZ; 		// Vector containing the length of each control volume
@@ -44,7 +44,7 @@ public abstract class GeneralSF {
 	 * General constructor used to pass the values of variables
 	 */
 	
-	public GeneralSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,double totalDepth) {
+	public RepresentativeSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,double totalDepth) {
 		this.z  = z;
 		this.deltaZ = deltaZ;
 		this.NUM_CONTROL_VOLUMES = NUM_CONTROL_VOLUMES;  

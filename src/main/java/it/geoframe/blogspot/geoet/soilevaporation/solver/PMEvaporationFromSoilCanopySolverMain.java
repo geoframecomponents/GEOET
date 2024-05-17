@@ -30,7 +30,7 @@ import it.geoframe.blogspot.geoet.penmanmonteithfao.*;
 @Name("")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-public class PMEvaporationFromSoilAfterCanopySolverMain {
+public class PMEvaporationFromSoilCanopySolverMain {
 	
 	@Description("Water stress factor for the Evaporation layer")
 	@In
@@ -105,7 +105,8 @@ public class PMEvaporationFromSoilAfterCanopySolverMain {
 		
 		evaporation = variables.evaporation;
 		
-		System.out.println("\nflux evaporation is  = "+ variables.fluxEvaporation);
+		//System.out.println("\nflux evaporation is  = "+ variables.fluxEvaporation);
+		System.out.printf("\nflux evaporation = %.5f %n", variables.fluxEvaporation);
 		
 		if (input.airTemperature == nullValue) {
 			System.out.printf("\nAir temperature is null");

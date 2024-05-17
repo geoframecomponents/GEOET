@@ -1,4 +1,4 @@
-package it.geoframe.blogspot.geoet.prospero.solver;
+package it.geoframe.blogspot.geoet.transpiration.solver;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -14,8 +14,8 @@ import oms3.annotations.Unit;
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.*;
-import it.geoframe.blogspot.geoet.prospero.data.*;
-import it.geoframe.blogspot.geoet.prospero.methods.*;
+import it.geoframe.blogspot.geoet.transpiration.data.*;
+import it.geoframe.blogspot.geoet.transpiration.methods.*;
 
 
 @Description("The Prospero model for computing actual evapotranspiration. The transpiration model is based on Schymansky and Or (2017)")
@@ -108,8 +108,8 @@ public class ProsperoSolverMain {
 		variables.fluxTranspiration = plantstranspiration.computeTranspiration(stressSun,  stressShade,  input.longWaveRadiation,  input.airTemperature,  input.time,  nullValue);
 		variables.transpiration = variables.fluxTranspiration * (input.time / parameters.latentHeatEvaporation);
 		transpiration=variables.transpiration;	
-		System.out.println("\nflux transpiration is  = "+ variables.fluxTranspiration);
-
+		//System.out.println("\nflux transpiration is  = "+ variables.fluxTranspiration);
+		System.out.printf("\nflux transpiration = %.5f %n", variables.fluxTranspiration);
 		
 		if (input.airTemperature == nullValue) {
 			System.out.printf("\nAir temperature is null");

@@ -1,4 +1,4 @@
-package it.geoframe.blogspot.geoet.prospero.methods;
+package it.geoframe.blogspot.geoet.transpiration.methods;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;

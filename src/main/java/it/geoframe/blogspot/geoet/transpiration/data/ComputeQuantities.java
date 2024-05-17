@@ -17,13 +17,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package it.geoframe.blogspot.geoet.prospero.data;
+package it.geoframe.blogspot.geoet.transpiration.data;
 import org.joda.time.DateTime;
 import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.data.WindProfile;
-import it.geoframe.blogspot.geoet.prospero.methods.*;
 import it.geoframe.blogspot.geoet.radiation.methods.RadiationMethod;
+import it.geoframe.blogspot.geoet.transpiration.methods.*;
 import oms3.annotations.Author;
 import oms3.annotations.Bibliography;
 import oms3.annotations.Description;
@@ -31,7 +31,7 @@ import oms3.annotations.Documentation;
 import oms3.annotations.Keywords;
 import oms3.annotations.License;
 
-@Description("This class compute some of the quantities to solve the Prospero model.")
+@Description("This class compute some of the quantities of the radiation balance considering the LAI.")
 @Documentation("")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("")
@@ -39,7 +39,7 @@ import oms3.annotations.License;
 @License("General Public License Version 3 (GPLv3)")
 
 
-public class ComputeQuantitiesProspero {
+public class ComputeQuantities {
 	
 	private Leaf leafparameters;
 	private Parameters parameters;
@@ -51,7 +51,10 @@ public class ComputeQuantitiesProspero {
 	SolarGeometry solarGeometry 		= new SolarGeometry();
 	
 	
-	public void computeQuantitiesProspero(double windVelocity, double canopyHeight, double airTemperature, double relativeHumidity, double atmosphericPressure, DateTime date, double latitude, double longitude, 
+	//public void computeQuantitiesProspero(double windVelocity, double canopyHeight, double airTemperature, double relativeHumidity, double atmosphericPressure, DateTime date, double latitude, double longitude, 
+			//boolean doHourly, double time, double leafAreaIndex, String typeOfCanopy, double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
+	
+	public void computeQuantities(double windVelocity, double canopyHeight, double airTemperature, double relativeHumidity, double atmosphericPressure, DateTime date, double latitude, double longitude, 
 				double time, double leafAreaIndex, String typeOfCanopy, double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
 		
 		
@@ -87,49 +90,60 @@ public class ComputeQuantitiesProspero {
 				parameters.airDensity, parameters.molarGasConstant, parameters.molarVolume, parameters.waterMolarMass, parameters.latentHeatEvaporation, leafparameters.poreDensity, leafparameters.poreArea, leafparameters.poreDepth, leafparameters.poreRadius);			
 
 		
+/*
 		// RADIATION SUN
-		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude,longitude,time);
-		variables.shortwaveCanopySun = radiationMethods.computeAbsorbedRadiationSunlit(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect*2.1, shortWaveRadiationDiffuse*2.1);
 		
-		if (variables.shortwaveCanopySun == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0 ) {
+		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude,longitude,time);
+		
+		variables.shortwaveCanopySun = radiationMethods.computeAbsordebRadiationSunlit(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+		
+		/*if (variables.shortwaveCanopySun == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0 ) {
 			variables.shortwaveCanopySun=0;}
 		else { 
 			variables.radFactorSun = (shortWaveRadiationDirect*2.1 + shortWaveRadiationDiffuse*2.1)/ variables.shortwaveCanopySun;
 			variables.shortwaveCanopySun = (shortWaveRadiationDirect+shortWaveRadiationDiffuse)/variables.radFactorSun;
 		}
+		
+		
+		
 		// Compute the area in sunlight
-		variables.areaCanopySun = radiationMethods.computeSunlitLeafAreaIndex(typeOfCanopy,leafAreaIndex, variables.solarElevationAngle);
+		
+		if (leafAreaIndex > 1) {
+			variables.areaCanopySun=1;
+			variables.areaCanopyShade=1;
+			}
+		
+		else {
+			variables.areaCanopySun = radiationMethods.computeSunlitLeafAreaIndex(typeOfCanopy,leafAreaIndex, variables.solarElevationAngle);
+			variables.areaCanopyShade = leafAreaIndex - variables.areaCanopySun;}
 
-		
-		
 		
 
 		// RADIATION SHADOW
-		variables.shortwaveCanopyShade = radiationMethods.computeAbsorbedRadiationShadow(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect*2.1, shortWaveRadiationDiffuse*2.1);
+		variables.shortwaveCanopyShade = radiationMethods.computeAbsordebRadiationShadow(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
 		
-		if (variables.shortwaveCanopyShade == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0 ) {
+		/*if (variables.shortwaveCanopyShade == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0 ) {
 			variables.shortwaveCanopyShade=0;}
 		
 		else { 
 			variables.radFactorShade = (shortWaveRadiationDirect*2.1 + shortWaveRadiationDiffuse*2.1)/ variables.shortwaveCanopyShade;
 			variables.shortwaveCanopyShade = (shortWaveRadiationDirect+shortWaveRadiationDiffuse)/variables.radFactorShade;
 			}
-		
+	
 		
 		
 		if (variables.solarElevationAngle <0) {
 			variables.shortwaveCanopySun=0;
 			variables.shortwaveCanopyShade=0;
-			variables.areaCanopySun=0;
+			//variables.areaCanopySun=0;
 		 }
 		
 		
 		
 		
 		
-		// Compute the area in shadow
-		variables.areaCanopyShade = leafAreaIndex - variables.areaCanopySun;				
-		variables.netLong = shortWaveRadiationDirect-netRadiation; 
+		// Compute the area in shadow		
+		variables.netLong = shortWaveRadiationDirect-netRadiation; // quando la direct è nulla questo veniva negativo
 		variables.netLong=(variables.netLong<0)?0:variables.netLong;
 		
 		variables.incidentSolarRadiationSoil = shortWaveRadiationDirect + shortWaveRadiationDiffuse - variables.shortwaveCanopySun - variables.shortwaveCanopyShade-variables.netLong;
@@ -139,7 +153,14 @@ public class ComputeQuantitiesProspero {
 			variables.incidentSolarRadiationSoil=0;
 		 }
 		
-						
+*/				
 	}
+	
+	/*public Point[] getPoint(Coordinate coordinate, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)
+			throws Exception{
+		Point[] point = new Point[] { GeometryUtilities.gf().createPoint(coordinate) };
+		CrsUtilities.reproject(sourceCRS, targetCRS, point);
+		return point;
+	}*/
 	
 }

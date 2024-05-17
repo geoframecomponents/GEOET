@@ -60,10 +60,10 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	@Out
 	public boolean  doProcess4;
 	
-	@Description("Height of the canopy.")
-	@Unit("[m]")
-	@In
-	public double canopyHeight;
+	//@Description("Height of the canopy.")
+	//@Unit("[m]")
+	//@In
+	//public double canopyHeight;
 	
     //double nullValue = -9999.0;
 	
@@ -96,7 +96,7 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
     	
 
-        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,canopyHeight);
+        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
         
         variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation);// --> mm/time
         
