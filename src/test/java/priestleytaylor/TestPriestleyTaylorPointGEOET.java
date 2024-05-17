@@ -15,51 +15,34 @@ import org.junit.Test;
 import it.geoframe.blogspot.geoet.inout.InputReaderMain;
 import it.geoframe.blogspot.geoet.inout.OutputWriterMain;
 import it.geoframe.blogspot.geoet.priestleytaylor.*;
-import it.geoframe.blogspot.geoet.stressfactor.solver.*;
+//import it.geoframe.blogspot.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
 
 /**
- * Test ActualPrestleyTaylorModel.
+ * Test PrestleyTaylorModel.
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
-public class TestActualPriestleyTaylorGEOET{
+public class TestPriestleyTaylorPointGEOET{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
-        String endDate	= "2013-12-15 01:00";
+        String endDate	= "2013-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
-        String lab1 = "test";
         
-        
-        
-    
-        OmsRasterReader DEMreader = new OmsRasterReader();
-        DEMreader.file = "resources/Input/dataET_point/Cavone/1/dem_1.tif";
-		  DEMreader.process();
-		  GridCoverage2D digitalElevationModel = DEMreader.outRaster;
-        
-		
-		String inPathToNetRad 					="resources/Input/dataET_point/Cavone/1/Net_1.csv";
-		String inPathToTemperature 				="resources/Input/dataET_point/Cavone/1/airT_1.csv";
-		String inPathToPressure 				="resources/Input/dataET_point/Cavone/1/Pres_1.csv";
-		String inPathToSoilHeatFlux 			="resources/Input/dataET_point/Cavone/1/GHF_1.csv";
-        String inPathToSoilMoisture 			="resources/Input/dataET_point/Cavone/1/Soil_Moisture_Esercitazione_A.csv";
 
-		String pathToLatentHeatPT	="resources/Output/LatentHeatPT_"+lab1+".csv";
-		String pathToEvapotranspirationPT ="resources/Output/ETPrestleyTaylor_"+lab1+".csv";
-        
-		OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
+		
+        String inPathToNetRad 		="resources/Input/dataET_point/1/Net_1.csv";
+		String inPathToTemperature 	="resources/Input/dataET_point/1/airT_1.csv";
+		String inPathToPressure		="resources/Input/dataET_point/1/Pres_1.csv";
+        String inPathToSoilHeatFlux ="resources/Input/dataET_point/1/GHF_1.csv";
+
+		String pathToLatentHeatPT	="resources/Output/latentHeatPtnew.csv";
+		String pathToEvapotranspirationPT ="resources/Output/etp_PrestleyTaylornew.csv";
+        OmsTimeSeriesIteratorReader tempReader = getTimeseriesReader(inPathToTemperature, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader netradReader = getTimeseriesReader(inPathToNetRad, fId, startDate, endDate, timeStepMinutes);
         OmsTimeSeriesIteratorReader pressureReader = getTimeseriesReader(inPathToPressure, fId, startDate, endDate, timeStepMinutes);      
         OmsTimeSeriesIteratorReader soilHeatFluxReader 	= getTimeseriesReader(inPathToSoilHeatFlux, fId, startDate, endDate,timeStepMinutes);
-        OmsTimeSeriesIteratorReader soilMoistureReader 	= getTimeseriesReader(inPathToSoilMoisture, fId, startDate, endDate,timeStepMinutes);
-        
-        String inPathToCentroids ="resources/Input/dataET_point/Cavone/1/centroids_ID_1.shp";
-        OmsShapefileFeatureReader centroidsReader 		= new OmsShapefileFeatureReader();
-        centroidsReader.file = inPathToCentroids;
-		centroidsReader.readFeatureCollection();
-		SimpleFeatureCollection stationsFC = centroidsReader.geodata;
 		
         OmsTimeSeriesIteratorWriter writerLatentHeatPT = new OmsTimeSeriesIteratorWriter();
         writerLatentHeatPT.file = pathToLatentHeatPT;
@@ -72,44 +55,23 @@ public class TestActualPriestleyTaylorGEOET{
         writerEvapotranspirationPT.tStart = startDate;
         writerEvapotranspirationPT.tTimestep = timeStepMinutes;
         writerEvapotranspirationPT.fileNovalue="-9999";
-        
+		
+        PriestleyTaylorPotentialETSolverMain PtEt = new PriestleyTaylorPotentialETSolverMain();
         InputReaderMain Input 		= new InputReaderMain();
-        PriestleyTaylorActualETSolverMain PtEt = new PriestleyTaylorActualETSolverMain();
-        PTPMStressFactorSolverMain PTstressfactor = new PTPMStressFactorSolverMain();
         OutputWriterMain Output 	= new OutputWriterMain();
-		
-      
         
+        Input.elevation= 579;
+		//Input.latitude = 37.97;
+		//Input.longitude= 13.57;
         
-		Input.inCentroids = stationsFC;
-		Input.idCentroids= "ID";
-		Input.centroidElevation="Elevation";
-		Input.inDem = digitalElevationModel;
-		
-
-		
 		PtEt.alpha = 1.26;
         PtEt.soilFluxParameterDay = 0.35;
         PtEt.soilFluxParameterNight = 0.75;
-        Input.temporalStep = timeStepMinutes;
-		
-		
-        PTstressfactor.useRadiationStress=false;
-        PTstressfactor.useTemperatureStress=false;
-        PTstressfactor.useVDPStress=false;
-        PTstressfactor.useWaterStress=true;
-        PTstressfactor.alpha = 0.005;
-        PTstressfactor.theta = 0.85;
-        PTstressfactor.VPD0 = 5.0;
-        PTstressfactor.Tl = -5.0;
-        PTstressfactor.T0 = 15.0;
-		PTstressfactor.Th = 35.0;
-		PTstressfactor.waterWiltingPoint = 0.20;
-		PTstressfactor.waterFieldCapacity = 0.35; 
-		PTstressfactor.depth = 1.50;
-		PTstressfactor.depletionFraction = 0.45;
-		PTstressfactor.cropCoefficient = 0.59;
+
         
+        //PtEt.doHourly = true;
+        Input.temporalStep = timeStepMinutes;
+        //PtEt.defaultAtmosphericPressure = 101.3;
 
         while(tempReader.doProcess ) {
             
@@ -131,21 +93,13 @@ public class TestActualPriestleyTaylorGEOET{
             id2ValueMap = soilHeatFluxReader.outData;
             Input.inSoilFlux = id2ValueMap;
             
-            soilMoistureReader.nextRecord();
-            id2ValueMap = soilMoistureReader.outData;
-            Input.inSoilMoisture = id2ValueMap;
-            
             Input.process();
-            
-            PTstressfactor.solve();
-            
-            PtEt.stressFactor = PTstressfactor.stressSun;
             
             PtEt.process();
             
             Output.process();
             
-            //HashMap<Integer, double[]> outLatentHeat = PtEt.outLatentHeatPt;
+          //HashMap<Integer, double[]> outLatentHeat = PtEt.outLatentHeatPt;
             writerLatentHeatPT.inData = Output.outLatentHeatPT;
             writerLatentHeatPT.writeNextLine();	
             
@@ -155,7 +109,7 @@ public class TestActualPriestleyTaylorGEOET{
             
            // HashMap<Integer, double[]> outEvapotranspiration= PtEt.outEvapotranspirationPt;
             writerEvapotranspirationPT.inData = Output.outEvapoTranspirationPT;
-            writerEvapotranspirationPT.writeNextLine();	
+            writerEvapotranspirationPT.writeNextLine();		
 			
 			if (pathToEvapotranspirationPT != null) {
 				writerEvapotranspirationPT.close();
@@ -165,9 +119,9 @@ public class TestActualPriestleyTaylorGEOET{
         netradReader.close();    
         soilHeatFluxReader.close();
         pressureReader.close();
-        soilMoistureReader.close();
         writerLatentHeatPT.close();
         writerEvapotranspirationPT.close();
+
 
     }
 	private OmsTimeSeriesIteratorReader getTimeseriesReader( String path, String id, String startDate, String endDate,

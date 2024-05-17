@@ -54,9 +54,9 @@ public class RootDensitySolverMain {
 	public String rootDensityModel = "CostantMethod";
 	
 	@In
-	public boolean  doProcess7;
+	public boolean  doProcess1;
 	@Out
-	public boolean  doProcess8;
+	public boolean  doProcess2;
 	
 	@Description("Vector of root density")
 	@Out
@@ -100,13 +100,13 @@ public class RootDensitySolverMain {
 		
 		defRootDensity = variables.rootDensity;
 		
+		
 		System.out.print("\nEnd RootDensitySolverMain");
 
-		
+		//System.out.println("defRootDensity  = "+Arrays.toString(defRootDensity));
 		//System.out.println("z = "+Arrays.toString(z));
 		//System.out.println("\n\nStressedET  = "+ StressedET);
-		
-		System.out.println("root density  = "+Arrays.toString(variables.rootDensity));
+		//System.out.println("root density  = "+Arrays.toString(variables.rootDensity));
 		//System.out.println("\ng  = "+Arrays.toString(input.g));
 		//System.out.println("\n\nsumRootWaterStress  = "+ variables.sumRootWaterStress);
 		//System.out.println("\n\ntranspirations  = "+ Arrays.toString(variables.transpirations));

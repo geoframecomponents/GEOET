@@ -11,11 +11,9 @@ import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.*;
 
 import it.geoframe.blogspot.geoet.inout.*;
-//import it.geoframe.blogspot.geoet.prospero.data.*;
-//import it.geoframe.blogspot.geoet.prospero.methods.*;
-import it.geoframe.blogspot.geoet.prospero.solver.*;
 //import it.geoframe.blogspot.geoet.stressfactor.methods.*;
 import it.geoframe.blogspot.geoet.stressfactor.solver.*;
+import it.geoframe.blogspot.geoet.transpiration.solver.*;
 /**
  * 
  * @author D'Amato Concetta, Michele Bottazzi (concetta.damato@unitn.it)

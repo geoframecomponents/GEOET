@@ -1,4 +1,4 @@
-package it.geoframe.blogspot.geoet.prospero.solver;
+package it.geoframe.blogspot.geoet.transpiration.solver;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -15,11 +15,10 @@ import it.geoframe.blogspot.geoet.data.Parameters;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 //import java.util.Arrays;
 import it.geoframe.blogspot.geoet.inout.*;
-import it.geoframe.blogspot.geoet.prospero.data.*;
-import it.geoframe.blogspot.geoet.prospero.methods.*;
-
 import it.geoframe.blogspot.geoet.radiation.methods.RadiationMethod;
 import it.geoframe.blogspot.geoet.stressfactor.methods.*;
+import it.geoframe.blogspot.geoet.transpiration.data.*;
+import it.geoframe.blogspot.geoet.transpiration.methods.*;
 
 @Description("Transpiration Budget solved according to D'Amato & Rigon (2023)")
 

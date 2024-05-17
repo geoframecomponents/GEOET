@@ -89,6 +89,10 @@ public class InputTimeSeries {
 	
 	public double growthRateRoot;
 	
+	public double g1;
+	
+	public double assimilationRate;
+	
 	//@Description("Switch that defines if it is hourly.")
 	//@In
 	//public boolean doHourly = true;

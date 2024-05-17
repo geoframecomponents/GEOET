@@ -28,7 +28,7 @@ import oms3.annotations.License;
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-public class GeneralSFFactory {
+public class RepresentativeSFFactory {
 	/**
 	 * Creates a new stress factor object.
 	 * @param type name of the Stress Factor model
@@ -39,9 +39,9 @@ public class GeneralSFFactory {
 	 * @return stressFactor G
 	 */
 
-	public GeneralSF createRepresentativeStressFactor (String type, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) 
+	public RepresentativeSF createRepresentativeStressFactor (String type, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) 
 	{
-		GeneralSF generalSF = null;
+		RepresentativeSF generalSF = null;
 		if(type.equalsIgnoreCase("AverageMethod") || type.equalsIgnoreCase("AverageMethod")){
 			generalSF = new AverageSF(z,deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
 		else if(type.equalsIgnoreCase("SizeWeightedMethod") || type.equalsIgnoreCase("SizeWeightedMethod")){

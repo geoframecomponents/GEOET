@@ -108,7 +108,7 @@ public class TestPenmanMonteithFAOTotalStressed{
 		PMstressfactor.depletionFraction = 0.70;
 		PMstressfactor.cropCoefficient = 0.95;
 		
-		PmFAO.canopyHeight = 1.30;
+		Input.canopyHeight = 1.30;
         PmFAO.soilFluxParameterDay = 0.35;
         PmFAO.soilFluxParameterNight = 0.75;
         

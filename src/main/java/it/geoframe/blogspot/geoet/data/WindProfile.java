@@ -12,7 +12,7 @@ public class WindProfile {
 	public double computeWindProfile(double windSpeed2m, double height) {
 		variables = ProblemQuantities.getInstance();
 		
-		 // Computation of the wind speed at height H [m s-1]
+		 // Computation of the wind speed at height H [m s-1] FAO chapter 3, equation 47
 		variables.windSpeedH = (windSpeed2m * (Math.log(67.8*height - 5.42)))/4.87;
 		
 		return variables.windSpeedH;	
