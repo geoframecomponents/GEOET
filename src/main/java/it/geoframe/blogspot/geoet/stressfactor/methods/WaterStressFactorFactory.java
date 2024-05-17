@@ -48,10 +48,7 @@ public class WaterStressFactorFactory {
 
 		WaterStressFactor stressFactor = null;
 		if(type.equalsIgnoreCase("LinearStressFactor") || type.equalsIgnoreCase("LinearStressFactor")){
-			stressFactor = new JarvisWaterStressFactor(thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
-		
-		if(type.equalsIgnoreCase("LinearVolumeStressFactor") || type.equalsIgnoreCase("LinearVolumeStressFactor")){
-			stressFactor = new JarvisWaterVolumeStressFactor(thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+			stressFactor = new LinearWaterStressFactor(thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
 		
 		return stressFactor;
 	}

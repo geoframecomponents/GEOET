@@ -75,10 +75,10 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	
 	int step;
 	
-	@Description("Height of the canopy.")
-	@Unit("[m]")
-	@In
-	public double canopyHeight;
+	//@Description("Height of the canopy.")
+	//@Unit("[m]")
+	//@In
+	//public double canopyHeight;
 	
     double nullValue = -9999.0;
 	
@@ -126,7 +126,7 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	    	
             
 		
-		variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,canopyHeight);
+		variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
 		
         variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
     	

@@ -10,13 +10,11 @@ import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 //import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
 import org.junit.*;
 import it.geoframe.blogspot.geoet.inout.*;
-//import it.geoframe.blogspot.geoet.prospero.data.*;
-//import it.geoframe.blogspot.geoet.prospero.methods.*;
-import it.geoframe.blogspot.geoet.prospero.solver.*;
 import it.geoframe.blogspot.geoet.soilevaporation.solver.*;
 //import it.geoframe.blogspot.geoet.stressfactor.methods.*;
 import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 import it.geoframe.blogspot.geoet.totalEvapoTranspiration.*;
+import it.geoframe.blogspot.geoet.transpiration.solver.*;
 
 /**
  * Test GEOET Prospero-transpiration and Penman Monteith-soil evaporation version
@@ -197,7 +195,7 @@ public class TestProspero_SoilEvaporationPM_GEOET{
 		
 		InputReaderMain Input 								= new InputReaderMain();
 		ProsperoPMStressFactorSolverMain ProsperoPMStressFactor = new ProsperoPMStressFactorSolverMain();
-		PMEvaporationFromSoilAfterCanopySolverMain PMsoilevaporation = new PMEvaporationFromSoilAfterCanopySolverMain();
+		PMEvaporationFromSoilCanopySolverMain PMsoilevaporation = new PMEvaporationFromSoilCanopySolverMain();
 		ProsperoSolverMain Prospero 						= new ProsperoSolverMain();
 		TotalEvapoTranspirationSolverMain TotalEvapoTranspiration = new TotalEvapoTranspirationSolverMain();
 		OutputWriterMain Output 							= new OutputWriterMain();

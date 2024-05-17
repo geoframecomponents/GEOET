@@ -178,7 +178,7 @@ public class OriginalJarvisWaterStressFactorSolverMain {
 	WaterStressFactor stressFactor;
 	
 	@Description("Object dealing with stress factor model representative of the domain")
-	GeneralSF representativeSF;
+	RepresentativeSF representativeSF;
 	
 
 	@Execute
@@ -193,7 +193,7 @@ public class OriginalJarvisWaterStressFactorSolverMain {
 			WaterStressFactorFactory stressFactorFactory= new WaterStressFactorFactory();
 			stressFactor = stressFactorFactory.createStressFactor(stressFactorModel, thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 		
-			GeneralSFFactory representativeSFFactory= new GeneralSFFactory();
+			RepresentativeSFFactory representativeSFFactory= new RepresentativeSFFactory();
 			representativeSF = representativeSFFactory.createRepresentativeStressFactor(representativeStressFactorModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 			
 			zR = totalDepth + etaR;

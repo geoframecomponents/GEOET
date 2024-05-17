@@ -35,7 +35,7 @@ import oms3.annotations.License;
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-public class RootDensityWeightedSF extends GeneralSF {
+public class RootDensityWeightedSF extends RepresentativeSF {
 	
 	private ProblemQuantities variables;
 	private InputTimeSeries input;

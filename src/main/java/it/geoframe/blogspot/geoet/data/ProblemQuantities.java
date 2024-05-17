@@ -144,6 +144,11 @@ public class ProblemQuantities {
 	@Unit("m")
 	public double zR;
 	
+	public double carbonDioxideLeafConcentration;
+	
+	public double stressMedlyn;
+	
+	
 	
 	
 }

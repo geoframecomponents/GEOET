@@ -33,7 +33,7 @@ import oms3.annotations.License;
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-public class SizeWeightedSF extends GeneralSF {
+public class SizeWeightedSF extends RepresentativeSF {
 
 	/** General constructor used to pass the value of variables */
 	public SizeWeightedSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {

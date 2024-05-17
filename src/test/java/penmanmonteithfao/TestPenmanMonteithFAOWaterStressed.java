@@ -90,7 +90,7 @@ public class TestPenmanMonteithFAOWaterStressed{
         //PmFAO.waterFieldCapacity = 0.27; 
         PmFAO.rootsDepth = 0.75;
         //PmFAO.depletionFraction = 0.55;
-        PmFAO.canopyHeight = 0.12;
+        Input.canopyHeight = 0.12;
         PmFAO.soilFluxParameterDay = 0.35;
         PmFAO.soilFluxParameterNight = 0.75;
         

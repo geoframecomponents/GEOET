@@ -16,13 +16,6 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package it.geoframe.blogspot.geoet.priestleytaylor;
-
-//import static java.lang.Math.pow;
-//import java.util.HashMap;
-//import java.util.LinkedHashMap;
-//import java.util.Map.Entry;
-//import java.util.Set;
-
 import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.Execute;
@@ -79,14 +72,6 @@ public class PriestleyTaylorPotentialETSolverMain{
 
 	int step;
 	
-	//@In
-	//public int ID;
-	
-	//@Out 
-	//public boolean  doProcessOut = false;
-	
-	//@In
-	//public boolean  doProcess;
 	
 	@In
 	public boolean  doProcess3;

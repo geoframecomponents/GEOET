@@ -32,7 +32,7 @@ import oms3.annotations.License;
  * @author Concetta D'Amato
  */
 
-public class AverageSF extends GeneralSF{
+public class AverageSF extends RepresentativeSF{
 	
 
 	/** General constructor used to pass the value of variables */

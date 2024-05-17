@@ -11,7 +11,6 @@ import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.*;
 
 import it.geoframe.blogspot.geoet.inout.*;
-import it.geoframe.blogspot.geoet.radiation.solver.*;
 //import it.geoframe.blogspot.geoet.stressfactor.methods.*;
 import it.geoframe.blogspot.geoet.stressfactor.solver.*;
 import it.geoframe.blogspot.geoet.transpiration.solver.*;
@@ -19,25 +18,15 @@ import it.geoframe.blogspot.geoet.transpiration.solver.*;
  * 
  * @author D'Amato Concetta, Michele Bottazzi (concetta.damato@unitn.it)
  */
-public class TestProsperoLAIGEOET_Cavone{
+public class TestProsperoPointGEOET{
 	@Test
     public void Test() throws Exception {
-		String startDate= "2014-01-01 09:00";
-        String endDate	= "2014-01-01 14:00"; 
+		String startDate= "2013-12-15 11:00";
+        String endDate	= "2014-12-15 12:00";
         int timeStepMinutes = 60;
         String fId = "ID";
-        String lab1 = "actual_LAI_20_30928";
+        String lab1 = "test";
         
-        //////////////////////////////////////////////////////////////////////////////////////////////int stationID = 1;
-
-        //PrintStreamProgressMonitor pm = new PrintStreamProgressMonitor(System.out, System.out);
-        
-        OmsRasterReader DEMreader = new OmsRasterReader();
-		DEMreader.file = "resources/Input/dataET_point/1/dem_1.tif";
-		//DEMreader.fileNovalue = -9999.0;
-		//DEMreader.geodataNovalue = Double.NaN;
-		DEMreader.process();
-		GridCoverage2D digitalElevationModel = DEMreader.outRaster;
               
 		String inPathToTemperature 				="resources/Input/dataET_point/1/airT_1.csv";
         String inPathToWind 					="resources/Input/dataET_point/1/Wind_1.csv";
@@ -49,7 +38,6 @@ public class TestProsperoLAIGEOET_Cavone{
         String inPathToSoilHeatFlux 			="resources/Input/dataET_point/1/GHF_1.csv";
         String inPathToPressure 				="resources/Input/dataET_point/1/Pres_1.csv";
         String inPathToLai 						="resources/Input/dataET_point/1/LAI_10.csv";
-        String inPathToCentroids 				="resources/Input/dataET_point/1/centroids_ID_1.shp";
         String inPathToSoilMoisture				="resources/Input/dataET_point/1/SoilMoisture18.csv";
         
         String outPathToLatentHeatSun			="resources/Output/LatentHeatSun"+lab1+".csv";
@@ -85,11 +73,6 @@ public class TestProsperoLAIGEOET_Cavone{
         OmsTimeSeriesIteratorReader netRadReader 		= getTimeseriesReader(inPathToNetRad, fId, startDate, endDate,timeStepMinutes);
         OmsTimeSeriesIteratorReader soilMoistureReader 	= getTimeseriesReader(inPathToSoilMoisture, fId, startDate, endDate,timeStepMinutes);
          
-
-        OmsShapefileFeatureReader centroidsReader 		= new OmsShapefileFeatureReader();
-        centroidsReader.file = inPathToCentroids;
-		centroidsReader.readFeatureCollection();
-		SimpleFeatureCollection stationsFC = centroidsReader.geodata;
 		
 		OmsTimeSeriesIteratorWriter latentHeatSunWriter = new OmsTimeSeriesIteratorWriter();
 		latentHeatSunWriter.file = outPathToLatentHeatSun;
@@ -194,17 +177,14 @@ public class TestProsperoLAIGEOET_Cavone{
 		vapourPressureDeficitWriter.fileNovalue="-9999";
 		
 		InputReaderMain Input 								= new InputReaderMain();
-		RadiationSolverMain Radiation						= new RadiationSolverMain();
 		ProsperoStressFactorSolverMain ProsperoStressFactor = new ProsperoStressFactorSolverMain();
-		ProsperoLAISolverMain Prospero 						= new ProsperoLAISolverMain();
+		ProsperoSolverMain Prospero 						= new ProsperoSolverMain();
 		OutputWriterMain Output 							= new OutputWriterMain();
 		
 		
-		Input.inCentroids = stationsFC;
-		Input.idCentroids= "ID";
-		Input.centroidElevation="Elevation";
-		
-		Input.inDem = digitalElevationModel; 
+		Input.elevation= 579;
+		Input.latitude = 37.97;
+		Input.longitude= 13.57;
 
 
 		Input.canopyHeight = 30;
@@ -212,9 +192,9 @@ public class TestProsperoLAIGEOET_Cavone{
 		//Prospero.doIterative = false;
 		
 		
-		ProsperoStressFactor.useRadiationStress=true;
-		ProsperoStressFactor.useTemperatureStress=true;
-		ProsperoStressFactor.useVDPStress=true;
+		ProsperoStressFactor.useRadiationStress=false;
+		ProsperoStressFactor.useTemperatureStress=false;
+		ProsperoStressFactor.useVDPStress=false;
 		ProsperoStressFactor.useWaterStress=true;
 
 	
@@ -227,12 +207,11 @@ public class TestProsperoLAIGEOET_Cavone{
 		ProsperoStressFactor.T0 = 20.0;
 		ProsperoStressFactor.Th = 45.0;
 		Prospero.typeOfCanopy="multilayer";
-		Radiation.typeOfCanopy="multilayer";
-		ProsperoStressFactor.waterWiltingPoint = 0.05;
-		ProsperoStressFactor.waterFieldCapacity = 0.30; 
-		ProsperoStressFactor.rootsDepth = 1.80;
-		ProsperoStressFactor.depletionFraction = 0.7;
-		ProsperoStressFactor.cropCoefficient = 0.95;
+		ProsperoStressFactor.waterWiltingPoint = 0.08;
+		ProsperoStressFactor.waterFieldCapacity = 0.27; 
+		ProsperoStressFactor.rootsDepth = 1;
+		ProsperoStressFactor.depletionFraction = 0.55;
+		ProsperoStressFactor.cropCoefficient = 0.85;
 		
 		while(temperatureReader.doProcess ) {
         	temperatureReader.nextRecord();
@@ -290,8 +269,6 @@ public class TestProsperoLAIGEOET_Cavone{
             
         
             Input.process();
-            
-            Radiation.process();
             
             ProsperoStressFactor.solve();
            

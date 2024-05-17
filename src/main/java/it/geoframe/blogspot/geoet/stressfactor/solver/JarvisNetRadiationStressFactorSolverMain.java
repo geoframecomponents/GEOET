@@ -31,9 +31,9 @@ import java.util.ArrayList;
 import it.geoframe.blogspot.geoet.data.ProblemQuantities;
 import it.geoframe.blogspot.geoet.inout.InputTimeSeries;
 import it.geoframe.blogspot.geoet.stressfactor.methods.EnvironmentalStress;
-import it.geoframe.blogspot.geoet.stressfactor.methods.GeneralSFFactory;
+import it.geoframe.blogspot.geoet.stressfactor.methods.RepresentativeSFFactory;
 //import it.geoframe.blogspot.geoet.stressfactor.methods.FaoWaterStress;
-import it.geoframe.blogspot.geoet.stressfactor.methods.GeneralSF;
+import it.geoframe.blogspot.geoet.stressfactor.methods.RepresentativeSF;
 import it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactor;
 import it.geoframe.blogspot.geoet.stressfactor.methods.WaterStressFactorFactory;
 
@@ -174,7 +174,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
 	WaterStressFactor stressFactor;
 	
 	@Description("Object dealing with stress factor model representative of the domain")
-	GeneralSF representativeSF;
+	RepresentativeSF representativeSF;
 	
 	
 	//@Description("Water stress")
@@ -250,7 +250,7 @@ public class JarvisNetRadiationStressFactorSolverMain {
 			WaterStressFactorFactory stressFactorFactory= new WaterStressFactorFactory();
 			stressFactor = stressFactorFactory.createStressFactor(stressFactorModel, thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 		
-			GeneralSFFactory representativeSFFactory= new GeneralSFFactory();
+			RepresentativeSFFactory representativeSFFactory= new RepresentativeSFFactory();
 			representativeSF = representativeSFFactory.createRepresentativeStressFactor(representativeStressFactorModel, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 			
 			//zR = totalDepth + etaR;

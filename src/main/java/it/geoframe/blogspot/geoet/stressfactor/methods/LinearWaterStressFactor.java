@@ -27,23 +27,21 @@ import oms3.annotations.License;
  * Computation of the stress factor by the linear formulation of Jarvis 1976 
  * @author Concetta D'Amato
  */
-
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-
-public class JarvisWaterVolumeStressFactor extends WaterStressFactor{
+public class LinearWaterStressFactor extends WaterStressFactor{
 
 	/** General constructor used to pass the value of variables */
-	public JarvisWaterVolumeStressFactor (double[] thetaWp, double[] thetaFc,int[] ID, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
+	public LinearWaterStressFactor (double[] thetaWp, double[] thetaFc,int[] ID, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
 		super(thetaWp, thetaFc, ID, z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}	
 
 	public double[] computeStressFactor (double[] theta, double zR, double zE) {
 			
 	for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
 
-		if(z[i] >= zR || z[i] >= zE) {
-			stressFactor[i]=(theta[i]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i])/(thetaFc[ID[i]]*deltaZ[i]-thetaWp[ID[i]]*deltaZ[i]);
+		if(z[i] > zR || z[i] > zE) {
+			stressFactor[i]=(theta[i]-thetaWp[ID[i]])/(thetaFc[ID[i]]-thetaWp[ID[i]]);
 			stressFactor[i]=((stressFactor[i]>0)?stressFactor[i]:0);				
 			stressFactor[i]=((stressFactor[i]<1)?stressFactor[i]:1);
 			if (stressFactor[i] <  1 * pow(10,-8)) {

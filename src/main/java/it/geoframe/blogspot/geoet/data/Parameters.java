@@ -115,7 +115,7 @@ public class Parameters {
 	
 	public double defaultCanopyHeigth = 0.3;
 	
-	
+	public double defaultAssimilationRate = 0.5;
 	
 	
 }
