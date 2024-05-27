@@ -309,9 +309,9 @@ public class JarvisNetRadiationStressFactorSolverMain {
         outputToBuffer.add(g);
 
         outputToBuffer.add(new double[] {variables.stressWater});
-        outputToBuffer.add(new double[] {variables.evaporationStressWater});
+        outputToBuffer.add(new double[] {variables.stressWater});
         outputToBuffer.add(new double[] {stressSun});
-        outputToBuffer.add(new double[] {stressShade});
+        outputToBuffer.add(new double[] {stressSun});
        // stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
         
 		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
