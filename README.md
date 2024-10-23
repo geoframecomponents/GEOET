@@ -1,6 +1,8 @@
 # GEOET
 GEOET (GEOframe EvapoTranspiration) is a Java-based suite of evapotranspiration (ET) models that form part of the GEOSPACE system within the GEOframe framework. GEOET is designed to simulate ET processes within the soil-plant-atmosphere continuum by leveraging multiple models of varying complexity. These models allow for a detailed analysis of how water and energy are exchanged between the Earth’s surface and the atmosphere.
-GEOET is based on its precursor, GEOframe-ETP model (Bottazzi, 2020; Bottazzi et al., 2021) whose original source code is available at https://github.com/geoframecomponents/ETP. 
+GEOET is based on its precursor, GEOframe-ETP model (Bottazzi, 2020; Bottazzi et al., 2021) whose original source code is available [here](https://github.com/geoframecomponents/ETP). 
+
+More details and information are available in [D’Amato, C.: Exploring the Soil-Plant-Atmosphere Continuum: Advancements, Integrated Modeling and Ecohydrological Insights, Ph.D. thesis, Center Agriculture Food Environment (C3A), University of Trento, 2024](https://abouthydrology.blogspot.com/2024/04/exploring-soil-plant-atmosphere.html).
 
 # Scientific Overview
 GEOET incorporates several approaches to simulate evapotranspiration:
