@@ -31,7 +31,7 @@ This release allows the users to compute:
 The modularity of the GEOET model allows easy comparison between different ET approaches and their parameterizations within a unified framework.
 
 # Executables
-[GEOET Executables](https://github.com/GEOframeOMSProjects/OMS_Project_GEOET)
+The executables of GEOET can be found [here](https://github.com/GEOframeOMSProjects/OMS_Project_GEOET)
 
 # Contributing
 We welcome contributions! Please follow the GEOframe community guidelines.
