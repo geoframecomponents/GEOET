@@ -34,10 +34,10 @@ The modularity of the GEOET model allows easy comparison between different ET ap
 The executables of GEOET can be found [here](https://github.com/GEOframeOMSProjects/OMS_Project_GEOET)
 
 # Contributing
-We welcome contributions! Please follow the GEOframe community guidelines.
+We welcome contributions! Please follow the [GEOframe community guidelinest](http://geoframe.blogspot.com/2020/05/geoframe-community-publication-policy.html).
 
 # Acknowledgements
-GEOframe-ETP model is the precursor of GEOET.
-Concetta D’Amato did the refactoring of the code with a new structure of the java classes and methods.
-Concetta D’Amato and Riccardo Rigon developed the new theoretical parts (Authors).
-GEOET is part of the broader GEOframe project for ecohydrological and hydrological modeling.
+- GEOframe-ETP model is the precursor of GEOET.
+- Concetta D’Amato did the refactoring of the code with a new structure of the java classes and methods.
+- Concetta D’Amato and Riccardo Rigon developed the new theoretical parts (Authors).
+- GEOET is part of the broader GEOframe project for ecohydrological and hydrological modeling.
