@@ -34,7 +34,7 @@ The modularity of the GEOET model allows easy comparison between different ET ap
 The executables of GEOET can be found [here](https://github.com/GEOframeOMSProjects/OMS_Project_GEOET)
 
 # Contributing
-We welcome contributions! Please follow the [GEOframe community guidelinest](http://geoframe.blogspot.com/2020/05/geoframe-community-publication-policy.html).
+We welcome contributions! Please follow the [GEOframe community guideline](http://geoframe.blogspot.com/2020/05/geoframe-community-publication-policy.html).
 
 # Acknowledgements
 - GEOframe-ETP model is the precursor of GEOET.
