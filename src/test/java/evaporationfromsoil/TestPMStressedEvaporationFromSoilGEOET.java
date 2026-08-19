@@ -1,6 +1,10 @@
 package evaporationfromsoil;
 import java.net.URISyntaxException;
 import java.util.HashMap;
+
+import org.geoframe.geoet.inout.*;
+import org.geoframe.geoet.soilevaporation.solver.*;
+import org.geoframe.geoet.stressfactor.solver.*;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -9,14 +13,6 @@ import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 //import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
 import org.junit.*;
-
-import it.geoframe.blogspot.geoet.inout.*;
-//import it.geoframe.blogspot.geoet.prospero.data.*;
-//import it.geoframe.blogspot.geoet.prospero.methods.*;
-//import it.geoframe.blogspot.geoet.prospero.solver.*;
-//import it.geoframe.blogspot.geoet.stressfactor.methods.*;
-import it.geoframe.blogspot.geoet.stressfactor.solver.*;
-import it.geoframe.blogspot.geoet.soilevaporation.solver.*;
 /**
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */

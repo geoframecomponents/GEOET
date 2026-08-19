@@ -1,0 +1,152 @@
+/*
+ * This file is part of JGrasstools (http://www.jgrasstools.org)
+ * (C) HydroloGIS - www.hydrologis.com 
+ * 
+ * JGrasstools is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+package org.geoframe.geoet.priestleytaylor;
+
+import org.geoframe.geoet.data.Parameters;
+import org.geoframe.geoet.data.ProblemQuantities;
+import org.geoframe.geoet.inout.*;
+
+import oms3.annotations.Author;
+import oms3.annotations.Description;
+import oms3.annotations.Execute;
+import oms3.annotations.In;
+import oms3.annotations.Keywords;
+import oms3.annotations.Label;
+import oms3.annotations.License;
+import oms3.annotations.Name;
+import oms3.annotations.Out;
+import oms3.annotations.Status;
+import oms3.annotations.Unit;
+
+@Description("Calculate evapotraspiration based on the Priestley Taylor model")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@Keywords("evapotraspiration, hydrology")
+@Label("")
+@Name("ptetp")
+@Status(Status.CERTIFIED)
+@License("General Public License Version 3 (GPLv3)")
+
+public class PriestleyTaylorActualETSolverMain{
+
+	@Description("The alpha parameter.")
+	@In
+	@Unit("-")
+	public double alpha;
+
+	@Description("The coefficient for the soil heat flux during daylight")
+	@In
+	public double soilFluxParameterDay;
+
+	@Description("The coefficient for the soil heat flux during nighttime")
+	@In
+	public double soilFluxParameterNight;
+
+	@Description("The soilflux default value in case of missing data.")
+	@In
+	@Unit("W m-2")
+	public double defaultSoilFlux = 0.0;
+
+    double nullValue = -9999.0;
+    
+    @Description("stress factor")
+	@In 
+	@Unit("-")
+	public double stressFactor;
+
+	@Description("The evapotranspiration.")
+	@Unit("mm time-1")
+	@Out
+	public double evapoTranspirationPT ;
+
+	int step;
+	//public int time;
+	
+	//@Out 
+	//public boolean  doProcessOut = false;
+	
+	//@In
+	//public boolean  doProcess;
+	
+	@In
+	public boolean  doProcess3;
+	
+	@Out
+	public boolean  doProcess4;
+
+	private Parameters parameters;
+	private ProblemQuantities variables;
+	private InputTimeSeries input;
+	
+
+	@Execute
+	public void process() throws Exception {
+		
+		System.out.printf("\n\nStart PriestleyTaylorActualETSolverMain");
+		
+		parameters = Parameters.getInstance();
+		variables = ProblemQuantities.getInstance();
+		input = InputTimeSeries.getInstance();
+		
+
+		input.airTemperatureC = input.airTemperature - 273.15;
+		parameters.alpha = alpha;
+		
+		
+		int hourOfDay = variables.date.getHourOfDay();
+		boolean isLigth = false;
+		if (hourOfDay > 6 && hourOfDay < 18) {isLigth = true;}
+		
+		double soilFluxparameter;
+		if (isLigth == true) {soilFluxparameter = soilFluxParameterDay;}
+		
+		else {soilFluxparameter = soilFluxParameterNight;}
+	    
+		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = soilFluxparameter * input.netRadiation;}
+	
+	    PriestleyTaylorModel PT = new PriestleyTaylorModel();
+	    //PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
+	   
+	    
+	    variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET(input.netRadiation)* stressFactor ;
+	    variables.fluxEvapoTranspirationPT =(variables.fluxEvapoTranspirationPT<0)?0:variables.fluxEvapoTranspirationPT;
+	    
+		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT * (input.time/parameters.latentHeatEvaporation);
+	    variables.evapoTranspirationPT =(variables.evapoTranspirationPT<0)?0:variables.evapoTranspirationPT;
+		
+	   // System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
+	   // System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
+	    
+	    evapoTranspirationPT = variables.evapoTranspirationPT;
+	    //outEvapotranspirationPt.put((Integer)  basinId, new double[]{petp * time / 86400});
+	    //outLatentHeatPt.put((Integer)  basinId, new double[]{petp * latentHeatEvaporation / 86400});
+	    
+	    //System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
+	    
+	    System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");	
+			//step++;
+		}
+}
+
+
+
+
+
+
+
+
+
