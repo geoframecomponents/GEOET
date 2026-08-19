@@ -134,18 +134,6 @@ public class TestPriestleyTaylorGEOET extends org.geoframe.geoet.testsupport.Geo
         writerLatentHeatPT.close();
         writerEvapotranspirationPT.close();
 
-
-    }
-	private OmsTimeSeriesIteratorReader getTimeseriesReader( String path, String id, String startDate, String endDate,
-            int timeStepMinutes ) throws URISyntaxException {
-        OmsTimeSeriesIteratorReader reader = new OmsTimeSeriesIteratorReader();
-        reader.file = path;
-        reader.idfield = id;
-        reader.tStart =startDate;
-        reader.tTimestep = timeStepMinutes;
-        reader.tEnd = endDate;
-        reader.fileNovalue = "-9999.0";
-        reader.initProcess();
-        return reader;
+        assertGoldenDir();
     }
 }

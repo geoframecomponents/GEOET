@@ -384,8 +384,7 @@ public class TestPMEvaporationFromSoilGEOET extends org.geoframe.geoet.testsuppo
 		//leafTemperatureSunWriter.close();
 		//leafTemperatureShadowWriter.close();
 
-
-
+        assertGoldenDir();
     }
 
 }
