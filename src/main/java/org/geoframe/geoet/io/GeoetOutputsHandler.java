@@ -1,4 +1,4 @@
-package org.geoframe.geoet.io.gpkg;
+package org.geoframe.geoet.io;
 
 import java.util.ArrayList;
 import java.util.List;

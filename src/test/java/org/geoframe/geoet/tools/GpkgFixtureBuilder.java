@@ -14,7 +14,7 @@ import org.joda.time.DateTime;
 /**
  * One-off / reusable tool that builds a GEOET test input GeoPackage
  * ({@code parameters} table + one {@code timeseries_<variable>} table per
- * driving variable, see {@link org.geoframe.geoet.io.gpkg.GeoetInputsHandler})
+ * driving variable, see {@link org.geoframe.geoet.io.GeoetInputsHandler})
  * from the same OMS CSVs and scalar literals a test currently hardcodes. Used
  * to author the checked-in fixture files under
  * {@code src/test/resources/input/gpkg/}; not needed at test-run time (the
