@@ -1,0 +1,37 @@
+package org.geoframe.geoet.core.data;
+
+import static java.lang.Math.PI;
+import static java.lang.Math.pow;
+import oms3.annotations.Author;
+import oms3.annotations.License;
+
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@License("General Public License Version 3 (GPLv3)")
+
+public class Leaf {
+	
+	public double leafLength = 0.25;
+	public int leafSide = 2;
+	public int leafStomaSide = 1;
+
+	public double area() {
+		return PI*pow(leafLength/2,2);
+	}
+	
+	public double poreRadius = 22 * pow(10,-6);
+	public double poreDensity = 35 * pow(10,6);
+	public double poreArea() {
+		return pow(poreRadius,2)*PI;
+	}
+	public double poreDepth= 2.5 * pow(10,-5);
+	
+	public double shortWaveAbsorption = 0.8;	
+	public double shortWaveReflectance = 0.2;	
+	public double shortWaveTransmittance = 0;
+	
+	public double longWaveAbsorption = 0.8;	
+	public double longWaveReflectance = 0.2;	  
+	public double longWaveTransmittance = 0;
+	public double longWaveEmittance = 0.95;
+
+}

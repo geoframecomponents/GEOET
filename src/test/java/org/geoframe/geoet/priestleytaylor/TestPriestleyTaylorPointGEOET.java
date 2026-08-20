@@ -3,15 +3,16 @@ package org.geoframe.geoet.priestleytaylor;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.InputTimeSeries;
-import org.geoframe.geoet.inout.OutputWriterMain;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.core.data.InputTimeSeries;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
 
+import org.geoframe.geoet.solvers.PriestleyTaylorSolver;
 /**
  * Test PrestleyTaylorModel.
  * 
@@ -58,17 +59,17 @@ public class TestPriestleyTaylorPointGEOET extends GeoetTestCase {
 		writerEvapotranspirationPT.tTimestep = timeStepMinutes;
 		writerEvapotranspirationPT.fileNovalue = "-9999";
 
-		PriestleyTaylorPotentialETSolverMain ptEt = new PriestleyTaylorPotentialETSolverMain();
+		PriestleyTaylorSolver ptEt = new PriestleyTaylorSolver();
 		ptEt.parameters = parameters;
 		ptEt.variables = variables;
 		ptEt.input = input;
 		
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 

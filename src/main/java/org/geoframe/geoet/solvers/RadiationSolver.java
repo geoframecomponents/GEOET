@@ -1,0 +1,120 @@
+package org.geoframe.geoet.solvers;
+
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.radiation.ComputeRadiationQuantities;
+import org.hortonmachine.gears.libs.modules.HMModel;
+
+import oms3.annotations.Author;
+import oms3.annotations.Description;
+import oms3.annotations.Execute;
+import oms3.annotations.In;
+import oms3.annotations.Keywords;
+import oms3.annotations.Label;
+import oms3.annotations.License;
+import oms3.annotations.Name;
+import oms3.annotations.Status;
+
+import org.geoframe.geoet.core.data.Leaf;
+import org.geoframe.geoet.core.radiation.RadiationMethod;
+import org.geoframe.geoet.core.stressfactor.EnvironmentalStress;
+import org.geoframe.geoet.core.transpiration.LatentHeatMethods;
+import org.geoframe.geoet.core.transpiration.PressureMethods;
+import org.geoframe.geoet.core.transpiration.SensibleHeatMethods;
+import org.geoframe.geoet.core.transpiration.SolarGeometry;
+@Description("This class compute the absorbed radiation from canopy")
+@Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
+@Keywords("Evapotranspiration")
+@Label("")
+@Name("")
+@Status(Status.CERTIFIED)
+@License("General Public License Version 3 (GPLv3)")
+public class RadiationSolver extends HMModel {
+
+	// @In public double canopyHeight;
+
+	@In
+	public String typeOfCanopy;
+
+	double nullValue = -9999.0;
+
+	/*
+	 * @Description("Stress factor for sun canopy")
+	 * 
+	 * @In
+	 * 
+	 * @Unit("-") public double stressSun;
+	 * 
+	 * @Description("Stress factor for shade canopy")
+	 * 
+	 * @In
+	 * 
+	 * @Unit("-") public double stressShade;
+	 * 
+	 * 
+	 * @Description("The Transpiration.")
+	 * 
+	 * @Unit("mm h-1")
+	 * 
+	 * @Out public double transpiration;
+	 */
+
+	// METHODS FROM CLASSES
+	/*
+	 * SensibleHeatMethods sensibleHeat = new SensibleHeatMethods();
+	 * LatentHeatMethods latentHeat = new LatentHeatMethods(); PressureMethods
+	 * pressure = new PressureMethods(); RadiationMethod radiationMethods = new
+	 * RadiationMethod(); SolarGeometry solarGeometry = new SolarGeometry();
+	 * EnvironmentalStress environmentalStress = new EnvironmentalStress();
+	 * Transpiration plantstranspiration = new Transpiration();
+	 */
+	// private Leaf leafparameters;
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
+
+	@Execute
+	public void process() throws Exception {
+		checkNull(parameters, variables, input);
+		// System.out.print("\n\nStart RadiationSolver");
+
+		// computeQuantitiesProspero.computeQuantitiesProspero(input.windVelocity,
+		// canopyHeight, input.airTemperature, input.relativeHumidity,
+		// input.atmosphericPressure, variables.date, input.latitude, input.longitude,
+		// input.doHourly, input.time, input.leafAreaIndex, typeOfCanopy,
+		// input.shortWaveRadiationDirect, input.shortWaveRadiationDiffuse,
+		// input.netRadiation);
+
+		ComputeRadiationQuantities.computeRadiationQuantities(parameters, variables, variables.date, input.latitude,
+				input.longitude, input.time, input.leafAreaIndex, typeOfCanopy, input.shortWaveRadiationDirect,
+				input.shortWaveRadiationDiffuse, input.netRadiation);
+
+		/////////////////////////////////////////////////
+		/////////// Transpiration ///////////////////////
+		/////////////////////////////////////////////////
+
+		/*
+		 * System.out.println("stressSun is  = "+ stressSun);
+		 * System.out.println("stressShade is  = "+ stressShade);
+		 * System.out.println("input.longWaveRadiation is  = "+
+		 * input.longWaveRadiation); System.out.println("input.airTemperature is  = "+
+		 * input.airTemperature); System.out.println("input.time, is  = "+ input.time);
+		 * System.out.println("nullValue is  = "+ nullValue);
+		 */
+		/*
+		 * variables.fluxTranspiration =
+		 * plantstranspiration.computeTranspiration(stressSun, stressShade,
+		 * input.longWaveRadiation, input.airTemperature, input.time, nullValue);
+		 * variables.transpiration = variables.fluxTranspiration * (input.time /
+		 * parameters.latentHeatEvaporation); transpiration=variables.transpiration;
+		 * System.out.println("\nflux transpiration is  = "+
+		 * variables.fluxTranspiration);
+		 * 
+		 * 
+		 * if (Double.isNaN(variables.transpiration)) {variables.transpiration = 0;}
+		 */
+		// System.out.print("\nEnd RadiationSolver");
+	}
+
+}

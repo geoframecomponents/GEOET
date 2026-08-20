@@ -3,14 +3,14 @@ package org.geoframe.geoet.prospero;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Leaf;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.InputTimeSeries;
-import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.stressfactor.solver.ProsperoStressFactorSolverMain;
-import org.geoframe.geoet.transpiration.solver.ProsperoSolverMain;
+import org.geoframe.geoet.core.data.Leaf;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.solvers.ProsperoStressFactorSolver;
+import org.geoframe.geoet.solvers.ProsperoSolver;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -183,21 +183,21 @@ public class TestProsperoGEOET_Cavone extends GeoetTestCase {
 		vapourPressureDeficitWriter.tTimestep = timeStepMinutes;
 		vapourPressureDeficitWriter.fileNovalue = "-9999";
 
-		ProsperoStressFactorSolverMain prosperoStressFactor = new ProsperoStressFactorSolverMain();
+		ProsperoStressFactorSolver prosperoStressFactor = new ProsperoStressFactorSolver();
 		prosperoStressFactor.variables = variables;
 		prosperoStressFactor.input = input;
-		ProsperoSolverMain prospero = new ProsperoSolverMain();
+		ProsperoSolver prospero = new ProsperoSolver();
 		prospero.parameters = parameters;
 		prospero.variables = variables;
 		prospero.input = input;
 		prospero.leafparameters = leaf;
 
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 

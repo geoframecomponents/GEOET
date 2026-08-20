@@ -3,15 +3,15 @@ package org.geoframe.geoet.totalEvapoTranspiration;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Leaf;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.InputTimeSeries;
-import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.soilevaporation.solver.PMEvaporationFromSoilCanopySolverMain;
-import org.geoframe.geoet.stressfactor.solver.ProsperoPMStressFactorSolverMain;
-import org.geoframe.geoet.transpiration.solver.ProsperoSolverMain;
+import org.geoframe.geoet.core.data.Leaf;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.solvers.PenmanMonteithFAOSoilEvaporationSolverWithCanopy;
+import org.geoframe.geoet.solvers.ProsperoStressFactorSolverWithEvaporation;
+import org.geoframe.geoet.solvers.ProsperoSolver;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -20,6 +20,7 @@ import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
 
+import org.geoframe.geoet.solvers.TotalEvapoTranspirationSolver;
 /**
  * 
  * @author D'Amato Concetta (concetta.damato@unitn.it)
@@ -218,32 +219,32 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 		vapourPressureDeficitWriter.tTimestep = timeStepMinutes;
 		vapourPressureDeficitWriter.fileNovalue = "-9999";
 
-		PMEvaporationFromSoilCanopySolverMain pmSoilevaporation = new PMEvaporationFromSoilCanopySolverMain();
+		PenmanMonteithFAOSoilEvaporationSolverWithCanopy pmSoilevaporation = new PenmanMonteithFAOSoilEvaporationSolverWithCanopy();
 		pmSoilevaporation.parameters = parameters;
 		pmSoilevaporation.variables = variables;
 		pmSoilevaporation.input = input;
 		
-		TotalEvapoTranspirationSolverMain totalEvapoTranspiration = new TotalEvapoTranspirationSolverMain();
+		TotalEvapoTranspirationSolver totalEvapoTranspiration = new TotalEvapoTranspirationSolver();
 		totalEvapoTranspiration.parameters = parameters;
 		totalEvapoTranspiration.variables = variables;
 		totalEvapoTranspiration.input = input;
 		
-		ProsperoPMStressFactorSolverMain prosperoStressFactor = new ProsperoPMStressFactorSolverMain();
+		ProsperoStressFactorSolverWithEvaporation prosperoStressFactor = new ProsperoStressFactorSolverWithEvaporation();
 		prosperoStressFactor.variables = variables;
 		prosperoStressFactor.input = input;
 		
-		ProsperoSolverMain prospero = new ProsperoSolverMain();
+		ProsperoSolver prospero = new ProsperoSolver();
 		prospero.parameters = parameters;
 		prospero.variables = variables;
 		prospero.input = input;
 		prospero.leafparameters = leaf;
 
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 

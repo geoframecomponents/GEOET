@@ -1,14 +1,16 @@
 package org.geoframe.geoet.evaporationfromsoil;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
 
 import java.util.HashMap;
 
-import org.geoframe.geoet.inout.*;
-import org.geoframe.geoet.soilevaporation.solver.*;
-import org.geoframe.geoet.stressfactor.solver.*;
+import org.geoframe.geoet.solvers.*;
+import org.geoframe.geoet.core.data.*;
+import org.geoframe.geoet.solvers.*;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -86,19 +88,19 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 		EvaporationWriter.tTimestep = timeStepMinutes;
 		EvaporationWriter.fileNovalue = "-9999";
 
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 
-		PTPMStressFactorSolverMain pmWaterStressFactor = new PTPMStressFactorSolverMain();
+		PriestleyTaylorPenmanMonteithFAOStressFactorSolver pmWaterStressFactor = new PriestleyTaylorPenmanMonteithFAOStressFactorSolver();
 		pmWaterStressFactor.variables = variables;
 		pmWaterStressFactor.input = input;
-		PMEvaporationFromSoilSolverMain pmSoilevaporation = new PMEvaporationFromSoilSolverMain();
+		PenmanMonteithFAOSoilEvaporationSolver pmSoilevaporation = new PenmanMonteithFAOSoilEvaporationSolver();
 		pmSoilevaporation.parameters = parameters;
 		pmSoilevaporation.variables = variables;
 		pmSoilevaporation.input = input;

@@ -3,15 +3,15 @@ package org.geoframe.geoet.prospero;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Leaf;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.InputTimeSeries;
-import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.radiation.solver.RadiationSolverMain;
-import org.geoframe.geoet.stressfactor.solver.ProsperoStressFactorSolverMain;
-import org.geoframe.geoet.transpiration.solver.ProsperoLAISolverMain;
+import org.geoframe.geoet.core.data.Leaf;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.solvers.RadiationSolver;
+import org.geoframe.geoet.solvers.ProsperoStressFactorSolver;
+import org.geoframe.geoet.solvers.ProsperoSolverWithExplicitLAI;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -196,27 +196,27 @@ public class TestProsperoLAIGEOET_Cavone extends GeoetTestCase {
 		vapourPressureDeficitWriter.tTimestep = timeStepMinutes;
 		vapourPressureDeficitWriter.fileNovalue = "-9999";
 
-		RadiationSolverMain radiation = new RadiationSolverMain();
+		RadiationSolver radiation = new RadiationSolver();
 		radiation.parameters = parameters;
 		radiation.variables = variables;
 		radiation.input = input;
 
-		ProsperoStressFactorSolverMain prosperoStressFactor = new ProsperoStressFactorSolverMain();
+		ProsperoStressFactorSolver prosperoStressFactor = new ProsperoStressFactorSolver();
 		prosperoStressFactor.variables = variables;
 		prosperoStressFactor.input = input;
 
-		ProsperoLAISolverMain prospero = new ProsperoLAISolverMain();
+		ProsperoSolverWithExplicitLAI prospero = new ProsperoSolverWithExplicitLAI();
 		prospero.parameters = parameters;
 		prospero.variables = variables;
 		prospero.input = input;
 		prospero.leafparameters = leaf;
 
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 

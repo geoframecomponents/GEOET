@@ -3,10 +3,10 @@ package org.geoframe.geoet.untested;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.priestleytaylor.PriestleyTaylorActualETSolverMain;
-import org.geoframe.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.solvers.PriestleyTaylorSolverWithStressFactor;
+import org.geoframe.geoet.solvers.PriestleyTaylorPenmanMonteithFAOStressFactorSolver;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
@@ -56,10 +56,10 @@ public class TestActualPriestleyTaylorPointGEOET extends GeoetTestCase{
         writerEvapotranspirationPT.tTimestep = timeStepMinutes;
         writerEvapotranspirationPT.fileNovalue="-9999";
         
-        InputReaderMain Input 		= new InputReaderMain();
-        PriestleyTaylorActualETSolverMain PtEt = new PriestleyTaylorActualETSolverMain();
-        PTPMStressFactorSolverMain PTstressfactor = new PTPMStressFactorSolverMain();
-        OutputWriterMain Output 	= new OutputWriterMain();
+        InputReader Input 		= new InputReader();
+        PriestleyTaylorSolverWithStressFactor PtEt = new PriestleyTaylorSolverWithStressFactor();
+        PriestleyTaylorPenmanMonteithFAOStressFactorSolver PTstressfactor = new PriestleyTaylorPenmanMonteithFAOStressFactorSolver();
+        OutputWriter Output 	= new OutputWriter();
 		
         
         

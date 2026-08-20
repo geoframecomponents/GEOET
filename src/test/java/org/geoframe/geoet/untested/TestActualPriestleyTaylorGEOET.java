@@ -3,13 +3,13 @@ package org.geoframe.geoet.untested;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.data.Parameters;
-import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputReaderMain;
-import org.geoframe.geoet.inout.InputTimeSeries;
-import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.priestleytaylor.PriestleyTaylorActualETSolverMain;
-import org.geoframe.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
+import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.solvers.PriestleyTaylorSolverWithStressFactor;
+import org.geoframe.geoet.solvers.PriestleyTaylorPenmanMonteithFAOStressFactorSolver;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -80,20 +80,20 @@ public class TestActualPriestleyTaylorGEOET extends GeoetTestCase {
 		writerEvapotranspirationPT.tTimestep = timeStepMinutes;
 		writerEvapotranspirationPT.fileNovalue = "-9999";
 
-		PriestleyTaylorActualETSolverMain ptEt = new PriestleyTaylorActualETSolverMain();
+		PriestleyTaylorSolverWithStressFactor ptEt = new PriestleyTaylorSolverWithStressFactor();
 		ptEt.parameters = parameters;
 		ptEt.variables = variables;
 		ptEt.input = input;
-		PTPMStressFactorSolverMain ptStressfactor = new PTPMStressFactorSolverMain();
+		PriestleyTaylorPenmanMonteithFAOStressFactorSolver ptStressfactor = new PriestleyTaylorPenmanMonteithFAOStressFactorSolver();
 		ptStressfactor.variables = variables;
 		ptStressfactor.input = input;
 		
-		InputReaderMain inputReader = new InputReaderMain();
+		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriterMain outputWriter = new OutputWriterMain();
+		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 
