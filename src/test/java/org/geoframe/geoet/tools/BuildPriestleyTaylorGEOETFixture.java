@@ -13,7 +13,7 @@ public class BuildPriestleyTaylorGEOETFixture {
 
 	public static void main(String[] args) throws Exception {
 		String resIn = "src/test/resources/Input/dataET_point/1/";
-		String outPath = "src/test/resources/input/gpkg/PriestleyTaylorGEOET.gpkg";
+		String outPath = "src/test/resources/Input/gpkg/PriestleyTaylorGEOET.gpkg";
 
 		Map<String, Object> parameters = new LinkedHashMap<>();
 		parameters.put("startDate", "2013-12-15 00:00");

@@ -17,7 +17,7 @@ import org.joda.time.DateTime;
  * driving variable, see {@link org.geoframe.geoet.io.GeoetInputsHandler})
  * from the same OMS CSVs and scalar literals a test currently hardcodes. Used
  * to author the checked-in fixture files under
- * {@code src/test/resources/input/gpkg/}; not needed at test-run time (the
+ * {@code src/test/resources/Input/gpkg/}; not needed at test-run time (the
  * handler just reads the resulting gpkg).
  */
 public class GpkgFixtureBuilder {

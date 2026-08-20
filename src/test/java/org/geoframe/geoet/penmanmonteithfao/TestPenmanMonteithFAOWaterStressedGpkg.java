@@ -36,7 +36,7 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		ProblemQuantities variables = new ProblemQuantities();
 		InputTimeSeries input = new InputTimeSeries();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOWaterStressed.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PenmanMonteithFAOWaterStressed.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");

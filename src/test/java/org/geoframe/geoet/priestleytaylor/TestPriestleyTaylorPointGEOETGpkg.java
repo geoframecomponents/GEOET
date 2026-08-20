@@ -36,7 +36,7 @@ public class TestPriestleyTaylorPointGEOETGpkg extends GeoetTestCase {
 		ProblemQuantities variables = new ProblemQuantities();
 		InputTimeSeries input = new InputTimeSeries();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PriestleyTaylorPointGEOET.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PriestleyTaylorPointGEOET.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");

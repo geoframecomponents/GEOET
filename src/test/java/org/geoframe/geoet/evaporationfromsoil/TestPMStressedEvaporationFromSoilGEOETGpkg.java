@@ -40,7 +40,7 @@ public class TestPMStressedEvaporationFromSoilGEOETGpkg extends GeoetTestCase {
 		InputTimeSeries input = new InputTimeSeries();
 
 		GeoetInputsHandler inputs = new GeoetInputsHandler(
-				getRes("/input/gpkg/PMStressedEvaporationFromSoilGEOET.gpkg"));
+				getRes("/Input/gpkg/PMStressedEvaporationFromSoilGEOET.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");

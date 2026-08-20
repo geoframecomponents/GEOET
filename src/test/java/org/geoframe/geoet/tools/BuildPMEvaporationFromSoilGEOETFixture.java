@@ -16,7 +16,7 @@ public class BuildPMEvaporationFromSoilGEOETFixture {
 
 	public static void main(String[] args) throws Exception {
 		String resIn = "src/test/resources/Input/dataET_point/1/";
-		String outPath = "src/test/resources/input/gpkg/PMEvaporationFromSoilGEOET.gpkg";
+		String outPath = "src/test/resources/Input/gpkg/PMEvaporationFromSoilGEOET.gpkg";
 
 		Map<String, Object> parameters = new LinkedHashMap<>();
 		parameters.put("startDate", "2014-01-01 09:00");

@@ -34,7 +34,7 @@ public class TestPenmanMonteithFAOPotentialETGpkg extends GeoetTestCase {
 		ProblemQuantities variables = new ProblemQuantities();
 		InputTimeSeries input = new InputTimeSeries();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOPotentialET.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PenmanMonteithFAOPotentialET.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");
