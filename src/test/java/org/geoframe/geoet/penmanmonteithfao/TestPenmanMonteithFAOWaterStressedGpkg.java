@@ -1,7 +1,5 @@
 package org.geoframe.geoet.penmanmonteithfao;
 
-import java.util.HashMap;
-
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.data.InputTimeSeries;
 import org.geoframe.geoet.core.data.Parameters;
@@ -9,7 +7,6 @@ import org.geoframe.geoet.core.data.ProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputReader;
-import org.geoframe.geoet.io.OutputWriter;
 import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithFAOWaterStress;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
@@ -58,10 +55,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		inputReader.variables = variables;
 		inputReader.input = input;
 
-		OutputWriter outputWriter = new OutputWriter();
-		outputWriter.variables = variables;
-		outputWriter.input = input;
-
 		// no DEM/shapefile: elevation/latitude/longitude come straight from the gpkg
 		inputReader.elevation = inputs.getParameterDouble("elevation");
 		inputReader.latitude = inputs.getParameterDouble("latitude");
@@ -80,8 +73,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		inputReader.temporalStep = timeStepMinutes;
 		// PmFAO.defaultAtmosphericPressure = 101.3;
 		// PmFAO.doHourly = true;
-
-		outputWriter.doPrintOutputPM = true;
 
 		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries("airTemperature", startDate, endDate, 1000);
 				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries("windVelocity", startDate, endDate, 1000);
@@ -115,11 +106,10 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 
 				inputReader.process();
 				pmFAO.process();
-				outputWriter.process();
 
 				outputs.timestamp = tempIt.timestamp();
-				outputs.evapoTranspiration = outputWriter.outEvapoTranspirationPM.get(STATION_ID)[0];
-				outputs.fluxEvapoTranspiration = outputWriter.outLatentHeatPM.get(STATION_ID)[0];
+				outputs.evapoTranspiration = variables.evapoTranspirationPM;
+				outputs.fluxEvapoTranspiration = variables.fluxEvapoTranspirationPM;
 				outputs.write();
 			}
 		}
