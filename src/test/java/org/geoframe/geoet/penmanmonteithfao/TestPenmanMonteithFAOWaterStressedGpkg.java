@@ -3,26 +3,29 @@ package org.geoframe.geoet.penmanmonteithfao;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
+import org.geoframe.geoet.core.data.InputTimeSeries;
 import org.geoframe.geoet.core.data.Parameters;
 import org.geoframe.geoet.core.data.ProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputReader;
 import org.geoframe.geoet.io.OutputWriter;
+import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithFAOWaterStress;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
-import org.geoframe.geoet.core.data.InputTimeSeries;
-import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
 
-import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithFAOWaterStress;
 /**
  * Test FAO Hourly evapotranspiration, driven by a single input GeoPackage
  * ({@code PenmanMonteithFAOWaterStressed.gpkg} - scalar parameters +
  * driving timeseries in one file) instead of the individual CSVs/DEM/
  * shapefile {@link TestPenmanMonteithFAOWaterStressed} reads. Same solver
- * wiring and same golden-checked CSV outputs as the original; also writes a
- * {@code .gpkg} output as a bonus inspectable/chartable artifact (not
- * golden-checked - see {@link GeoetTestCase#assertGoldenDir()}).
+ * wiring as the original. The computed values go only into the output
+ * GeoPackage (via {@link GeoetOutputsHandler}); this test then reads them
+ * straight back out of that gpkg and compares them against the golden
+ * reference CSVs {@link TestPenmanMonteithFAOWaterStressed} already checks
+ * (see {@link GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the
+ * assertion actually exercises the gpkg's contents, not a parallel CSV
+ * written alongside it purely for comparison purposes.
  *
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
@@ -43,21 +46,7 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		String endDate = inputs.getString("endDate");
 		int timeStepMinutes = inputs.getInt("timeStepMinutes");
 
-		String pathToEvapotranspirationFAO = getOutRes("ETwaterStressedFAO.csv");
-		String pathToLatentHeatFAO = getOutRes("FluxETwaterStressedFAO.csv");
 		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOWaterStressed.gpkg");
-
-		OmsTimeSeriesIteratorWriter writerEvapotranspirationFAO = new OmsTimeSeriesIteratorWriter();
-		writerEvapotranspirationFAO.file = pathToEvapotranspirationFAO;
-		writerEvapotranspirationFAO.tStart = startDate;
-		writerEvapotranspirationFAO.tTimestep = timeStepMinutes;
-		writerEvapotranspirationFAO.fileNovalue = "-9999";
-
-		OmsTimeSeriesIteratorWriter writerLatentHeatFAO = new OmsTimeSeriesIteratorWriter();
-		writerLatentHeatFAO.file = pathToLatentHeatFAO;
-		writerLatentHeatFAO.tStart = startDate;
-		writerLatentHeatFAO.tTimestep = timeStepMinutes;
-		writerLatentHeatFAO.fileNovalue = "-9999";
 
 		PenmanMonteithFAOSolverWithFAOWaterStress pmFAO = new PenmanMonteithFAOSolverWithFAOWaterStress();
 		pmFAO.parameters = parameters;
@@ -106,10 +95,7 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 						1000);
 				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries("soilFlux", startDate, endDate, 1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
-			outputs.testName = "TestPenmanMonteithFAOWaterStressedGpkg";
-			outputs.startDate = startDate;
-			outputs.endDate = endDate;
-			outputs.timeStepMinutes = timeStepMinutes;
+			outputs.parameters = inputs.getParameters();
 
 			while (tempIt.next()) {
 				windIt.next();
@@ -131,12 +117,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 				pmFAO.process();
 				outputWriter.process();
 
-				writerLatentHeatFAO.inData = outputWriter.outLatentHeatPM;
-				writerLatentHeatFAO.writeNextLine();
-
-				writerEvapotranspirationFAO.inData = outputWriter.outEvapoTranspirationPM;
-				writerEvapotranspirationFAO.writeNextLine();
-
 				outputs.timestamp = tempIt.timestamp();
 				outputs.evapoTranspiration = outputWriter.outEvapoTranspirationPM.get(STATION_ID)[0];
 				outputs.fluxEvapoTranspiration = outputWriter.outLatentHeatPM.get(STATION_ID)[0];
@@ -144,10 +124,12 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 			}
 		}
 
-		writerLatentHeatFAO.close();
-		writerEvapotranspirationFAO.close();
-
-		assertGoldenDir();
+		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/ETwaterStressedFAO.csv",
+				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_EVAPO_TRANSPIRATION);
+		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/FluxETwaterStressedFAO.csv",
+				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_FLUX_EVAPO_TRANSPIRATION);
 	}
 
 	private static HashMap<Integer, double[]> one(double value) {

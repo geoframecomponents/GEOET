@@ -1,6 +1,11 @@
 package org.geoframe.geoet;
 
+import org.hortonmachine.dbs.compat.ADb;
+import org.hortonmachine.dbs.compat.EDb;
+import org.hortonmachine.dbs.utils.SqlName;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
+import org.hortonmachine.gears.io.timeseries.OmsTimeSeriesReader;
+import org.joda.time.DateTime;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,12 +14,15 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 
 /**
@@ -104,6 +112,49 @@ public abstract class GeoetTestCase {
 	private static List<String> readDataLines( Path file ) throws IOException {
 		return Files.readAllLines(file).stream().filter(line -> !line.startsWith("Created,"))
 				.collect(Collectors.toList());
+	}
+
+	/**
+	 * Reads {@code resultColumn} back out of {@code tableName} in the just-written
+	 * output GeoPackage at {@code outputGpkgPath}, ordered by {@code
+	 * timestampColumn}, and compares it against the golden OMS-format timeseries
+	 * CSV at {@code goldenResourcePath} (e.g. the CSV a pre-gpkg version of the
+	 * same test still golden-checks via {@link #assertGoldenDir()}) - value by
+	 * value, keyed on timestamp. This exercises the gpkg's actual contents,
+	 * rather than a CSV written alongside it purely for comparison purposes.
+	 */
+	protected void assertGpkgColumnMatchesGolden( String goldenResourcePath, String outputGpkgPath, String tableName,
+			String timestampColumn, String resultColumn ) throws Exception {
+		OmsTimeSeriesReader goldenReader = new OmsTimeSeriesReader();
+		goldenReader.file = getRes(goldenResourcePath);
+		goldenReader.read();
+		goldenReader.close();
+
+		Map<Long, Double> golden = new TreeMap<>();
+		for (Map.Entry<DateTime, double[]> e : goldenReader.outData.entrySet()) {
+			golden.put(e.getKey().getMillis(), e.getValue()[0]);
+		}
+
+		Map<Long, Double> actual = new TreeMap<>();
+		try (ADb db = EDb.GEOPACKAGE.getDb()) {
+			db.open(outputGpkgPath);
+			String sql = "SELECT " + timestampColumn + ", " + resultColumn + " FROM "
+					+ SqlName.m(tableName).fixedDoubleName + " ORDER BY " + timestampColumn;
+			db.execOnResultSet(sql, rs -> {
+				while (rs.next()) {
+					actual.put(rs.getLong(1), rs.getDouble(2));
+				}
+				return null;
+			});
+		}
+
+		assertEquals("Row count mismatch reading back " + resultColumn + " from " + tableName, golden.size(),
+				actual.size());
+		for (Map.Entry<Long, Double> e : golden.entrySet()) {
+			Double actualValue = actual.get(e.getKey());
+			assertNotNull("Missing timestamp " + e.getKey() + " in " + tableName + " for " + resultColumn, actualValue);
+			assertEquals("Value mismatch for " + resultColumn + " at " + e.getKey(), e.getValue(), actualValue, 1e-9);
+		}
 	}
 
 	protected String getTmpPath(String prefix, String ext) throws Exception {

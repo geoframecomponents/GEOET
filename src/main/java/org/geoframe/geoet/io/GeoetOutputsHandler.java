@@ -2,6 +2,7 @@ package org.geoframe.geoet.io;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.hortonmachine.dbs.compat.ADb;
 import org.hortonmachine.dbs.compat.EDb;
@@ -31,14 +32,22 @@ public class GeoetOutputsHandler implements AutoCloseable {
 
 	public static final String PREFIX = "geoframe_geoet";
 	public static final String TABLE_OUTPUT_RESULTS = PREFIX + "_output_results";
-	public static final String TABLE_OUTPUT_METADATA = PREFIX + "_output_metadata";
+	/**
+	 * Optional table, one row, written once: a snapshot of the input parameters
+	 * this run was configured with (e.g. crop coefficient, canopy height, station
+	 * elevation/lat/lon, start/end date, timestep - see {@code
+	 * GeoetInputsHandler.getParameters()}). Written so the output file is
+	 * self-contained even though the parameters themselves were originally read
+	 * from a separate input gpkg - without this, nothing connected to just the
+	 * output file could know what configuration produced it. Columns are
+	 * dynamic, one per parameter key actually set.
+	 */
+	public static final String TABLE_OUTPUT_PARAMETERS = PREFIX + "_output_parameters";
 
 	public static final String COL_ID = "id";
 	public static final String COL_TIMESTAMP = "timestamp";
-	public static final String COL_TEST_NAME = "test_name";
-	public static final String COL_START_DATE = "start_date";
-	public static final String COL_END_DATE = "end_date";
-	public static final String COL_TIME_STEP_MINUTES = "time_step_minutes";
+	public static final String COL_EVAPO_TRANSPIRATION = "evapo_transpiration";
+	public static final String COL_FLUX_EVAPO_TRANSPIRATION = "flux_evapo_transpiration";
 
 	// mandatory per-step output - the row key every run always has
 	public long timestamp;
@@ -63,11 +72,13 @@ public class GeoetOutputsHandler implements AutoCloseable {
 	public Double canopy;
 	public Double vpd;
 
-	// metadata, written once on first write() if set beforehand
-	public String testName;
-	public String startDate;
-	public String endDate;
-	public Integer timeStepMinutes;
+	/**
+	 * Input parameter snapshot, written once on first {@link #write()} if
+	 * non-null and non-empty. Values must be {@link String}, {@link Integer} or a
+	 * {@link Number} (stored as REAL) - the same convention {@code
+	 * GpkgFixtureBuilder} uses for the input {@code parameters} table.
+	 */
+	public Map<String, Object> parameters;
 
 	/**
 	 * When true, existing output tables are dropped and recreated on the first
@@ -203,33 +214,41 @@ public class GeoetOutputsHandler implements AutoCloseable {
 		withVpd = (vpd != null);
 
 		SqlName resultsTable = SqlName.m(TABLE_OUTPUT_RESULTS);
-		SqlName metadataTable = SqlName.m(TABLE_OUTPUT_METADATA);
+		SqlName parametersTable = SqlName.m(TABLE_OUTPUT_PARAMETERS);
 
 		if (dropAndRecreate) {
-			for (String t : List.of(TABLE_OUTPUT_RESULTS, TABLE_OUTPUT_METADATA)) {
+			for (String t : List.of(TABLE_OUTPUT_RESULTS, TABLE_OUTPUT_PARAMETERS)) {
 				db.executeInsertUpdateDeleteSql("DROP TABLE IF EXISTS \"" + t + "\"");
 			}
 		}
 
-		boolean withMetadata = (testName != null || startDate != null || endDate != null || timeStepMinutes != null);
-		if (withMetadata && !db.hasTable(metadataTable)) {
-			db.createTable(metadataTable, COL_ID + " INTEGER PRIMARY KEY", COL_TEST_NAME + " TEXT",
-					COL_START_DATE + " TEXT", COL_END_DATE + " TEXT", COL_TIME_STEP_MINUTES + " INTEGER");
+		boolean withParameters = (parameters != null && !parameters.isEmpty());
+		if (withParameters && !db.hasTable(parametersTable)) {
+			List<String> paramFieldDefs = new ArrayList<>();
+			paramFieldDefs.add(COL_ID + " INTEGER PRIMARY KEY");
+			for (Map.Entry<String, Object> e : parameters.entrySet()) {
+				String sqlType = (e.getValue() instanceof String) ? "TEXT"
+						: (e.getValue() instanceof Integer) ? "INTEGER" : "REAL";
+				paramFieldDefs.add(e.getKey() + " " + sqlType);
+			}
+			db.createTable(parametersTable, paramFieldDefs.toArray(new String[0]));
 
-			String sqlMetadata = String.format("""
-					INSERT INTO %s (%s, %s, %s, %s)
-					VALUES (?, ?, ?, ?)
-					""", TABLE_OUTPUT_METADATA, COL_TEST_NAME, COL_START_DATE, COL_END_DATE, COL_TIME_STEP_MINUTES);
+			String paramColsCsv = "id, " + String.join(", ", parameters.keySet());
+			String sqlParameters = "INSERT INTO " + TABLE_OUTPUT_PARAMETERS + " (" + paramColsCsv + ") VALUES ("
+					+ placeholders(parameters.size() + 1) + ")";
 
 			db.execOnConnection(conn -> {
-				try (IHMPreparedStatement ps = conn.prepareStatement(sqlMetadata)) {
-					ps.setString(1, testName);
-					ps.setString(2, startDate);
-					ps.setString(3, endDate);
-					if (timeStepMinutes != null) {
-						ps.setInt(4, timeStepMinutes);
-					} else {
-						ps.setObject(4, null);
+				try (IHMPreparedStatement ps = conn.prepareStatement(sqlParameters)) {
+					ps.setInt(1, 1);
+					int pos = 2;
+					for (Object v : parameters.values()) {
+						if (v instanceof String s) {
+							ps.setString(pos++, s);
+						} else if (v instanceof Integer i) {
+							ps.setInt(pos++, i);
+						} else {
+							ps.setDouble(pos++, ((Number) v).doubleValue());
+						}
 					}
 					ps.addBatch();
 					ps.executeBatch();
@@ -240,9 +259,9 @@ public class GeoetOutputsHandler implements AutoCloseable {
 
 		resultCols = new ArrayList<>(List.of(COL_TIMESTAMP));
 		if (withEvapoTranspiration)
-			resultCols.add("evapo_transpiration");
+			resultCols.add(COL_EVAPO_TRANSPIRATION);
 		if (withFluxEvapoTranspiration)
-			resultCols.add("flux_evapo_transpiration");
+			resultCols.add(COL_FLUX_EVAPO_TRANSPIRATION);
 		if (withEvaporation)
 			resultCols.add("evaporation");
 		if (withFluxEvaporation)

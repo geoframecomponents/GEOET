@@ -100,6 +100,16 @@ public class GeoetInputsHandler {
 	}
 
 	/**
+	 * The full set of parameters read from the {@code parameters} table, e.g. to
+	 * snapshot them into an output gpkg via {@link GeoetOutputsHandler#parameters}
+	 * so the output file is self-contained even though the parameters themselves
+	 * were originally read from a separate input gpkg.
+	 */
+	public Map<String, Object> getParameters() {
+		return new HashMap<>(parameters);
+	}
+
+	/**
 	 * Buffered cursor over one variable's {@code timeseries_<variableName>}
 	 * table, filtered to a date range. Advance the iterators for every variable
 	 * a test needs in lockstep - each is independent, so nothing requires them
