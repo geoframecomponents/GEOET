@@ -1,5 +1,6 @@
 package org.geoframe.geoet.transpiration.solver;
 
+import org.geoframe.geoet.data.ComputeQuantitiesProspero;
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.*;

@@ -18,6 +18,7 @@
  */
 
 package org.geoframe.geoet.radiation.methods;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.transpiration.methods.*;
 import org.joda.time.DateTime;
@@ -36,68 +37,68 @@ import oms3.annotations.License;
 @Bibliography("")
 @License("General Public License Version 3 (GPLv3)")
 
-
 public class ComputeRadiationQuantities {
 
 	private ProblemQuantities variables;
-	RadiationMethod radiationMethods 	= new RadiationMethod();
-	SolarGeometry solarGeometry 		= new SolarGeometry();
-	
-	
-	public void computeRadiationQuantities(DateTime date, double latitude, double longitude,double time, double leafAreaIndex, String typeOfCanopy, 
-			double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
-		
+	RadiationMethod radiationMethods = new RadiationMethod();
+	SolarGeometry solarGeometry = new SolarGeometry();
+
+	public void computeRadiationQuantities(DateTime date, double latitude, double longitude, double time,
+			double leafAreaIndex, String typeOfCanopy, double shortWaveRadiationDirect,
+			double shortWaveRadiationDiffuse, double netRadiation) {
+
 		variables = ProblemQuantities.getInstance();
-		
-		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude,longitude,time);
+
+		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude, longitude, time);
 
 		if (variables.solarElevationAngle < 0) {
-			variables.shortwaveCanopySun=0;
-			variables.shortwaveCanopyShade=0;}
-		
-		else{
-		// RADIATION SUN		
-			variables.shortwaveCanopySun = radiationMethods.computeAbsorbedRadiationSunlit(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+			variables.shortwaveCanopySun = 0;
+			variables.shortwaveCanopyShade = 0;
+		}
 
-		// RADIATION SHADOW
-			variables.shortwaveCanopyShade = radiationMethods.computeAbsorbedRadiationShadow(leafAreaIndex, variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
-			}
-				
+		else {
+			// RADIATION SUN
+			variables.shortwaveCanopySun = radiationMethods.computeAbsorbedRadiationSunlit(leafAreaIndex,
+					variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+
+			// RADIATION SHADOW
+			variables.shortwaveCanopyShade = radiationMethods.computeAbsorbedRadiationShadow(leafAreaIndex,
+					variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+		}
+
 		// Compute the area in sunlight and shadow
 
-		if (leafAreaIndex <=1){
-			
-			if (variables.solarElevationAngle <0){
-				variables.areaCanopySun = leafAreaIndex/2;
-				variables.areaCanopyShade = leafAreaIndex/2;
-				}
-		
-			else {
-				variables.areaCanopySun = radiationMethods.computeSunlitLeafAreaIndex(typeOfCanopy,leafAreaIndex, variables.solarElevationAngle);
-				variables.areaCanopyShade = leafAreaIndex - variables.areaCanopySun;
-				}
-		}
-				
-	
-		else {
-			variables.areaCanopySun=1;
-			variables.areaCanopyShade=1;
-			}
-				
-					
-		variables.netLong = shortWaveRadiationDirect-netRadiation;
-		variables.netLong=(variables.netLong<0)?0:variables.netLong;
-				
-		variables.incidentSolarRadiationSoil = shortWaveRadiationDirect + shortWaveRadiationDiffuse - variables.shortwaveCanopySun - variables.shortwaveCanopyShade-variables.netLong;
-		variables.incidentSolarRadiationSoil=(variables.incidentSolarRadiationSoil<0)?0:variables.incidentSolarRadiationSoil;
-				
-		if (variables.solarElevationAngle <0) {
-			variables.incidentSolarRadiationSoil=0;}
-		
-		
-						
-	}
-	
+		if (leafAreaIndex <= 1) {
 
-	
+			if (variables.solarElevationAngle < 0) {
+				variables.areaCanopySun = leafAreaIndex / 2;
+				variables.areaCanopyShade = leafAreaIndex / 2;
+			}
+
+			else {
+				variables.areaCanopySun = radiationMethods.computeSunlitLeafAreaIndex(typeOfCanopy, leafAreaIndex,
+						variables.solarElevationAngle);
+				variables.areaCanopyShade = leafAreaIndex - variables.areaCanopySun;
+			}
+		}
+
+		else {
+			variables.areaCanopySun = 1;
+			variables.areaCanopyShade = 1;
+		}
+
+		variables.netLong = shortWaveRadiationDirect - netRadiation;
+		variables.netLong = (variables.netLong < 0) ? 0 : variables.netLong;
+
+		variables.incidentSolarRadiationSoil = shortWaveRadiationDirect + shortWaveRadiationDiffuse
+				- variables.shortwaveCanopySun - variables.shortwaveCanopyShade - variables.netLong;
+		variables.incidentSolarRadiationSoil = (variables.incidentSolarRadiationSoil < 0) ? 0
+				: variables.incidentSolarRadiationSoil;
+
+		if (variables.solarElevationAngle < 0) {
+			variables.incidentSolarRadiationSoil = 0;
+		}
+
+	}
+
 }

@@ -25,6 +25,7 @@ import oms3.annotations.License;
 import oms3.annotations.Name;
 //import oms3.annotations.Out;
 import oms3.annotations.Status;
+
 //import oms3.annotations.Unit;
 //import oms3.annotations.Execute;
 //import oms3.annotations.override;
@@ -38,38 +39,37 @@ import oms3.annotations.Status;
 @License("General Public License Version 3 (GPLv3)")
 //abstract
 //public abstract class PriestleyTaylor implements Evapotranspiration{
-class PriestleyTaylorModel{
-	//private double alpha;
-	//private double airTemperature;
+class PriestleyTaylorModel {
+	// private double alpha;
+	// private double airTemperature;
 	private double atmosphericPressure;
-	//private double netRadiation;
-	//private double soilHeatFlux;
+	// private double netRadiation;
+	// private double soilHeatFlux;
 	private double denDelta;
 	private double expDelta;
 	private double numDelta;
 	private double delta;
 	private double psychrometricConstant;
 	private double result;
-	
+
 	private InputTimeSeries input;
 	private Parameters parameters;
-	
-	/*public void setNumber(double alpha, double airTemperature, double atmosphericPressure,
-			double netRadiation, double soilHeatFlux) {
-		//this.alpha = alpha;
-		//this.airTemperature=airTemperature;
-		//this.atmosphericPressure=atmosphericPressure/1000;
-		//this.netRadiation=netRadiation;
-		//this.soilHeatFlux=soilHeatFlux;
-		}*/
-	
+
+	/*
+	 * public void setNumber(double alpha, double airTemperature, double
+	 * atmosphericPressure, double netRadiation, double soilHeatFlux) { //this.alpha
+	 * = alpha; //this.airTemperature=airTemperature;
+	 * //this.atmosphericPressure=atmosphericPressure/1000;
+	 * //this.netRadiation=netRadiation; //this.soilHeatFlux=soilHeatFlux; }
+	 */
+
 	public double doET(double radiation) {
-		
+
 		input = InputTimeSeries.getInstance();
 		parameters = Parameters.getInstance();
-		
-		atmosphericPressure=input.atmosphericPressure/1000;
-		
+
+		atmosphericPressure = input.atmosphericPressure / 1000;
+
 		// Computation of Delta [kPa °C-1]
 		denDelta = Math.pow((input.airTemperatureC + 237.3), 2);
 		expDelta = (17.27 * input.airTemperatureC) / (input.airTemperatureC + 237.3);
@@ -77,11 +77,9 @@ class PriestleyTaylorModel{
 		delta = numDelta / denDelta;
 		// Computation of Psicrometric constant [kPa °C-1]
 		psychrometricConstant = 0.665 * 0.001 * atmosphericPressure;
-		// Computation of Evapotranspiration  [W m-2]
+		// Computation of Evapotranspiration [W m-2]
 		result = ((parameters.alpha) * delta * (radiation - input.soilFlux)) / (psychrometricConstant + delta);
-		return result;  // -----> [W m-2]
-		
-	}
-	}
-	
+		return result; // -----> [W m-2]
 
+	}
+}

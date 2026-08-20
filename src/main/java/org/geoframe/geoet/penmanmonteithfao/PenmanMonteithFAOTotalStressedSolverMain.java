@@ -19,7 +19,6 @@ package org.geoframe.geoet.penmanmonteithfao;
 
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.data.WindProfile;
 import org.geoframe.geoet.inout.InputTimeSeries;
 
 import oms3.annotations.Author;
@@ -53,7 +52,7 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@In
 	@Unit("W m-2")
 	public double defaultSoilFlux = 0.0;
-	
+
 	@Description("The coefficient for the soil heat flux during daylight")
 	@In
 	public double soilFluxParameterDay;
@@ -61,83 +60,87 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
-	
+
 	@In
-	public boolean  doProcess3;
-	
+	public boolean doProcess3;
+
 	@Out
-	public boolean  doProcess4;
-	
+	public boolean doProcess4;
+
 	int step;
-	
-	//@Description("Height of the canopy.")
-	//@Unit("[m]")
-	//@In
-	//public double canopyHeight;
-	
-    double nullValue = -9999.0;
-	
+
+	// @Description("Height of the canopy.")
+	// @Unit("[m]")
+	// @In
+	// public double canopyHeight;
+
+	double nullValue = -9999.0;
+
 	@Description("stress factor")
-	@In 
+	@In
 	@Unit("-")
 	public double stressFactor;
-	
+
 	@Description("The  evapotranspiration.")
 	@Unit("mm time-1")
 	@Out
 	public double evapoTranspirationPM;
 
-
-	WindProfile windAtZ = new WindProfile();
 	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
-	
+
 	private Parameters parameters;
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
-	
-	
-	
-    @Execute
-    public void process() throws Exception {
-    	
-    	// //System.out.printf("\n\nStart PenmanMonteithFAOTotalStressedSolverMain");
-    	
-    	parameters = Parameters.getInstance();
+
+	@Execute
+	public void process() throws Exception {
+
+		// //System.out.printf("\n\nStart PenmanMonteithFAOTotalStressedSolverMain");
+
+		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
-    	
+
 		input.airTemperatureC = input.airTemperature - 273.15;
-    	
- 
+
 		variables.hourOfDay = variables.date.getHourOfDay();
 		variables.isLigth = false;
-		
-		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {variables.isLigth = true;}
-			
-		if (variables.isLigth == true) {variables.soilFluxparameter = soilFluxParameterDay;}
-		else {variables.soilFluxparameter = soilFluxParameterNight;}
-			    
-		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
-	    	
-            
-		
-		variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
-		
-        variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
-    	
-    	variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation / input.time;
 
-	   	if (variables.evapoTranspirationPM < 0) {variables.evapoTranspirationPM = 0;}
-	    if (variables.fluxEvapoTranspirationPM < 0) {variables.fluxEvapoTranspirationPM = 0;}
-	    	
-	    evapoTranspirationPM = variables.evapoTranspirationPM;
-	    	
-	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
-	    //System.out.println("\nflux etp   "+variables.fluxEvapoTranspirationPM);
-	    
-	    // //System.out.printf("\nEnd PenmanMonteithFAOTotalStressedSolverMain"); 
-    
-    }
+		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {
+			variables.isLigth = true;
+		}
 
-  
+		if (variables.isLigth == true) {
+			variables.soilFluxparameter = soilFluxParameterDay;
+		} else {
+			variables.soilFluxparameter = soilFluxParameterNight;
+		}
+
+		if (input.soilFlux == defaultSoilFlux) {
+			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
+		}
+
+		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
+
+		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
+
+		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
+				/ input.time;
+
+		if (variables.evapoTranspirationPM < 0) {
+			variables.evapoTranspirationPM = 0;
+		}
+		if (variables.fluxEvapoTranspirationPM < 0) {
+			variables.fluxEvapoTranspirationPM = 0;
+		}
+
+		evapoTranspirationPM = variables.evapoTranspirationPM;
+
+		// System.out.println("\netp "+variables.evapoTranspirationPM);
+		// System.out.println("\nflux etp "+variables.fluxEvapoTranspirationPM);
+
+		// //System.out.printf("\nEnd PenmanMonteithFAOTotalStressedSolverMain");
+
+	}
+
 }

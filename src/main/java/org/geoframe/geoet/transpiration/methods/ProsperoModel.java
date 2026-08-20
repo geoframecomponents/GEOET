@@ -1,9 +1,9 @@
 package org.geoframe.geoet.transpiration.methods;
 
+import org.geoframe.geoet.data.Leaf;
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.radiation.methods.*;
-import org.geoframe.geoet.transpiration.data.Leaf;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;

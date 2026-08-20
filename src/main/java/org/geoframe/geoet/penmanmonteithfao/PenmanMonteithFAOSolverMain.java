@@ -19,7 +19,6 @@ package org.geoframe.geoet.penmanmonteithfao;
 
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.data.WindProfile;
 import org.geoframe.geoet.inout.InputTimeSeries;
 import org.geoframe.geoet.stressfactor.methods.FaoWaterStress;
 
@@ -50,36 +49,35 @@ import oms3.annotations.Unit;
 
 public class PenmanMonteithFAOSolverMain {
 
-    
 	@Description("The crop coefficient.")
 	@Unit("[-]")
 	@In
-	public double cropCoefficient=1;
-	
+	public double cropCoefficient = 1;
+
 	@Description("the water content at wilting point.")
 	@Unit("[m3 m-3]")
 	@In
-	public double waterWiltingPoint=0;
-	
+	public double waterWiltingPoint = 0;
+
 	@Description("the water content at field capacity.")
 	@Unit("[m3 m-3]")
 	@In
-	public double waterFieldCapacity=0;
-	
+	public double waterFieldCapacity = 0;
+
 	@Description("the rooting depth.")
 	@Unit("[m]")
 	@In
 	public double rootsDepth;
-	
+
 	@Description("average fraction of Total Available Soil Water (TAW) that can be depleted from the root zone before moisture stress (reduction in ET) occurs [0-1].")
 	@In
-	public double depletionFraction=0;
-	
+	public double depletionFraction = 0;
+
 	@Description("The soilflux default value in case of missing data.")
 	@In
 	@Unit("W m-2")
 	public double defaultSoilFlux = 0.0;
-	
+
 	@Description("The coefficient for the soil heat flux during daylight")
 	@In
 	public double soilFluxParameterDay;
@@ -87,78 +85,83 @@ public class PenmanMonteithFAOSolverMain {
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
-	
+
 	@In
-	public boolean  doProcess3;
-	
+	public boolean doProcess3;
+
 	@Out
-	public boolean  doProcess4;
-	
+	public boolean doProcess4;
+
 	int step;
 
-	//@Description("Height of the canopy.")
-	//@Unit("[m]")
-	//@In
-	//public double canopyHeight;
-	
-    double nullValue = -9999.0;
-    
-    
-    WindProfile windAtZ = new WindProfile();
-    PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
-    FaoWaterStress waterStress = new FaoWaterStress();
-    
-    
-    private Parameters parameters;
+	// @Description("Height of the canopy.")
+	// @Unit("[m]")
+	// @In
+	// public double canopyHeight;
+
+	double nullValue = -9999.0;
+
+	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
+	FaoWaterStress waterStress = new FaoWaterStress();
+
+	private Parameters parameters;
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
 
-    @Execute
-    public void process() throws Exception {
-    	
-    	// //System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
-    	
-    	parameters = Parameters.getInstance();
+	@Execute
+	public void process() throws Exception {
+
+		// //System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
+
+		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
-    	
+
 		input.airTemperatureC = input.airTemperature - 273.15;
- 
+
 		variables.hourOfDay = variables.date.getHourOfDay();
 		variables.isLigth = false;
-		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {variables.isLigth = true;}
-		
-		if (variables.isLigth == true) {variables.soilFluxparameter = soilFluxParameterDay;}
-		else {variables.soilFluxparameter = soilFluxParameterNight;}
-		    
-		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
-    	
-		
-	
-		
-        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
-    
-        if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
-            variables.stressWater =1;}
-        else 
-        	variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction);
-            
-            
+		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {
+			variables.isLigth = true;
+		}
+
+		if (variables.isLigth == true) {
+			variables.soilFluxparameter = soilFluxParameterDay;
+		} else {
+			variables.soilFluxparameter = soilFluxParameterNight;
+		}
+
+		if (input.soilFlux == defaultSoilFlux) {
+			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
+		}
+
+		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
+
+		if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
+			variables.stressWater = 1;
+		} else
+			variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity,
+					waterWiltingPoint, rootsDepth, depletionFraction);
+
 ////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
-        variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * variables.stressWater * cropCoefficient;// --> mm/time
-	    	
-	  	variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation / input.time;
+		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * variables.stressWater
+				* cropCoefficient;// --> mm/time
 
-            
-	    if (variables.evapoTranspirationPM < 0) {variables.evapoTranspirationPM = 0;}
-	    if (variables.fluxEvapoTranspirationPM < 0) {variables.fluxEvapoTranspirationPM = 0;}
-	    			
-	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
-	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
-            
-	    // //System.out.printf("\nEnd PenmanMonteithFAOSolverMain"); 
+		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
+				/ input.time;
 
-    }
+		if (variables.evapoTranspirationPM < 0) {
+			variables.evapoTranspirationPM = 0;
+		}
+		if (variables.fluxEvapoTranspirationPM < 0) {
+			variables.fluxEvapoTranspirationPM = 0;
+		}
 
-   
+		// System.out.println("\netp "+variables.evapoTranspirationPM);
+		// System.out.println("flux etp "+variables.fluxEvapoTranspirationPM);
+
+		// //System.out.printf("\nEnd PenmanMonteithFAOSolverMain");
+
+	}
+
 }

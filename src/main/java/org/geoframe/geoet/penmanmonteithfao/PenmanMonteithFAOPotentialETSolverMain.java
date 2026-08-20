@@ -41,12 +41,12 @@ import oms3.annotations.Unit;
 @License("General Public License Version 3 (GPLv3)")
 
 public class PenmanMonteithFAOPotentialETSolverMain {
-	
+
 	@Description("The soilflux default value in case of missing data.")
 	@In
 	@Unit("W m-2")
 	public double defaultSoilFlux = 0.0;
-	
+
 	@Description("The coefficient for the soil heat flux during daylight")
 	@In
 	public double soilFluxParameterDay;
@@ -54,61 +54,65 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
-	
+
 	@In
-	public boolean  doProcess3;
-	
+	public boolean doProcess3;
+
 	@Out
-	public boolean  doProcess4;
-	
-	//@Description("Height of the canopy.")
-	//@Unit("[m]")
-	//@In
-	//public double canopyHeight;
-	
-    //double nullValue = -9999.0;
-	
-	WindProfile windAtZ = new WindProfile();
+	public boolean doProcess4;
+
+	// @Description("Height of the canopy.")
+	// @Unit("[m]")
+	// @In
+	// public double canopyHeight;
+
+	// double nullValue = -9999.0;
+
 	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
 
-    private Parameters parameters;
+	private Parameters parameters;
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
-	
-    @Execute
-    public void process() throws Exception {
-    	
-    	// //System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
-    	
-    	parameters = Parameters.getInstance();
+
+	@Execute
+	public void process() throws Exception {
+
+		// //System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
+
+		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
-    	
+
 		input.airTemperatureC = input.airTemperature - 273.15;
-		
-		
+
 		variables.hourOfDay = variables.date.getHourOfDay();
 		variables.isLigth = false;
-		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {variables.isLigth = true;}
-		
-		if (variables.isLigth == true) {variables.soilFluxparameter = soilFluxParameterDay;}
-		else {variables.soilFluxparameter = soilFluxParameterNight;}
-		    
-		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = variables.soilFluxparameter * input.netRadiation;}
-    	
+		if (variables.hourOfDay > 6 && variables.hourOfDay < 18) {
+			variables.isLigth = true;
+		}
 
-        variables.windAtZ = windAtZ.computeWindProfile(input.windVelocity,variables.canopyHeight);
-        
-        variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation);// --> mm/time
-        
-        variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation / input.time;
-	   		
-	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
-	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
-        
-        // //System.out.printf("\nEnd PenmanMonteithFAOPotentialETSolverMain");
+		if (variables.isLigth == true) {
+			variables.soilFluxparameter = soilFluxParameterDay;
+		} else {
+			variables.soilFluxparameter = soilFluxParameterNight;
+		}
 
-    }
+		if (input.soilFlux == defaultSoilFlux) {
+			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
+		}
 
-  
+		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
+
+		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation);// --> mm/time
+
+		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
+				/ input.time;
+
+		// System.out.println("\netp "+variables.evapoTranspirationPM);
+		// System.out.println("flux etp "+variables.fluxEvapoTranspirationPM);
+
+		// //System.out.printf("\nEnd PenmanMonteithFAOPotentialETSolverMain");
+
+	}
+
 }

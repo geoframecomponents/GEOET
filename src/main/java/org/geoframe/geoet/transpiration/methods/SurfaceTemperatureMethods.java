@@ -2,9 +2,9 @@ package org.geoframe.geoet.transpiration.methods;
 
 import static java.lang.Math.pow;
 
+import org.geoframe.geoet.data.Leaf;
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.transpiration.data.Leaf;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;

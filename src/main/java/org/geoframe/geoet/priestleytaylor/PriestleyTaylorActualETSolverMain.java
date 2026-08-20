@@ -41,7 +41,7 @@ import oms3.annotations.Unit;
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
 
-public class PriestleyTaylorActualETSolverMain{
+public class PriestleyTaylorActualETSolverMain {
 
 	@Description("The alpha parameter.")
 	@In
@@ -61,92 +61,93 @@ public class PriestleyTaylorActualETSolverMain{
 	@Unit("W m-2")
 	public double defaultSoilFlux = 0.0;
 
-    double nullValue = -9999.0;
-    
-    @Description("stress factor")
-	@In 
+	double nullValue = -9999.0;
+
+	@Description("stress factor")
+	@In
 	@Unit("-")
 	public double stressFactor;
 
 	@Description("The evapotranspiration.")
 	@Unit("mm time-1")
 	@Out
-	public double evapoTranspirationPT ;
+	public double evapoTranspirationPT;
 
 	int step;
-	//public int time;
-	
-	//@Out 
-	//public boolean  doProcessOut = false;
-	
-	//@In
-	//public boolean  doProcess;
-	
+	// public int time;
+
+	// @Out
+	// public boolean doProcessOut = false;
+
+	// @In
+	// public boolean doProcess;
+
 	@In
-	public boolean  doProcess3;
-	
+	public boolean doProcess3;
+
 	@Out
-	public boolean  doProcess4;
+	public boolean doProcess4;
 
 	private Parameters parameters;
 	private ProblemQuantities variables;
 	private InputTimeSeries input;
-	
 
 	@Execute
 	public void process() throws Exception {
-		
+
 		// //System.out.printf("\n\nStart PriestleyTaylorActualETSolverMain");
-		
+
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
-		
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 		parameters.alpha = alpha;
-		
-		
+
 		int hourOfDay = variables.date.getHourOfDay();
 		boolean isLigth = false;
-		if (hourOfDay > 6 && hourOfDay < 18) {isLigth = true;}
-		
-		double soilFluxparameter;
-		if (isLigth == true) {soilFluxparameter = soilFluxParameterDay;}
-		
-		else {soilFluxparameter = soilFluxParameterNight;}
-	    
-		if (input.soilFlux == defaultSoilFlux) {input.soilFlux = soilFluxparameter * input.netRadiation;}
-	
-	    PriestleyTaylorModel PT = new PriestleyTaylorModel();
-	    //PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.soilFlux);
-	   
-	    
-	    variables.fluxEvapoTranspirationPT = (input.netRadiation<0)?0:PT.doET(input.netRadiation)* stressFactor ;
-	    variables.fluxEvapoTranspirationPT =(variables.fluxEvapoTranspirationPT<0)?0:variables.fluxEvapoTranspirationPT;
-	    
-		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT * (input.time/parameters.latentHeatEvaporation);
-	    variables.evapoTranspirationPT =(variables.evapoTranspirationPT<0)?0:variables.evapoTranspirationPT;
-		
-	   // System.out.println("\nflux of evapotranspiration  = "+variables.fluxEvapoTranspirationPT);
-	   // System.out.println("\nevapotranspiration  = "+variables.evapoTranspirationPT);
-	    
-	    evapoTranspirationPT = variables.evapoTranspirationPT;
-	    //outEvapotranspirationPt.put((Integer)  basinId, new double[]{petp * time / 86400});
-	    //outLatentHeatPt.put((Integer)  basinId, new double[]{petp * latentHeatEvaporation / 86400});
-	    
-	    ////System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
-	    
-	    // //System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");
-			//step++;
+		if (hourOfDay > 6 && hourOfDay < 18) {
+			isLigth = true;
 		}
+
+		double soilFluxparameter;
+		if (isLigth == true) {
+			soilFluxparameter = soilFluxParameterDay;
+		}
+
+		else {
+			soilFluxparameter = soilFluxParameterNight;
+		}
+
+		if (input.soilFlux == defaultSoilFlux) {
+			input.soilFlux = soilFluxparameter * input.netRadiation;
+		}
+
+		PriestleyTaylorModel PT = new PriestleyTaylorModel();
+		// PT.setNumber(alpha, input.airTemperatureC, input.atmosphericPressure,
+		// input.netRadiation, input.soilFlux);
+
+		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0 : PT.doET(input.netRadiation) * stressFactor;
+		variables.fluxEvapoTranspirationPT = (variables.fluxEvapoTranspirationPT < 0) ? 0
+				: variables.fluxEvapoTranspirationPT;
+
+		variables.evapoTranspirationPT = variables.fluxEvapoTranspirationPT
+				* (input.time / parameters.latentHeatEvaporation);
+		variables.evapoTranspirationPT = (variables.evapoTranspirationPT < 0) ? 0 : variables.evapoTranspirationPT;
+
+		// System.out.println("\nflux of evapotranspiration =
+		// "+variables.fluxEvapoTranspirationPT);
+		// System.out.println("\nevapotranspiration = "+variables.evapoTranspirationPT);
+
+		evapoTranspirationPT = variables.evapoTranspirationPT;
+		// outEvapotranspirationPt.put((Integer) basinId, new double[]{petp * time /
+		// 86400});
+		// outLatentHeatPt.put((Integer) basinId, new double[]{petp *
+		// latentHeatEvaporation / 86400});
+
+		//// System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
+
+		// //System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");
+		// step++;
+	}
 }
-
-
-
-
-
-
-
-
-

@@ -1,4 +1,4 @@
-package org.geoframe.geoet.transpiration.data;
+package org.geoframe.geoet.data;
 
 import static java.lang.Math.PI;
 import static java.lang.Math.pow;
@@ -10,24 +10,19 @@ import oms3.annotations.License;
 
 public class Leaf {
 	
-	private static Leaf uniqueInstance;
-
-	public static Leaf getInstance() {
-		if (uniqueInstance == null) {
-			uniqueInstance = new Leaf();
-		}
-		return uniqueInstance;
-	}
-	
 	public double leafLength = 0.25;
 	public int leafSide = 2;
 	public int leafStomaSide = 1;
 
-	public double area = PI*pow(leafLength/2,2);
+	public double area() {
+		return PI*pow(leafLength/2,2);
+	}
 	
 	public double poreRadius = 22 * pow(10,-6);
 	public double poreDensity = 35 * pow(10,6);
-	public double poreArea = pow(poreRadius,2)*PI;
+	public double poreArea() {
+		return pow(poreRadius,2)*PI;
+	}
 	public double poreDepth= 2.5 * pow(10,-5);
 	
 	public double shortWaveAbsorption = 0.8;	

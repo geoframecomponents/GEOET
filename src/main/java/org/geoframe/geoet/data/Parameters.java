@@ -1,7 +1,6 @@
 package org.geoframe.geoet.data;
 
 
-import static java.lang.Math.pow;
 import oms3.annotations.Author;
 import oms3.annotations.Description;
 import oms3.annotations.In;
@@ -13,28 +12,18 @@ import oms3.annotations.Unit;
 
 public class Parameters {
 	
-	private static Parameters uniqueInstance;
 
-	public static Parameters getInstance() {
-		if (uniqueInstance == null) {
-			uniqueInstance = new Parameters();
-		}
-		return uniqueInstance;
-	}
-	
-	
-	
 	public double airSpecificHeat = 1010; // J kg-1 K-1
 	public double airDensity = 1.2690;
-	public double boltzmannConstant = 1.38066*pow(10,-23);
+	public double boltzmannConstant = 1.38066e-23;
 	public double criticalReynoldsNumber = 3000; 	//fixed
 	public double gravityConstant = 9.80665;
-	public double latentHeatEvaporation = 2.45*pow(10,6); // J/kg
-	public double massAirMolecule = 29*1.66054*pow(10,-27);
+	public double latentHeatEvaporation = 2.45e6; // J/kg
+	public double massAirMolecule = 29*1.66054e-27;
 	public double molarGasConstant = 8.314472;
 	public double molarVolume = 0.023;
 	public double prandtlNumber = 0.71; 			// fixed
-	public double stefanBoltzmannConstant = 5.670373 * pow(10,-8); 
+	public double stefanBoltzmannConstant = 5.670373e-8; 
 	public double waterMolarMass = 0.018;
 	
 	
