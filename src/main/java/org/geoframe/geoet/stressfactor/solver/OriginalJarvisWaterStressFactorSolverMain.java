@@ -184,7 +184,7 @@ public class OriginalJarvisWaterStressFactorSolverMain {
 
 	@Execute
 	public void solve() {
-		System.out.printf("\n\nStart JarvisWaterStressFactorSolverMain");	
+		//System.out.printf("\n\nStart JarvisWaterStressFactorSolverMain");	
 		if(step==0){
 		
 			NUM_CONTROL_VOLUMES = z.length;
@@ -210,10 +210,10 @@ public class OriginalJarvisWaterStressFactorSolverMain {
 		
 		//System.out.println("theta = "+ Arrays.toString(theta));
 		//System.out.println("\n\nG  = "+ G);
-		System.out.printf("\nG = %.5f %n", GnT[0]);
-		System.out.printf("GE = %.5f %n", GnE[0]);
+		//System.out.printf("\nG = %.5f %n", GnT[0]);
+		//System.out.printf("GE = %.5f %n", GnE[0]);
 						
 		step++;
-		System.out.printf("End JarvisWaterStressFactorSolverMain");	
+		//System.out.printf("End JarvisWaterStressFactorSolverMain");	
 	}
 }

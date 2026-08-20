@@ -75,7 +75,7 @@ public class RootDensitySolverMain {
 
 	@Execute
 	public void solve() {
-		System.out.print("\n\nStart RootDensitySolverMain");
+		// System.out.print("\n\nStart RootDensitySolverMain");
 		
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
@@ -101,7 +101,7 @@ public class RootDensitySolverMain {
 		defRootDensity = variables.rootDensity;
 		
 		
-		System.out.print("\nEnd RootDensitySolverMain");
+		// System.out.print("\nEnd RootDensitySolverMain");
 
 		//System.out.println("defRootDensity  = "+Arrays.toString(defRootDensity));
 		//System.out.println("z = "+Arrays.toString(z));

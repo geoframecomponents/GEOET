@@ -78,7 +78,7 @@ public class PriestleyTaylorPotentialETSolverMain{
 
 	@Execute
 	public void process() throws Exception {
-		System.out.printf("\n\nStart PriestleyTaylorETSolverMain");
+		// //System.out.printf("\n\nStart PriestleyTaylorETSolverMain");
 		
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -116,7 +116,7 @@ public class PriestleyTaylorPotentialETSolverMain{
 	    //System.out.println("\nsoilFlux  = "+input.soilFlux);
 	    //System.out.println("\nsoilFluxparameter  = "+variables.soilFluxparameter);
 	    
-	    System.out.printf("\n\nEnd PriestleyTaylorETSolverMain");	
+	    // //System.out.printf("\n\nEnd PriestleyTaylorETSolverMain");
 	    
 		    
 		}

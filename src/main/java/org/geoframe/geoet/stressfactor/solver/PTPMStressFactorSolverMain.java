@@ -153,12 +153,12 @@ public class PTPMStressFactorSolverMain {
     
         //stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
         
-		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
-		//System.out.printf("\nGE = %.5f %n", GnE[0]);
+		////System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
+		////System.out.printf("\nGE = %.5f %n", GnE[0]);
 		
-       // System.out.printf("\n\nstressSun= %.5f %n", stressSun);
+       // //System.out.printf("\n\nstressSun= %.5f %n", stressSun);
         
-       // System.out.printf("\ntheta= %.5f %n", input.soilMoisture);
+       // //System.out.printf("\ntheta= %.5f %n", input.soilMoisture);
         
         
         

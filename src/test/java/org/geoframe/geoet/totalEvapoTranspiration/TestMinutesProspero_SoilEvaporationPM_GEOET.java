@@ -1,26 +1,26 @@
-package totalEvapoTranspiration;
-import java.net.URISyntaxException;
+package org.geoframe.geoet.totalEvapoTranspiration;
+
 import java.util.HashMap;
 
-import org.geoframe.geoet.inout.*;
-import org.geoframe.geoet.soilevaporation.solver.*;
-import org.geoframe.geoet.stressfactor.solver.*;
-import org.geoframe.geoet.totalEvapoTranspiration.*;
-import org.geoframe.geoet.transpiration.solver.*;
+import org.geoframe.geoet.GeoetTestCase;
+import org.geoframe.geoet.inout.InputReaderMain;
+import org.geoframe.geoet.inout.OutputWriterMain;
+import org.geoframe.geoet.soilevaporation.solver.PMEvaporationFromSoilCanopySolverMain;
+import org.geoframe.geoet.stressfactor.solver.ProsperoPMStressFactorSolverMain;
+import org.geoframe.geoet.transpiration.solver.ProsperoSolverMain;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
 import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
-//import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
-import org.junit.*;
+import org.junit.Test;
 
 /**
  * 
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
-public class TestMinutesProspero_SoilEvaporationPM_GEOET extends org.geoframe.geoet.testsupport.GeoetTestCase{
+public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 07:00";

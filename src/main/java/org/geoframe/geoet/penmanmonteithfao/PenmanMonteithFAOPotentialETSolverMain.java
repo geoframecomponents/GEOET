@@ -78,7 +78,7 @@ public class PenmanMonteithFAOPotentialETSolverMain {
     @Execute
     public void process() throws Exception {
     	
-    	System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
+    	// //System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
     	
     	parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -106,7 +106,7 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
 	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
         
-        System.out.printf("\nEnd PenmanMonteithFAOPotentialETSolverMain"); 
+        // //System.out.printf("\nEnd PenmanMonteithFAOPotentialETSolverMain");
 
     }
 

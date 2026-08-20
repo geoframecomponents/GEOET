@@ -76,7 +76,7 @@ public class ProsperoLAISolverMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart ProsperoSolverMain");
+		// System.out.print("\n\nStart ProsperoSolverMain");
 
 		//leafparameters = Leaf.getInstance();
 		parameters = Parameters.getInstance();
@@ -103,12 +103,12 @@ public class ProsperoLAISolverMain {
 		variables.fluxTranspiration = plantstranspiration.computeTranspiration(stressSun,  stressShade,  input.longWaveRadiation,  input.airTemperature,  input.time,  nullValue);
 		variables.transpiration = variables.fluxTranspiration * (input.time / parameters.latentHeatEvaporation);
 		transpiration=variables.transpiration;	
-		System.out.println("\nflux transpiration is  = "+ variables.fluxTranspiration);
+		// System.out.println("\nflux transpiration is  = "+ variables.fluxTranspiration);
 
 			
 		if (Double.isNaN(variables.transpiration)) {variables.transpiration = 0;}  
 		
-		System.out.print("\nEnd ProsperoSolverMain");
+		// System.out.print("\nEnd ProsperoSolverMain");
 	}
 	
 }

@@ -1,19 +1,13 @@
-package priestleytaylor;
+package org.geoframe.geoet.priestleytaylor;
 
-import java.net.URISyntaxException;
 import java.util.HashMap;
 
+import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.inout.InputReaderMain;
 import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.priestleytaylor.*;
-import org.geoframe.geoet.stressfactor.solver.*;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
-import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
+import org.geoframe.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
-//import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
 import org.junit.Test;
 
 /**
@@ -21,7 +15,7 @@ import org.junit.Test;
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
-public class TestActualPriestleyTaylorPointGEOET extends org.geoframe.geoet.testsupport.GeoetTestCase{
+public class TestActualPriestleyTaylorPointGEOET extends GeoetTestCase{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";

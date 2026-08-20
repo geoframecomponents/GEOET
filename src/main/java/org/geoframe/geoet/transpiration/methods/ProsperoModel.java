@@ -94,7 +94,7 @@ public class ProsperoModel {
 		
 		
 		if (airTemperature == nullValue) {
-			System.out.printf("\nAir temperature is null");
+			//System.out.printf("\nAir temperature is null");
 			variables.fluxTranspiration=nullValue;}
 		
 		

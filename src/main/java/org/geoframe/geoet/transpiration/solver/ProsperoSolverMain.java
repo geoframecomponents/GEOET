@@ -84,7 +84,7 @@ public class ProsperoSolverMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart ProsperoSolverMain");
+		// System.out.print("\n\nStart ProsperoSolverMain");
 
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -110,15 +110,15 @@ public class ProsperoSolverMain {
 		variables.transpiration = variables.fluxTranspiration * (input.time / parameters.latentHeatEvaporation);
 		transpiration=variables.transpiration;	
 		//System.out.println("\nflux transpiration is  = "+ variables.fluxTranspiration);
-		System.out.printf("\nflux transpiration = %.5f %n", variables.fluxTranspiration);
+		//System.out.printf("\nflux transpiration = %.5f %n", variables.fluxTranspiration);
 		
 		if (input.airTemperature == nullValue) {
-			System.out.printf("\nAir temperature is null");
+			//System.out.printf("\nAir temperature is null");
 			variables.transpiration = nullValue;}
 			
 		if (Double.isNaN(variables.transpiration)) {variables.transpiration = 0;}  
 		
-		System.out.print("\nEnd ProsperoSolverMain");
+		// System.out.print("\nEnd ProsperoSolverMain");
 	}
 	
 }

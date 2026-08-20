@@ -96,7 +96,7 @@ public class PriestleyTaylorActualETSolverMain{
 	@Execute
 	public void process() throws Exception {
 		
-		System.out.printf("\n\nStart PriestleyTaylorActualETSolverMain");
+		// //System.out.printf("\n\nStart PriestleyTaylorActualETSolverMain");
 		
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -135,9 +135,9 @@ public class PriestleyTaylorActualETSolverMain{
 	    //outEvapotranspirationPt.put((Integer)  basinId, new double[]{petp * time / 86400});
 	    //outLatentHeatPt.put((Integer)  basinId, new double[]{petp * latentHeatEvaporation / 86400});
 	    
-	    //System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
+	    ////System.out.printf("\nstressFactorPT= %.5f %n", stressFactor);
 	    
-	    System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");	
+	    // //System.out.printf("\n\nEnd PriestleyTaylorActualETSolverMain");
 			//step++;
 		}
 }

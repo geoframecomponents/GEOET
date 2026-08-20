@@ -158,8 +158,8 @@ public class ProsperoStressFactorSolverMain {
     
         stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
         
-		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
-		//System.out.printf("\nGE = %.5f %n", GnE[0]);
+		////System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
+		////System.out.printf("\nGE = %.5f %n", GnE[0]);
         //System.out.println("stressSun is  = "+ stressSun);
         //System.out.println("stressShade is  = "+ stressShade);
 						

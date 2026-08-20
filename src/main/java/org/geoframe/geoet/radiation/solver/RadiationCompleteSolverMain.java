@@ -48,7 +48,7 @@ public class RadiationCompleteSolverMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart RadiationCompleteSolverMain");
+		// System.out.print("\n\nStart RadiationCompleteSolverMain");
 
 		variables = ProblemQuantities.getInstance();
 		input = InputTimeSeries.getInstance();
@@ -57,7 +57,7 @@ public class RadiationCompleteSolverMain {
 		computeRadiationQuantities.computeRadiationQuantities(variables.date, input.latitude, input.longitude, input.time, input.leafAreaIndex, typeOfCanopy, input.shortWaveRadiationDirect, input.shortWaveRadiationDiffuse);
 		
 		
-		System.out.print("\nEnd RadiationCompleteSolverMain");
+		// System.out.print("\nEnd RadiationCompleteSolverMain");
 	}
 	
 }

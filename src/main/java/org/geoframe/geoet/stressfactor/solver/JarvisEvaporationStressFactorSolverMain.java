@@ -181,7 +181,7 @@ public class JarvisEvaporationStressFactorSolverMain {
 
 	@Execute
 	public void solve() {
-		System.out.printf("\n\nStart JarvisStressFactorSolverMain");	
+		//System.out.printf("\n\nStart JarvisStressFactorSolverMain");	
 		if(step==0){
 		
 			NUM_CONTROL_VOLUMES = z.length;
@@ -213,14 +213,14 @@ public class JarvisEvaporationStressFactorSolverMain {
 		if (useWaterStress == true) {
     		variables.evaporationStressWater = GnE[0];
     		
-    		System.out.printf("GE = %.5f %n", GnE[0]);
+    		//System.out.printf("GE = %.5f %n", GnE[0]);
  
         	}
         
         evaporationStressWater = variables.evaporationStressWater;
         
-		//System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
-		//System.out.printf("\nGE = %.5f %n", GnE[0]);
+		////System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
+		////System.out.printf("\nGE = %.5f %n", GnE[0]);
         /*System.out.println("CELJstressSun is  = "+ stressSun);
         System.out.println("CELJstressShade is  = "+ stressShade);
         System.out.println("CELJsstressRadiationSun is  = "+ variables.stressRadiationSun);
@@ -245,6 +245,6 @@ public class JarvisEvaporationStressFactorSolverMain {
         outputToBuffer.add(new double[] {0});
         
 		step++;
-		System.out.printf("End JarvisStressFactorSolverMain");	
+		//System.out.printf("End JarvisStressFactorSolverMain");	
 	}
 }

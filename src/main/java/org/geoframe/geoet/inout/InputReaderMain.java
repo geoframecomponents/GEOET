@@ -271,7 +271,7 @@ public class InputReaderMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\nStart InputReaderMain");
+		// System.out.print("\nStart InputReaderMain");
 		
 		leafparameters = Leaf.getInstance();
 		parameters = Parameters.getInstance();
@@ -326,7 +326,7 @@ public class InputReaderMain {
 			
 				
 	///////////////////////////////////////////// INPUT READER /////////////////////////////////////////////
-			//System.out.printf("\ndata   " + variables.date);
+			////System.out.printf("\ndata   " + variables.date);
 			
 			input.airTemperature = inAirTemperature.get(ID)[0]+273.15;
 			if (input.airTemperature == (nullValue+273.15)) 
@@ -414,7 +414,7 @@ public class InputReaderMain {
 		
 		step++;
 		//System.out.println("\nairTinputReader  = "+input.airTemperature+ " ID ="+ID);
-		System.out.print("\n\nEnd InputReaderMain");
+		// System.out.print("\n\nEnd InputReaderMain");
 	}
 
 	private Point[] getPoint(Coordinate coordinate, CoordinateReferenceSystem sourceCRS, CoordinateReferenceSystem targetCRS)

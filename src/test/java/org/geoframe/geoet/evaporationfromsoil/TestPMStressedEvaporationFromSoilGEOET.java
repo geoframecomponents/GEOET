@@ -1,5 +1,6 @@
-package evaporationfromsoil;
-import java.net.URISyntaxException;
+package org.geoframe.geoet.evaporationfromsoil;
+
+import org.geoframe.geoet.GeoetTestCase;
 import java.util.HashMap;
 
 import org.geoframe.geoet.inout.*;
@@ -16,7 +17,7 @@ import org.junit.*;
 /**
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
-public class TestPMStressedEvaporationFromSoilGEOET extends org.geoframe.geoet.testsupport.GeoetTestCase{
+public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";

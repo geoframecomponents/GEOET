@@ -1,12 +1,10 @@
-package penmanmonteithfao;
-
-import java.net.URISyntaxException;
+package org.geoframe.geoet.penmanmonteithfao;
 
 import java.util.HashMap;
 
+import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.inout.InputReaderMain;
 import org.geoframe.geoet.inout.OutputWriterMain;
-import org.geoframe.geoet.penmanmonteithfao.*;
 import org.geoframe.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -14,15 +12,14 @@ import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
 import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
-//import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
-import org.junit.*;
+import org.junit.Test;
 /**
  * Test FAO Hourly evapotranspiration.
  * 
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
-public class TestPenmanMonteithFAOTotalStressed extends org.geoframe.geoet.testsupport.GeoetTestCase{
+public class TestPenmanMonteithFAOTotalStressed extends GeoetTestCase{
 	
 	@Test
     public void Test() throws Exception {

@@ -1,4 +1,5 @@
-package org.geoframe.geoet.testsupport;
+package org.geoframe.geoet;
+
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import java.io.File;
 import java.io.IOException;

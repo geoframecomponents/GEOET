@@ -116,7 +116,7 @@ public class PenmanMonteithFAOSolverMain {
     @Execute
     public void process() throws Exception {
     	
-    	System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
+    	// //System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
     	
     	parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -156,7 +156,7 @@ public class PenmanMonteithFAOSolverMain {
 	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
 	    //System.out.println("flux etp   "+variables.fluxEvapoTranspirationPM);
             
-	    System.out.printf("\nEnd PenmanMonteithFAOSolverMain"); 
+	    // //System.out.printf("\nEnd PenmanMonteithFAOSolverMain"); 
 
     }
 

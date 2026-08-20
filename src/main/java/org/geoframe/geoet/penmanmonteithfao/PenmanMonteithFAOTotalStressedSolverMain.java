@@ -100,7 +100,7 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
     @Execute
     public void process() throws Exception {
     	
-    	System.out.printf("\n\nStart PenmanMonteithFAOTotalStressedSolverMain");
+    	// //System.out.printf("\n\nStart PenmanMonteithFAOTotalStressedSolverMain");
     	
     	parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -135,7 +135,7 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	    //System.out.println("\netp   "+variables.evapoTranspirationPM);
 	    //System.out.println("\nflux etp   "+variables.fluxEvapoTranspirationPM);
 	    
-	    System.out.printf("\nEnd PenmanMonteithFAOTotalStressedSolverMain"); 
+	    // //System.out.printf("\nEnd PenmanMonteithFAOTotalStressedSolverMain"); 
     
     }
 

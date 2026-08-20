@@ -80,7 +80,7 @@ public class RadiationSolverMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart RadiationSolverMain");
+		// System.out.print("\n\nStart RadiationSolverMain");
 
 		//leafparameters = Leaf.getInstance();
 		//parameters = Parameters.getInstance();
@@ -112,7 +112,7 @@ public class RadiationSolverMain {
 			
 		if (Double.isNaN(variables.transpiration)) {variables.transpiration = 0;}  
 */		
-		System.out.print("\nEnd RadiationSolverMain");
+		// System.out.print("\nEnd RadiationSolverMain");
 	}
 	
 }

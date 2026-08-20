@@ -80,7 +80,7 @@ public class TotalEvapoTranspirationSolverMain {
 		
 		
 		if (input.airTemperature == nullValue) {
-			System.out.printf("\nAir temperature is null");
+			//System.out.printf("\nAir temperature is null");
 			evapoTranspiration = nullValue;}
 	  
 	 

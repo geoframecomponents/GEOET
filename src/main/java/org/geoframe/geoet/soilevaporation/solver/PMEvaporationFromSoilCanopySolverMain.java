@@ -78,7 +78,7 @@ public class PMEvaporationFromSoilCanopySolverMain {
 	
 	@Execute
 	public void process() throws Exception {
-		System.out.print("\n\nStart PMEvaporationFromSoilSolverMain");
+		// System.out.print("\n\nStart PMEvaporationFromSoilSolverMain");
 
 		parameters = Parameters.getInstance();
 		variables = ProblemQuantities.getInstance();
@@ -103,15 +103,15 @@ public class PMEvaporationFromSoilCanopySolverMain {
 		evaporation = variables.evaporation;
 		
 		//System.out.println("\nflux evaporation is  = "+ variables.fluxEvaporation);
-		System.out.printf("\nflux evaporation = %.5f %n", variables.fluxEvaporation);
+		//System.out.printf("\nflux evaporation = %.5f %n", variables.fluxEvaporation);
 		
 		if (input.airTemperature == nullValue) {
-			System.out.printf("\nAir temperature is null");
+			//System.out.printf("\nAir temperature is null");
 			variables.evapoTranspiration = nullValue;}
 			
 		if (Double.isNaN(variables.evaporation)) {variables.evaporation = 0;}  
 		
-		System.out.print("\nEnd PMEvaporationFromSoilSolverMain");
+		// System.out.print("\nEnd PMEvaporationFromSoilSolverMain");
 	}
 	
 }
