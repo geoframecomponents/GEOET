@@ -76,8 +76,7 @@
 				<version>3.5.3</version>
 				<configuration>
 					<excludes>
-						<exclude>**/solvers/toreview/**</exclude>
-						<exclude>**/solvers/untested/**</exclude>
+						<exclude>**/untested/**</exclude>
 					</excludes>
 				</configuration>
 			</plugin>

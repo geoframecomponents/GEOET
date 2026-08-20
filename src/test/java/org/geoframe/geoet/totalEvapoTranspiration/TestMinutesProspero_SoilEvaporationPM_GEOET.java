@@ -31,7 +31,7 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 	public void Test() throws Exception {
 		String startDate = "2013-12-15 07:00";
 		String endDate = "2013-12-15 12:00";
-		int timeStepMinutes = 15;
+		int timeStepMinutes = 60; // this needs to be hourly, since the inputs for the test are hourly, otherwise the test will fail.
 		String fId = "ID";
 
 		Parameters parameters = new Parameters();
