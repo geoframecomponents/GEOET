@@ -9,13 +9,7 @@ import java.util.Map;
  * same {@code dataET_point/1/} DEM/shapefile pair) and scalar literals
  * {@code TestPenmanMonteithFAOTotalStressed} currently hardcodes - including
  * the {@code PriestleyTaylorPenmanMonteithFAOStressFactorSolver} parameters
- * that feed the stress factor into the FAO solver. Not a JUnit test (no
- * {@code @Test} method) - run it directly:
- *
- * <pre>
- * java -cp target/test-classes:target/classes:$(cat /tmp/cp.txt) \
- *     org.geoframe.geoet.tools.BuildPenmanMonteithFAOTotalStressedFixture
- * </pre>
+ * that feed the stress factor into the FAO solver. 
  */
 public class BuildPenmanMonteithFAOTotalStressedFixture {
 

@@ -7,13 +7,7 @@ import java.util.Map;
  * One-off generator for the {@code PenmanMonteithFAOPotentialET.gpkg}
  * fixture, baking in the same CSVs, elevation/latitude/longitude (from the
  * same {@code dataET_point/1/} DEM/shapefile pair) and scalar literals
- * {@code TestPenmanMonteithFAOPotentialET} currently hardcodes. Not a JUnit
- * test (no {@code @Test} method) - run it directly:
- *
- * <pre>
- * java -cp target/test-classes:target/classes:$(cat /tmp/cp.txt) \
- *     org.geoframe.geoet.tools.BuildPenmanMonteithFAOPotentialETFixture
- * </pre>
+ * {@code TestPenmanMonteithFAOPotentialET} currently hardcodes. 
  */
 public class BuildPenmanMonteithFAOPotentialETFixture {
 
