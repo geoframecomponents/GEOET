@@ -27,7 +27,7 @@ public class TestProsperoGEOET_Cavone extends GeoetTestCase {
 	@Test
 	public void Test() throws Exception {
 		String startDate = "2013-12-15 11:00";
-		String endDate = "2014-12-15 12:00";
+		String endDate = "2013-12-16 11:00";
 		int timeStepMinutes = 60;
 		String fId = "ID";
 		String lab1 = "_potential10";
