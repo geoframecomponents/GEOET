@@ -95,7 +95,8 @@ public abstract class GeoetTestCase {
 
 	private static Set<String> listFileNames( Path dir ) throws IOException {
 		try (Stream<Path> stream = Files.list(dir)) {
-			return stream.map(p -> p.getFileName().toString()).collect(Collectors.toCollection(TreeSet::new));
+			return stream.map(p -> p.getFileName().toString()).filter(name -> !name.endsWith(".gpkg"))
+					.collect(Collectors.toCollection(TreeSet::new));
 		}
 	}
 

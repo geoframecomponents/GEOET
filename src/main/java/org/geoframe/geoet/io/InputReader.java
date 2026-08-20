@@ -22,7 +22,6 @@ import org.geotools.feature.FeatureIterator;
 import org.geotools.referencing.crs.DefaultGeographicCRS;
 import org.hortonmachine.gears.utils.crs.CrsUtilities;
 import org.hortonmachine.gears.utils.geometry.GeometryUtilities;
-import org.hortonmachine.hmachine.i18n.HortonMessageHandler;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
@@ -250,8 +249,6 @@ public class InputReader {
 	@Out
 	public boolean doProcess1;
 
-	private PressureMethods pressure = new PressureMethods();
-
 	public Leaf leafparameters;
 	public Parameters parameters;
 	public ProblemQuantities variables;
@@ -411,7 +408,7 @@ public class InputReader {
 				input.atmosphericPressure = inAtmosphericPressure.get(ID)[0];
 			}
 			if (input.atmosphericPressure == nullValue) {
-				input.atmosphericPressure = pressure.computePressure(parameters.defaultAtmosphericPressure,
+				input.atmosphericPressure = PressureMethods.computePressure(parameters.defaultAtmosphericPressure,
 						parameters.massAirMolecule, parameters.gravityConstant, input.elevation,
 						parameters.boltzmannConstant, input.airTemperature);
 			}
