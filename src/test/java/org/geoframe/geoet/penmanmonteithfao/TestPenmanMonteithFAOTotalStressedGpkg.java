@@ -118,13 +118,13 @@ public class TestPenmanMonteithFAOTotalStressedGpkg extends GeoetTestCase {
 				soilMoistureIt.next();
 				soilFluxIt.next();
 
-				inputReader.inAirTemperature = one(tempIt.value());
-				inputReader.inWindVelocity = one(windIt.value());
-				inputReader.inRelativeHumidity = one(humIt.value());
-				inputReader.inNetRadiation = one(netradIt.value());
-				inputReader.inAtmosphericPressure = one(pressureIt.value());
-				inputReader.inSoilMoisture = one(soilMoistureIt.value());
-				inputReader.inSoilFlux = one(soilFluxIt.value());
+				inputReader.inAirTemperature = one(STATION_ID, tempIt.value());
+				inputReader.inWindVelocity = one(STATION_ID, windIt.value());
+				inputReader.inRelativeHumidity = one(STATION_ID, humIt.value());
+				inputReader.inNetRadiation = one(STATION_ID, netradIt.value());
+				inputReader.inAtmosphericPressure = one(STATION_ID, pressureIt.value());
+				inputReader.inSoilMoisture = one(STATION_ID, soilMoistureIt.value());
+				inputReader.inSoilFlux = one(STATION_ID, soilFluxIt.value());
 
 				inputReader.process();
 				pmStressfactor.solve();
@@ -147,10 +147,6 @@ public class TestPenmanMonteithFAOTotalStressedGpkg extends GeoetTestCase {
 				GeoetOutputsHandler.COL_FLUX_EVAPO_TRANSPIRATION);
 	}
 
-	private static HashMap<Integer, double[]> one(double value) {
-		HashMap<Integer, double[]> m = new HashMap<>();
-		m.put(STATION_ID, new double[] { value });
-		return m;
-	}
+
 
 }

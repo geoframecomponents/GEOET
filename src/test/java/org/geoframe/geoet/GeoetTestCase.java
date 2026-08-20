@@ -13,6 +13,7 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -175,5 +176,11 @@ public abstract class GeoetTestCase {
 		reader.fileNovalue = "-9999.0";
 		reader.initProcess();
 		return reader;
+	}
+
+	protected HashMap<Integer, double[]> one(int stationId, double value) {
+		HashMap<Integer, double[]> m = new HashMap<>();
+		m.put(stationId, new double[] { value });
+		return m;
 	}
 }
