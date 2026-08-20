@@ -75,19 +75,19 @@ public class GeoetInputsHandler {
 	}
 
 	/** Returns a parameter as a double, throwing if absent. */
-	public double getDouble(String name) {
+	public double getParameterDouble(String name) {
 		Object v = requireParam(name);
 		return ((Number) v).doubleValue();
 	}
 
 	/** Returns a parameter as an int, throwing if absent. */
-	public int getInt(String name) {
+	public int getParameterInt(String name) {
 		Object v = requireParam(name);
 		return ((Number) v).intValue();
 	}
 
 	/** Returns a parameter as a String, throwing if absent. */
-	public String getString(String name) {
+	public String getParameterString(String name) {
 		Object v = requireParam(name);
 		return String.valueOf(v);
 	}

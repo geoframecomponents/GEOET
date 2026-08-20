@@ -10,26 +10,24 @@ import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputReader;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithFAOWaterStress;
+import org.geoframe.geoet.solvers.PenmanMonteithFAOSolver;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test FAO Hourly evapotranspiration, driven by a single input GeoPackage
- * ({@code PenmanMonteithFAOWaterStressed.gpkg} - scalar parameters +
- * driving timeseries in one file) instead of the individual CSVs/DEM/
- * shapefile {@link TestPenmanMonteithFAOWaterStressed} reads. Same solver
- * wiring as the original. The computed values go only into the output
- * GeoPackage (via {@link GeoetOutputsHandler}); this test then reads them
- * straight back out of that gpkg and compares them against the golden
- * reference CSVs {@link TestPenmanMonteithFAOWaterStressed} already checks
- * (see {@link GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the
- * assertion actually exercises the gpkg's contents, not a parallel CSV
- * written alongside it purely for comparison purposes.
- *
- * @author D'Amato Concetta (concetta.damato@unitn.it)
+ * Test FAO potential evapotranspiration, driven by a single input GeoPackage
+ * ({@code PenmanMonteithFAOPotentialET.gpkg} - scalar parameters + driving
+ * timeseries in one file) instead of the individual CSVs/DEM/shapefile
+ * {@link TestPenmanMonteithFAOPotentialET} reads. Same solver wiring as the
+ * original. The computed values go only into the output GeoPackage (via
+ * {@link GeoetOutputsHandler}); this test then reads them straight back out
+ * of that gpkg and compares them against the golden reference CSVs {@link
+ * TestPenmanMonteithFAOPotentialET} already checks (see {@link
+ * GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the assertion
+ * actually exercises the gpkg's contents, not a parallel CSV written
+ * alongside it purely for comparison purposes.
  */
-public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
+public class TestPenmanMonteithFAOPotentialETGpkg extends GeoetTestCase {
 
 	private static final int STATION_ID = 1;
 
@@ -39,16 +37,16 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		ProblemQuantities variables = new ProblemQuantities();
 		InputTimeSeries input = new InputTimeSeries();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOWaterStressed.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOPotentialET.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");
 		String endDate = inputs.getParameterString("endDate");
 		int timeStepMinutes = inputs.getParameterInt("timeStepMinutes");
 
-		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOWaterStressed.gpkg");
+		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOPotentialET.gpkg");
 
-		PenmanMonteithFAOSolverWithFAOWaterStress pmFAO = new PenmanMonteithFAOSolverWithFAOWaterStress();
+		PenmanMonteithFAOSolver pmFAO = new PenmanMonteithFAOSolver();
 		pmFAO.parameters = parameters;
 		pmFAO.variables = variables;
 		pmFAO.input = input;
@@ -67,19 +65,12 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		inputReader.latitude = inputs.getParameterDouble("latitude");
 		inputReader.longitude = inputs.getParameterDouble("longitude");
 
-		pmFAO.cropCoefficient = inputs.getParameterDouble("cropCoefficient");
-		// PmFAO.waterWiltingPoint = 0.05;
-		// PmFAO.waterFieldCapacity = 0.27;
-		pmFAO.rootsDepth = inputs.getParameterDouble("rootsDepth");
-		// PmFAO.depletionFraction = 0.55;
 		inputReader.canopyHeight = inputs.getParameterDouble("canopyHeight");
 		pmFAO.soilFluxParameterDay = inputs.getParameterDouble("soilFluxParameterDay");
 		pmFAO.soilFluxParameterNight = inputs.getParameterDouble("soilFluxParameterNight");
 
 		inputReader.tStartDate = startDate;
 		inputReader.temporalStep = timeStepMinutes;
-		// PmFAO.defaultAtmosphericPressure = 101.3;
-		// PmFAO.doHourly = true;
 
 		outputWriter.doPrintOutputPM = true;
 
@@ -91,8 +82,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 						1000);
 				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries("atmosphericPressure", startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator soilMoistureIt = inputs.iterateTimeseries("soilMoisture", startDate, endDate,
-						1000);
 				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries("soilFlux", startDate, endDate, 1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
 			outputs.parameters = inputs.getParameters();
@@ -102,7 +91,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 				humIt.next();
 				netradIt.next();
 				pressureIt.next();
-				soilMoistureIt.next();
 				soilFluxIt.next();
 
 				inputReader.inAirTemperature = one(tempIt.value());
@@ -110,7 +98,6 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 				inputReader.inRelativeHumidity = one(humIt.value());
 				inputReader.inNetRadiation = one(netradIt.value());
 				inputReader.inAtmosphericPressure = one(pressureIt.value());
-				inputReader.inSoilMoisture = one(soilMoistureIt.value());
 				inputReader.inSoilFlux = one(soilFluxIt.value());
 
 				inputReader.process();
@@ -124,11 +111,11 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 			}
 		}
 
-		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/ETwaterStressedFAO.csv",
-				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+		assertGpkgColumnMatchesGolden("/golden/TestPenmanMonteithFAOPotentialET/ETpotentialFAO.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_EVAPO_TRANSPIRATION);
-		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/FluxETwaterStressedFAO.csv",
-				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+		assertGpkgColumnMatchesGolden("/golden/TestPenmanMonteithFAOPotentialET/FluxETpotentialFAO.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_FLUX_EVAPO_TRANSPIRATION);
 	}
 

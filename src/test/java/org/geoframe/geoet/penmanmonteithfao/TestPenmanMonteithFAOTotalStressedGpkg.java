@@ -10,26 +10,27 @@ import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputReader;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithFAOWaterStress;
+import org.geoframe.geoet.solvers.PenmanMonteithFAOSolverWithStressFactor;
+import org.geoframe.geoet.solvers.PriestleyTaylorPenmanMonteithFAOStressFactorSolver;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test FAO Hourly evapotranspiration, driven by a single input GeoPackage
- * ({@code PenmanMonteithFAOWaterStressed.gpkg} - scalar parameters +
- * driving timeseries in one file) instead of the individual CSVs/DEM/
- * shapefile {@link TestPenmanMonteithFAOWaterStressed} reads. Same solver
- * wiring as the original. The computed values go only into the output
- * GeoPackage (via {@link GeoetOutputsHandler}); this test then reads them
- * straight back out of that gpkg and compares them against the golden
- * reference CSVs {@link TestPenmanMonteithFAOWaterStressed} already checks
- * (see {@link GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the
- * assertion actually exercises the gpkg's contents, not a parallel CSV
- * written alongside it purely for comparison purposes.
- *
- * @author D'Amato Concetta (concetta.damato@unitn.it)
+ * Test FAO Hourly evapotranspiration with a stress factor fed in from a
+ * {@link PriestleyTaylorPenmanMonteithFAOStressFactorSolver}, driven by a
+ * single input GeoPackage ({@code PenmanMonteithFAOTotalStressed.gpkg} -
+ * scalar parameters + driving timeseries in one file) instead of the
+ * individual CSVs/DEM/shapefile {@link TestPenmanMonteithFAOTotalStressed}
+ * reads. Same two-solver wiring as the original, over the same full 2-year
+ * hourly span. The computed values go only into the output GeoPackage (via
+ * {@link GeoetOutputsHandler}); this test then reads them straight back out
+ * of that gpkg and compares them against the golden reference CSVs {@link
+ * TestPenmanMonteithFAOTotalStressed} already checks (see {@link
+ * GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the assertion
+ * actually exercises the gpkg's contents, not a parallel CSV written
+ * alongside it purely for comparison purposes.
  */
-public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
+public class TestPenmanMonteithFAOTotalStressedGpkg extends GeoetTestCase {
 
 	private static final int STATION_ID = 1;
 
@@ -39,19 +40,22 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		ProblemQuantities variables = new ProblemQuantities();
 		InputTimeSeries input = new InputTimeSeries();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOWaterStressed.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/input/gpkg/PenmanMonteithFAOTotalStressed.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");
 		String endDate = inputs.getParameterString("endDate");
 		int timeStepMinutes = inputs.getParameterInt("timeStepMinutes");
 
-		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOWaterStressed.gpkg");
+		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOTotalStressed.gpkg");
 
-		PenmanMonteithFAOSolverWithFAOWaterStress pmFAO = new PenmanMonteithFAOSolverWithFAOWaterStress();
+		PenmanMonteithFAOSolverWithStressFactor pmFAO = new PenmanMonteithFAOSolverWithStressFactor();
 		pmFAO.parameters = parameters;
 		pmFAO.variables = variables;
 		pmFAO.input = input;
+		PriestleyTaylorPenmanMonteithFAOStressFactorSolver pmStressfactor = new PriestleyTaylorPenmanMonteithFAOStressFactorSolver();
+		pmStressfactor.variables = variables;
+		pmStressfactor.input = input;
 
 		InputReader inputReader = new InputReader();
 		inputReader.parameters = parameters;
@@ -66,20 +70,29 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		inputReader.elevation = inputs.getParameterDouble("elevation");
 		inputReader.latitude = inputs.getParameterDouble("latitude");
 		inputReader.longitude = inputs.getParameterDouble("longitude");
+		inputReader.tStartDate = startDate;
+		inputReader.temporalStep = timeStepMinutes;
 
-		pmFAO.cropCoefficient = inputs.getParameterDouble("cropCoefficient");
-		// PmFAO.waterWiltingPoint = 0.05;
-		// PmFAO.waterFieldCapacity = 0.27;
-		pmFAO.rootsDepth = inputs.getParameterDouble("rootsDepth");
-		// PmFAO.depletionFraction = 0.55;
+		pmStressfactor.defaultStress = inputs.getParameterDouble("defaultStress");
+		pmStressfactor.useRadiationStress = inputs.getParameterInt("useRadiationStress") != 0;
+		pmStressfactor.useTemperatureStress = inputs.getParameterInt("useTemperatureStress") != 0;
+		pmStressfactor.useVDPStress = inputs.getParameterInt("useVDPStress") != 0;
+		pmStressfactor.useWaterStress = inputs.getParameterInt("useWaterStress") != 0;
+		pmStressfactor.alpha = inputs.getParameterDouble("alpha");
+		pmStressfactor.theta = inputs.getParameterDouble("theta");
+		pmStressfactor.VPD0 = inputs.getParameterDouble("VPD0");
+		pmStressfactor.Tl = inputs.getParameterDouble("Tl");
+		pmStressfactor.T0 = inputs.getParameterDouble("T0");
+		pmStressfactor.Th = inputs.getParameterDouble("Th");
+		pmStressfactor.waterWiltingPoint = inputs.getParameterDouble("waterWiltingPoint");
+		pmStressfactor.waterFieldCapacity = inputs.getParameterDouble("waterFieldCapacity");
+		pmStressfactor.depth = inputs.getParameterDouble("depth");
+		pmStressfactor.depletionFraction = inputs.getParameterDouble("depletionFraction");
+		pmStressfactor.cropCoefficient = inputs.getParameterDouble("cropCoefficient");
+
 		inputReader.canopyHeight = inputs.getParameterDouble("canopyHeight");
 		pmFAO.soilFluxParameterDay = inputs.getParameterDouble("soilFluxParameterDay");
 		pmFAO.soilFluxParameterNight = inputs.getParameterDouble("soilFluxParameterNight");
-
-		inputReader.tStartDate = startDate;
-		inputReader.temporalStep = timeStepMinutes;
-		// PmFAO.defaultAtmosphericPressure = 101.3;
-		// PmFAO.doHourly = true;
 
 		outputWriter.doPrintOutputPM = true;
 
@@ -114,6 +127,8 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 				inputReader.inSoilFlux = one(soilFluxIt.value());
 
 				inputReader.process();
+				pmStressfactor.solve();
+				pmFAO.stressFactor = pmStressfactor.stressSun;
 				pmFAO.process();
 				outputWriter.process();
 
@@ -124,10 +139,10 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 			}
 		}
 
-		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/ETwaterStressedFAO.csv",
+		assertGpkgColumnMatchesGolden("/golden/TestPenmanMonteithFAOTotalStressed/ETPotentialFAOCavone.csv",
 				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_EVAPO_TRANSPIRATION);
-		assertGpkgColumnMatchesGolden("/golden/" + getClass().getSimpleName() + "/FluxETwaterStressedFAO.csv",
+		assertGpkgColumnMatchesGolden("/golden/TestPenmanMonteithFAOTotalStressed/FluxETPotentialFAOCavone.csv",
 				pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_FLUX_EVAPO_TRANSPIRATION);
 	}
