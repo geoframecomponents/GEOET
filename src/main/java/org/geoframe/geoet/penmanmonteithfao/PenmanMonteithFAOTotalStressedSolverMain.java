@@ -20,6 +20,7 @@ package org.geoframe.geoet.penmanmonteithfao;
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 //import static java.lang.Math.pow;
@@ -45,8 +46,7 @@ import oms3.annotations.Unit;
 @Name("PenmanMonteithFAO Evapotranspiration")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-
-public class PenmanMonteithFAOTotalStressedSolverMain {
+public class PenmanMonteithFAOTotalStressedSolverMain extends HMModel {
 
 	@Description("The soilflux default value in case of missing data.")
 	@In
@@ -60,12 +60,6 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@Description("The coefficient for the soil heat flux during nighttime")
 	@In
 	public double soilFluxParameterNight;
-
-	@In
-	public boolean doProcess3;
-
-	@Out
-	public boolean doProcess4;
 
 	int step;
 
@@ -86,20 +80,14 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 	@Out
 	public double evapoTranspirationPM;
 
-	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
 
-	private Parameters parameters;
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void process() throws Exception {
-
-		// //System.out.printf("\n\nStart PenmanMonteithFAOTotalStressedSolverMain");
-
-		parameters = Parameters.getInstance();
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
+		checkNull(parameters, variables, input);
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 
@@ -122,7 +110,8 @@ public class PenmanMonteithFAOTotalStressedSolverMain {
 
 		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
-		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
+		variables.evapoTranspirationPM = PenmanMonteithFAOModel.doET(parameters, input, variables.windAtZ,
+				input.netRadiation) * stressFactor;// --> mm/time
 
 		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
 				/ input.time;

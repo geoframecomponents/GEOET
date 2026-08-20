@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.stressfactor.methods;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 
@@ -25,35 +26,16 @@ import oms3.annotations.License;
 
 /**
  * Computation of the stress factor by Medlyn et al. 2011
+ * 
  * @author Concetta D'Amato
  */
 
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-
-
 public class MedlynStressFactor {
-	
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	private double stressMedlyn;
-	
 
-	
-	public double stressFactorMedlyn() {
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
-		
-		stressMedlyn = 1.6*(1+input.g1/Math.sqrt(variables.vapourPressureDeficit))*(input.assimilationRate/variables.carbonDioxideLeafConcentration);
-		
-		
-		return stressMedlyn;}
-
-
-		
-			
-
+	public static double stressFactorMedlyn(ProblemQuantities variables, InputTimeSeries input) {
+		return 1.6*(1+input.g1/Math.sqrt(variables.vapourPressureDeficit))*(input.assimilationRate/variables.carbonDioxideLeafConcentration);
 	}
+}

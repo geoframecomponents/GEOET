@@ -17,10 +17,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.stressfactor.solver;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 import org.geoframe.geoet.stressfactor.methods.EnvironmentalStress;
 import org.geoframe.geoet.stressfactor.methods.FaoWaterStress;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -36,50 +38,55 @@ import oms3.annotations.Unit;
 @Documentation("")
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
+public class ProsperoPMStressFactorSolverMain extends HMModel {
 
-
-public class ProsperoPMStressFactorSolverMain {
-	
 	@Description("Wilting point")
-	@In 
-	@Unit ("-")
-	public double waterWiltingPoint;	
+	@In
+	@Unit("-")
+	public double waterWiltingPoint;
 
 	@Description("Field capacity")
-	@In 
-	@Unit ("-")
+	@In
+	@Unit("-")
 	public double waterFieldCapacity;
-	
+
 	@Description("Water content")
-	@In 
-	@Unit ("-")
+	@In
+	@Unit("-")
 	public double soilMoisture;
-	
+
 	@Description("Depth of the root.")
-	@In 
+	@In
 	@Unit("m")
 	public double rootsDepth;
-	
+
 	@Description("Evporation depth.")
-	@In 
+	@In
 	@Unit("m")
 	public double evaporationDepth;
-	
+
 	@Description("The crop coefficient.")
 	@Unit("[-]")
 	@In
 	public double cropCoefficient = 1;
-	
-	@In	public double alpha;
-	@In public double theta;
-	@In public double VPD0;
 
-	@In	public double T0;
-	@In public double Tl;
-	@In public double Th;
-	
-	@In public double depletionFraction;
-	
+	@In
+	public double alpha;
+	@In
+	public double theta;
+	@In
+	public double VPD0;
+
+	@In
+	public double T0;
+	@In
+	public double Tl;
+	@In
+	public double Th;
+
+	@In
+	public double depletionFraction;
+
 	@In
 	public boolean useRadiationStress = true;
 	@In
@@ -88,87 +95,88 @@ public class ProsperoPMStressFactorSolverMain {
 	public boolean useVDPStress = true;
 	@In
 	public boolean useWaterStress = true;
-	
+
 	@In
-	public double defaultStress=1;
-	
+	public double defaultStress = 1;
+
 	@Description("It is needed to iterate on the date")
 	int step;
-	
+
 	@Description("Stress factor for sun canopy")
 	@Out
 	@Unit("-")
 	public double stressSun;
-	
+
 	@Description("Stress factor for shade canopy")
 	@Out
 	@Unit("-")
 	public double stressShade;
-	
+
 	@Description("Stress factor for evaporation")
 	@Out
 	@Unit("-")
-	public double evaporationStress=1;
-	
-	//@In
-	//public boolean  doProcess;
-	
+	public double evaporationStress = 1;
+
+	// @In
+	// public boolean doProcess;
+
 	@In
-	public boolean  doProcess2;
-	
+	public boolean doProcess2;
+
 	@Out
-	public boolean  doProcess3;
+	public boolean doProcess3;
 	/////////////////////////////////////////////////////////////////////////////
 
-	EnvironmentalStress environmentalStress	= new EnvironmentalStress();
-	FaoWaterStress faoWaterStress = new FaoWaterStress();
-	
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void solve() {
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-	
-	
-		variables.stressRadiationSun = 1;
-        if (useRadiationStress == true) {
-        	variables.stressRadiationSun = environmentalStress.computeRadiationStress(variables.shortwaveCanopySun*2.1, alpha, theta);
-        	}
-        
-        variables.stressRadiationShade = 1;
-        if (useRadiationStress == true) {
-        	variables.stressRadiationShade = environmentalStress.computeRadiationStress(variables.shortwaveCanopyShade*2.1, alpha, theta);
-        	}
-        
-        
-        variables.stressTemperature = 1;
-        if (useTemperatureStress == true) {
-        	variables.stressTemperature = environmentalStress.computeTemperatureStress(input.airTemperature, Tl, Th, T0);
-        	}
+		checkNull(variables, input);
 
-        variables.stressVPD = 1;
-        if (useVDPStress == true) {
-        	variables.stressVPD = environmentalStress.computeVapourPressureStress(input.airTemperature, VPD0);
-        	}
-          
-        variables.stressWater = 1;
-        if (useWaterStress == true) {
-        	variables.stressWater = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, rootsDepth, depletionFraction) * cropCoefficient;
-        	evaporationStress = faoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity, waterWiltingPoint, evaporationDepth, depletionFraction);
-        }
-        	            
-        stressSun = defaultStress * variables.stressRadiationSun * variables.stressTemperature * variables.stressWater * variables.stressVPD;
-    
-        stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature * variables.stressWater * variables.stressVPD;
-        
-		////System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
-		////System.out.printf("\nGE = %.5f %n", GnE[0]);
-        //System.out.println("stressSun is  = "+ stressSun);
-        //System.out.println("stressShade is  = "+ stressShade);
-						
+		variables.stressRadiationSun = 1;
+		if (useRadiationStress == true) {
+			variables.stressRadiationSun = EnvironmentalStress
+					.computeRadiationStress(variables.shortwaveCanopySun * 2.1, alpha, theta);
+		}
+
+		variables.stressRadiationShade = 1;
+		if (useRadiationStress == true) {
+			variables.stressRadiationShade = EnvironmentalStress
+					.computeRadiationStress(variables.shortwaveCanopyShade * 2.1, alpha, theta);
+		}
+
+		variables.stressTemperature = 1;
+		if (useTemperatureStress == true) {
+			variables.stressTemperature = EnvironmentalStress.computeTemperatureStress(input.airTemperature, Tl, Th,
+					T0);
+		}
+
+		variables.stressVPD = 1;
+		if (useVDPStress == true) {
+			variables.stressVPD = EnvironmentalStress.computeVapourPressureStress(variables.vapourPressureDeficit,
+					input.airTemperature, VPD0);
+		}
+
+		variables.stressWater = 1;
+		if (useWaterStress == true) {
+			variables.stressWater = FaoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity,
+					waterWiltingPoint, rootsDepth, depletionFraction) * cropCoefficient;
+			evaporationStress = FaoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity,
+					waterWiltingPoint, evaporationDepth, depletionFraction);
+		}
+
+		stressSun = defaultStress * variables.stressRadiationSun * variables.stressTemperature * variables.stressWater
+				* variables.stressVPD;
+
+		stressShade = defaultStress * variables.stressRadiationShade * variables.stressTemperature
+				* variables.stressWater * variables.stressVPD;
+
+		//// System.out.printf("\n\nStressFactorBroker Finished, G = %.5f %n", GnT[0]);
+		//// System.out.printf("\nGE = %.5f %n", GnE[0]);
+		// System.out.println("stressSun is = "+ stressSun);
+		// System.out.println("stressShade is = "+ stressShade);
+
 		step++;
 	}
 }

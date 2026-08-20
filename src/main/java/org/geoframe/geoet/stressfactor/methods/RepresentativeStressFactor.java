@@ -23,45 +23,46 @@ import oms3.annotations.License;
 
 /**
  * The stress factor abstract class.
+ * 
  * @author Concetta D'Amato
  */
 
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 
-public abstract class RepresentativeSF {
-	
-	public double[] z;   			// z coordinate read from grid NetCDF file
-	public double[] deltaZ; 		// Vector containing the length of each control volume
+public abstract class RepresentativeStressFactor {
+
+	public double[] z; // z coordinate read from grid NetCDF file
+	public double[] deltaZ; // Vector containing the length of each control volume
 	public int NUM_CONTROL_VOLUMES; // Number of control volume for domain discetrization
-	public double totalDepth;		// Depth of the colum of soil
-	public double n; 				// n counts the number of control volumes
-	public double G; 				// Representative stress factor
-	public double[] Gn;				// Vector containing G and n
-		
-	
+	public double totalDepth; // Depth of the colum of soil
+	public double n; // n counts the number of control volumes
+	public double G; // Representative stress factor
+	public double[] Gn; // Vector containing G and n
+
 	/**
 	 * General constructor used to pass the values of variables
 	 */
-	
-	public RepresentativeSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,double totalDepth) {
-		this.z  = z;
+
+	public RepresentativeStressFactor(double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
+		this.z = z;
 		this.deltaZ = deltaZ;
-		this.NUM_CONTROL_VOLUMES = NUM_CONTROL_VOLUMES;  
+		this.NUM_CONTROL_VOLUMES = NUM_CONTROL_VOLUMES;
 		this.totalDepth = totalDepth;
-		n= 0;
+		n = 0;
 		G = 0;
-		Gn = new double [2];
-		}
-	
+		Gn = new double[2];
+	}
+
 	/*
-	 * This method compute the representative stress factor given the values of stress factor for each control volumes
+	 * This method compute the representative stress factor given the values of
+	 * stress factor for each control volumes
+	 * 
 	 * @param g, @param etaRef, @param zRef
 	 * 
 	 * @return G
 	 */
-	
-	public abstract double [] computeRepresentativeStressFactor (double[]g, double etaRef, double zRef);
-	
-	
+
+	public abstract double[] computeRepresentativeStressFactor(double[] g, double etaRef, double zRef);
+
 }

@@ -32,18 +32,17 @@ import oms3.annotations.License;
  * @author Concetta D'Amato
  */
 
-public class AverageSF extends RepresentativeSF{
-	
+public class AverageStressFactor extends RepresentativeStressFactor {
 
 	/** General constructor used to pass the value of variables */
-	public AverageSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
-		super(z,deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+	public AverageStressFactor(double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
+		super(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
+	}
 
-	
-	public double [] computeRepresentativeStressFactor (double[]g, double etaRef,double zRef) {
+	public double[] computeRepresentativeStressFactor(double[] g, double etaRef, double zRef) {
 		n = 0;
 		G = 0;
-		for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
+		for (int i = 0; i <= NUM_CONTROL_VOLUMES - 2; i++) {
 			if (etaRef==0){
 				G = 0;
 				n = 1;} 

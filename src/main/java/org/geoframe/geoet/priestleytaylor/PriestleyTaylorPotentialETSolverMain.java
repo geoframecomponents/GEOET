@@ -20,6 +20,7 @@ package org.geoframe.geoet.priestleytaylor;
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -29,7 +30,6 @@ import oms3.annotations.Keywords;
 import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
-import oms3.annotations.Out;
 //import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
@@ -42,7 +42,7 @@ import oms3.annotations.Unit;
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
 
-public class PriestleyTaylorPotentialETSolverMain {
+public class PriestleyTaylorPotentialETSolverMain extends HMModel {
 
 	@Description("The alpha parameter.")
 	@In
@@ -66,23 +66,14 @@ public class PriestleyTaylorPotentialETSolverMain {
 
 	int step;
 
-	@In
-	public boolean doProcess3;
-
-	@Out
-	public boolean doProcess4;
-
-	private Parameters parameters;
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void process() throws Exception {
+		checkNull(parameters, variables, input);
 		// //System.out.printf("\n\nStart PriestleyTaylorETSolverMain");
-
-		parameters = Parameters.getInstance();
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 		parameters.alpha = alpha;
@@ -103,11 +94,8 @@ public class PriestleyTaylorPotentialETSolverMain {
 			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
 		}
 
-		PriestleyTaylorModel PT = new PriestleyTaylorModel();
-		// PT.setNumber(parameters.alpha, input.airTemperatureC,
-		// input.atmosphericPressure, input.netRadiation, input.soilFlux);
-
-		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0 : PT.doET(input.netRadiation);
+		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0
+				: PriestleyTaylorModel.doET(parameters, input, input.netRadiation);
 		variables.fluxEvapoTranspirationPT = (variables.fluxEvapoTranspirationPT < 0) ? 0
 				: variables.fluxEvapoTranspirationPT;
 

@@ -45,7 +45,6 @@ public class ComputeQuantitiesProspero {
 	private SensibleHeatMethods sensibleHeat = new SensibleHeatMethods();
 	private LatentHeatMethods latentHeat = new LatentHeatMethods();
 	private PressureMethods pressure = new PressureMethods();
-	private RadiationMethod radiationMethods = new RadiationMethod();
 	private SolarGeometry solarGeometry = new SolarGeometry();
 
 	public ComputeQuantitiesProspero(Leaf leafparameters, Parameters parameters, ProblemQuantities variables) {
@@ -95,7 +94,7 @@ public class ComputeQuantitiesProspero {
 
 		// RADIATION SUN
 		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude, longitude, time);
-		variables.shortwaveCanopySun = radiationMethods.computeAbsorbedRadiationSunlit(leafAreaIndex,
+		variables.shortwaveCanopySun = RadiationMethod.computeAbsorbedRadiationSunlit(parameters, leafAreaIndex,
 				variables.solarElevationAngle, shortWaveRadiationDirect * 2.1, shortWaveRadiationDiffuse * 2.1);
 
 		if (variables.shortwaveCanopySun == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0) {
@@ -107,11 +106,11 @@ public class ComputeQuantitiesProspero {
 					/ variables.radFactorSun;
 		}
 		// Compute the area in sunlight
-		variables.areaCanopySun = radiationMethods.computeSunlitLeafAreaIndex(typeOfCanopy, leafAreaIndex,
+		variables.areaCanopySun = RadiationMethod.computeSunlitLeafAreaIndex(typeOfCanopy, leafAreaIndex,
 				variables.solarElevationAngle);
 
 		// RADIATION SHADOW
-		variables.shortwaveCanopyShade = radiationMethods.computeAbsorbedRadiationShadow(leafAreaIndex,
+		variables.shortwaveCanopyShade = RadiationMethod.computeAbsorbedRadiationShadow(parameters, leafAreaIndex,
 				variables.solarElevationAngle, shortWaveRadiationDirect * 2.1, shortWaveRadiationDiffuse * 2.1);
 
 		if (variables.shortwaveCanopyShade == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0) {

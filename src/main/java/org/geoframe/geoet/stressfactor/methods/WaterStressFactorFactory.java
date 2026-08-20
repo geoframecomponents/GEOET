@@ -44,7 +44,7 @@ public class WaterStressFactorFactory {
 	 * @return stressFactor g
 	 */
 	
-	public WaterStressFactor createStressFactor (String type, double[] thetaWp, double[] thetaFc, int[] ID, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
+	public static WaterStressFactor createStressFactor (String type, double[] thetaWp, double[] thetaFc, int[] ID, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
 
 		WaterStressFactor stressFactor = null;
 		if(type.equalsIgnoreCase("LinearStressFactor") || type.equalsIgnoreCase("LinearStressFactor")){

@@ -21,56 +21,59 @@ package org.geoframe.geoet.stressfactor.methods;
 import static java.lang.Math.pow;
 
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.InputTimeSeries;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
 
-
 /**
- * Computation of the representaive stress factor as the weighted average of g as a function of dx from each control volumes
+ * Computation of the representaive stress factor as the weighted average of g
+ * as a function of dx from each control volumes
  * 
  * @author Concetta D'Amato
  */
 
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
+public class RootDensityWeightedSF extends RepresentativeStressFactor {
 
-public class RootDensityWeightedSF extends RepresentativeSF {
-	
 	private ProblemQuantities variables;
-	private InputTimeSeries input;
-		
-		
 
 	/** General constructor used to pass the value of variables */
-	public RootDensityWeightedSF (double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES, double totalDepth) {
-		super(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);}
+	public RootDensityWeightedSF(ProblemQuantities variables, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,
+			double totalDepth) {
+		super(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
+		this.variables = variables;
+	}
 
-	public double [] computeRepresentativeStressFactor (double[]g, double etaRef, double zRef) {
-		
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		variables.sumRootDensity =0;
-		
-		for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
+	public double[] computeRepresentativeStressFactor(double[] g, double etaRef, double zRef) {
+
+		variables.sumRootDensity = 0;
+
+		for (int i = 0; i <= NUM_CONTROL_VOLUMES - 2; i++) {
 			if (z[i] >= zRef) {
-			variables.sumRootDensity = variables.sumRootDensity + variables.rootDensity[i];	}
+				variables.sumRootDensity = variables.sumRootDensity + variables.rootDensity[i];
+			}
 		}
-		
-		G=0;
-		if (etaRef==0){
-			G = 0;}
-		else{
-			for (int i = 0; i <= NUM_CONTROL_VOLUMES-2; i++) {
+
+		G = 0;
+		if (etaRef == 0) {
+			G = 0;
+		} else {
+			for (int i = 0; i <= NUM_CONTROL_VOLUMES - 2; i++) {
 				if (z[i] >= zRef) {
-					G = G + g[i] * variables.rootDensity[i];}}
-					G = G/variables.sumRootDensity;}
-			
-		if (G <  1 * pow(10,-8)) {G = 0;}	
-			
-		if (G > 1) {G = 1;}	
+					G = G + g[i] * variables.rootDensity[i];
+				}
+			}
+			G = G / variables.sumRootDensity;
+		}
+
+		if (G < 1 * pow(10, -8)) {
+			G = 0;
+		}
+
+		if (G > 1) {
+			G = 1;
+		}
 		Gn[0] = G;
 		Gn[1] = 0;
 		return Gn.clone();

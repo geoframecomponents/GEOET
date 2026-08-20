@@ -21,6 +21,7 @@ import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 import org.geoframe.geoet.stressfactor.methods.FaoWaterStress;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 //import static java.lang.Math.pow;
@@ -47,7 +48,7 @@ import oms3.annotations.Unit;
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
 
-public class PenmanMonteithFAOSolverMain {
+public class PenmanMonteithFAOSolverMain extends HMModel {
 
 	@Description("The crop coefficient.")
 	@Unit("[-]")
@@ -86,36 +87,25 @@ public class PenmanMonteithFAOSolverMain {
 	@In
 	public double soilFluxParameterNight;
 
-	@In
-	public boolean doProcess3;
-
-	@Out
-	public boolean doProcess4;
-
-	int step;
+	private int step;
 
 	// @Description("Height of the canopy.")
 	// @Unit("[m]")
 	// @In
 	// public double canopyHeight;
 
-	double nullValue = -9999.0;
+	private double nullValue = -9999.0;
 
-	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
-	FaoWaterStress waterStress = new FaoWaterStress();
 
-	private Parameters parameters;
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void process() throws Exception {
+		checkNull(parameters, variables, input);
 
 		// //System.out.printf("\n\nStart PenmanMonteithFAOSolverMain");
-
-		parameters = Parameters.getInstance();
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 
@@ -140,11 +130,11 @@ public class PenmanMonteithFAOSolverMain {
 		if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
 			variables.stressWater = 1;
 		} else
-			variables.stressWater = waterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity,
+			variables.stressWater = FaoWaterStress.computeFAOWaterStress(input.soilMoisture, waterFieldCapacity,
 					waterWiltingPoint, rootsDepth, depletionFraction);
 
 ////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
-		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation) * variables.stressWater
+		variables.evapoTranspirationPM = PenmanMonteithFAOModel.doET(parameters, input, variables.windAtZ, input.netRadiation) * variables.stressWater
 				* cropCoefficient;// --> mm/time
 
 		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation

@@ -74,6 +74,12 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>3.5.3</version>
+				<configuration>
+					<excludes>
+						<exclude>**/solvers/toreview/**</exclude>
+						<exclude>**/solvers/untested/**</exclude>
+					</excludes>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

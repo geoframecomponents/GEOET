@@ -1,15 +1,12 @@
-package org.geoframe.geoet.priestleytaylor;
+package org.geoframe.geoet.untested;
 
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.inout.InputReaderMain;
 import org.geoframe.geoet.inout.OutputWriterMain;
+import org.geoframe.geoet.priestleytaylor.PriestleyTaylorActualETSolverMain;
 import org.geoframe.geoet.stressfactor.solver.PTPMStressFactorSolverMain;
-import org.geotools.coverage.grid.GridCoverage2D;
-import org.geotools.data.simple.SimpleFeatureCollection;
-import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
-import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
@@ -19,7 +16,7 @@ import org.junit.Test;
  * @author D'Amato Concetta (concetta.damato@unitn.it)
  */
 //@SuppressWarnings("nls")
-public class TestActualPriestleyTaylorGEOET extends GeoetTestCase{
+public class TestActualPriestleyTaylorPointGEOET extends GeoetTestCase{
 	@Test
     public void Test() throws Exception {
 		String startDate= "2013-12-15 00:00";
@@ -29,13 +26,7 @@ public class TestActualPriestleyTaylorGEOET extends GeoetTestCase{
         String lab1 = "test";
         
         
-        
-    
-        OmsRasterReader DEMreader = new OmsRasterReader();
-        DEMreader.file = getRes("/Input/dataET_point/1/dem_1.tif");
-		  DEMreader.process();
-		  GridCoverage2D digitalElevationModel = DEMreader.outRaster;
-        
+           
 		
 		String inPathToNetRad 					=getRes("/Input/dataET_point/1/Net_1.csv");
 		String inPathToTemperature 				=getRes("/Input/dataET_point/1/airT_1.csv");
@@ -52,11 +43,6 @@ public class TestActualPriestleyTaylorGEOET extends GeoetTestCase{
         OmsTimeSeriesIteratorReader soilHeatFluxReader 	= getTimeseriesReader(inPathToSoilHeatFlux, fId, startDate, endDate,timeStepMinutes);
         OmsTimeSeriesIteratorReader soilMoistureReader 	= getTimeseriesReader(inPathToSoilMoisture, fId, startDate, endDate,timeStepMinutes);
         
-        String inPathToCentroids =getRes("/Input/dataET_point/1/centroids_ID_1.shp");
-        OmsShapefileFeatureReader centroidsReader 		= new OmsShapefileFeatureReader();
-        centroidsReader.file = inPathToCentroids;
-		centroidsReader.readFeatureCollection();
-		SimpleFeatureCollection stationsFC = centroidsReader.geodata;
 		
         OmsTimeSeriesIteratorWriter writerLatentHeatPT = new OmsTimeSeriesIteratorWriter();
         writerLatentHeatPT.file = pathToLatentHeatPT;
@@ -75,21 +61,19 @@ public class TestActualPriestleyTaylorGEOET extends GeoetTestCase{
         PTPMStressFactorSolverMain PTstressfactor = new PTPMStressFactorSolverMain();
         OutputWriterMain Output 	= new OutputWriterMain();
 		
-      
         
         
-		Input.inCentroids = stationsFC;
-		Input.idCentroids= "ID";
-		Input.centroidElevation="Elevation";
-		Input.inDem = digitalElevationModel;
-		
+        Input.elevation= 579;
+		//Input.latitude = 37.97;
+		//Input.longitude= 13.57;
+        
 
 		
 		PtEt.alpha = 1.26;
         PtEt.soilFluxParameterDay = 0.35;
         PtEt.soilFluxParameterNight = 0.75;
         Input.temporalStep = timeStepMinutes;
-		
+
 		
         PTstressfactor.useRadiationStress=false;
         PTstressfactor.useTemperatureStress=false;

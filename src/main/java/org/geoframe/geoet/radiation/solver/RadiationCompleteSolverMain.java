@@ -1,8 +1,10 @@
 package org.geoframe.geoet.radiation.solver;
 
+import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.inout.*;
-import org.geoframe.geoet.radiation.methods.*;
+import org.geoframe.geoet.inout.InputTimeSeries;
+import org.geoframe.geoet.radiation.methods.ComputeRadiationQuantitiesComplete;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -12,10 +14,7 @@ import oms3.annotations.Keywords;
 import oms3.annotations.Label;
 import oms3.annotations.License;
 import oms3.annotations.Name;
-import oms3.annotations.Out;
 import oms3.annotations.Status;
-
-
 
 @Description("This class compute the absorbed radiation from canopy")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -24,40 +23,25 @@ import oms3.annotations.Status;
 @Name("")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-public class RadiationCompleteSolverMain {
-	
-	
-	@In public String typeOfCanopy;
-	
-	
-	double nullValue = -9999.0;
+public class RadiationCompleteSolverMain extends HMModel {
 
-	@In 
-	public boolean  doProcess1;
-	
-	@Out 
-	public boolean  doProcess2;
+	@In
+	public String typeOfCanopy;
 
-	
-	ComputeRadiationQuantitiesComplete computeRadiationQuantities = new ComputeRadiationQuantitiesComplete();
-	
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	
-	
 	@Execute
 	public void process() throws Exception {
+		checkNull(parameters, variables, input);
 		// System.out.print("\n\nStart RadiationCompleteSolverMain");
 
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
+		ComputeRadiationQuantitiesComplete.computeRadiationQuantities(parameters, variables, input, variables.date,
+				input.latitude, input.longitude, input.time, input.leafAreaIndex, typeOfCanopy,
+				input.shortWaveRadiationDirect, input.shortWaveRadiationDiffuse);
 
-		computeRadiationQuantities.computeRadiationQuantities(variables.date, input.latitude, input.longitude, input.time, input.leafAreaIndex, typeOfCanopy, input.shortWaveRadiationDirect, input.shortWaveRadiationDiffuse);
-		
-		
 		// System.out.print("\nEnd RadiationCompleteSolverMain");
 	}
-	
+
 }

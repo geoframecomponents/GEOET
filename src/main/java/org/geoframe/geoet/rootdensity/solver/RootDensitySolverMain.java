@@ -18,12 +18,10 @@
  */
 package org.geoframe.geoet.rootdensity.solver;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-
-import org.geoframe.geoet.data.*;
-import org.geoframe.geoet.inout.*;
-import org.geoframe.geoet.rootdensity.methods.*;
+import org.geoframe.geoet.data.ProblemQuantities;
+import org.geoframe.geoet.inout.InputTimeSeries;
+import org.geoframe.geoet.rootdensity.methods.RootDensity;
+import org.geoframe.geoet.rootdensity.methods.RootDensityFactory;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -38,83 +36,53 @@ import oms3.annotations.Unit;
 @Documentation("")
 @Author(name = "Concetta D'Amato", contact = "concetta.damato@unitn.it")
 
-
 public class RootDensitySolverMain {
-	
-	
+
 	@Description("It is needed to iterate on the date")
 	int step;
-	
-	@Description("Root Density can be evaluated in different way"
-		    + " The same of the IC--> CostantMethod"
-		    + " Costant growth with the depth--> CostantGrowthMetod"
-		    + " Linear growth according to a costant--> LinearGrowthMetod"
-		    + " Exponential growth with the depth--> ExponentialGrowthMetod")
+
+	@Description("Root Density can be evaluated in different way" + " The same of the IC--> CostantMethod"
+			+ " Costant growth with the depth--> CostantGrowthMetod"
+			+ " Linear growth according to a costant--> LinearGrowthMetod"
+			+ " Exponential growth with the depth--> ExponentialGrowthMetod")
 	@In
 	public String rootDensityModel = "CostantMethod";
-	
-	@In
-	public boolean  doProcess1;
-	@Out
-	public boolean  doProcess2;
-	
+
 	@Description("Vector of root density")
 	@Out
 	@Unit("-")
-	public double [] defRootDensity;
-	
-	
+	public double[] defRootDensity;
+
 	/////////////////////////////////////////////////////////////////////////////
-	
-	
+
 	@Description("Object dealing with rootdensity in each control volume of the domain")
-	RootDensity rootDensity;
-	
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	private RootDensity rootDensity;
+
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void solve() {
 		// System.out.print("\n\nStart RootDensitySolverMain");
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
-		if(step==0){
+
+		if (step == 0) {
 			variables.NUM_CONTROL_VOLUMES = input.z.length;
-			variables.totalDepth = input.z[variables.NUM_CONTROL_VOLUMES -1];
-			
-			variables.rootDensity = new double [variables.NUM_CONTROL_VOLUMES -1];
-		
-			
-			RootDensityFactory rootDensityFactory= new RootDensityFactory();
-			rootDensity = rootDensityFactory.createRootDensity(rootDensityModel);
-			
-			
-			
-		}	
-		
+			variables.totalDepth = input.z[variables.NUM_CONTROL_VOLUMES - 1];
+
+			variables.rootDensity = new double[variables.NUM_CONTROL_VOLUMES - 1];
+
+			rootDensity = RootDensityFactory.createRootDensity(variables, input, rootDensityModel);
+
+		}
+
 		variables.zR = variables.totalDepth + variables.rootDepth;
 
 		variables.rootDensity = rootDensity.computeRootDensity(variables.zR);
-		
-		defRootDensity = variables.rootDensity;
-		
-		
-		// System.out.print("\nEnd RootDensitySolverMain");
 
-		//System.out.println("defRootDensity  = "+Arrays.toString(defRootDensity));
-		//System.out.println("z = "+Arrays.toString(z));
-		//System.out.println("\n\nStressedET  = "+ StressedET);
-		//System.out.println("root density  = "+Arrays.toString(variables.rootDensity));
-		//System.out.println("\ng  = "+Arrays.toString(input.g));
-		//System.out.println("\n\nsumRootWaterStress  = "+ variables.sumRootWaterStress);
-		//System.out.println("\n\ntranspirations  = "+ Arrays.toString(variables.transpirations));
-		
-		
-		
+		defRootDensity = variables.rootDensity;
+
 		step++;
-		variables.step=step;
-		
+		variables.step = step;
+
 	}
 }

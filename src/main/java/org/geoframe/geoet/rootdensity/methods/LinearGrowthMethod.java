@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.rootdensity.methods;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 
@@ -25,35 +26,31 @@ import org.geoframe.geoet.inout.InputTimeSeries;
  * @author Concetta D'Amato
  */
 
+public class LinearGrowthMethod extends RootDensity {
 
-public class LinearGrowthMethod extends RootDensity{
+	public LinearGrowthMethod(ProblemQuantities variables, InputTimeSeries input) {
+		super(variables, input);
+	}
 
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	
-	
-	public double [] computeRootDensity (double zRef) {
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
-		if(variables.step==0){
+	public double[] computeRootDensity(double zRef) {
+		if (variables.step == 0) {
 			variables.rootDensity = input.rootDensityIC;
 		}
-		
+
 		else {
 
-		for (int i = 0; i <= variables.NUM_CONTROL_VOLUMES-2; i++) {
-			if (input.z[i] >= zRef) {
-				variables.rootDensity[i]= variables.rootDensity[i] + input.growthRateRoot;
-				if (variables.rootDensity[i] > 1) {
-					variables.rootDensity[i]= 1;}
+			for (int i = 0; i <= variables.NUM_CONTROL_VOLUMES - 2; i++) {
+				if (input.z[i] >= zRef) {
+					variables.rootDensity[i] = variables.rootDensity[i] + input.growthRateRoot;
+					if (variables.rootDensity[i] > 1) {
+						variables.rootDensity[i] = 1;
+					}
+				} else {
+					variables.rootDensity[i] = 0;
+				}
 			}
-			else{
-				variables.rootDensity[i] = 0;}}
 		}
-		
-	return variables.rootDensity.clone();
+
+		return variables.rootDensity.clone();
 	}
 }
- 

@@ -17,6 +17,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.rootdensity.methods;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 
@@ -25,26 +26,22 @@ import org.geoframe.geoet.inout.InputTimeSeries;
  * @author Concetta D'Amato
  */
 
+public class CostantGrowthMethod extends RootDensity {
 
-public class CostantGrowthMethod extends RootDensity{
+	public CostantGrowthMethod(ProblemQuantities variables, InputTimeSeries input) {
+		super(variables, input);
+	}
 
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	
-	
-	public double [] computeRootDensity (double zRef) {
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
+	public double[] computeRootDensity(double zRef) {
 
-		for (int i = 0; i <= variables.NUM_CONTROL_VOLUMES-2; i++) {
+		for (int i = 0; i <= variables.NUM_CONTROL_VOLUMES - 2; i++) {
 			if (input.z[i] >= zRef) {
-				variables.rootDensity[i]= 0.5;}
-			else{
-				variables.rootDensity[i] = 0;}}
-		
-	return variables.rootDensity.clone();
+				variables.rootDensity[i] = 0.5;
+			} else {
+				variables.rootDensity[i] = 0;
+			}
+		}
+
+		return variables.rootDensity.clone();
 	}
 }
- 

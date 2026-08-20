@@ -19,6 +19,7 @@ package org.geoframe.geoet.penmanmonteithfao;
 
 import org.geoframe.geoet.data.*;
 import org.geoframe.geoet.inout.*;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -39,8 +40,7 @@ import oms3.annotations.Unit;
 @Name("ptet")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-
-public class PenmanMonteithFAOPotentialETSolverMain {
+public class PenmanMonteithFAOPotentialETSolverMain extends HMModel {
 
 	@Description("The soilflux default value in case of missing data.")
 	@In
@@ -55,12 +55,6 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 	@In
 	public double soilFluxParameterNight;
 
-	@In
-	public boolean doProcess3;
-
-	@Out
-	public boolean doProcess4;
-
 	// @Description("Height of the canopy.")
 	// @Unit("[m]")
 	// @In
@@ -68,20 +62,15 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 
 	// double nullValue = -9999.0;
 
-	PenmanMonteithFAOModel FAO = new PenmanMonteithFAOModel();
-
-	private Parameters parameters;
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
 
 	@Execute
 	public void process() throws Exception {
+		checkNull(parameters, variables, input);
 
 		// //System.out.printf("\n\nStart PenmanMonteithFAOPotentialETSolverMain");
-
-		parameters = Parameters.getInstance();
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
 
 		input.airTemperatureC = input.airTemperature - 273.15;
 
@@ -103,7 +92,8 @@ public class PenmanMonteithFAOPotentialETSolverMain {
 
 		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
-		variables.evapoTranspirationPM = FAO.doET(variables.windAtZ, input.netRadiation);// --> mm/time
+		variables.evapoTranspirationPM = PenmanMonteithFAOModel.doET(parameters, input, variables.windAtZ,
+				input.netRadiation);// --> mm/time
 
 		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
 				/ input.time;

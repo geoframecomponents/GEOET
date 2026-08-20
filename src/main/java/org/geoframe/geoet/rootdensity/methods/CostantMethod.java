@@ -28,18 +28,14 @@ import org.geoframe.geoet.inout.InputTimeSeries;
 
 public class CostantMethod extends RootDensity{
 
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	
+	public CostantMethod(ProblemQuantities variables, InputTimeSeries input) {
+		super(variables, input);
+	}
 	
 	public double [] computeRootDensity (double zRef) {
-		
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
 		variables.rootDensity = input.rootDensityIC;
 		
-	return variables.rootDensity.clone();
+		return variables.rootDensity.clone();
 	}
 }
  

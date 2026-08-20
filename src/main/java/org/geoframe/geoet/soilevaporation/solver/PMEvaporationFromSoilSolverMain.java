@@ -2,9 +2,9 @@ package org.geoframe.geoet.soilevaporation.solver;
 
 import org.geoframe.geoet.data.Parameters;
 import org.geoframe.geoet.data.ProblemQuantities;
-import org.geoframe.geoet.data.WindProfile;
-import org.geoframe.geoet.inout.*;
-import org.geoframe.geoet.penmanmonteithfao.*;
+import org.geoframe.geoet.inout.InputTimeSeries;
+import org.geoframe.geoet.penmanmonteithfao.PenmanMonteithFAOModel;
+import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
 import oms3.annotations.Description;
@@ -18,7 +18,6 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-
 @Description("The Penman Monteith model for computing actual evaporation from soil considering the net radiation incoming")
 
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -27,78 +26,65 @@ import oms3.annotations.Unit;
 @Name("")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-public class PMEvaporationFromSoilSolverMain {
-	
+public class PMEvaporationFromSoilSolverMain extends HMModel {
+
 	@Description("Water stress factor for the Evaporation layer")
 	@In
 	@Unit("-")
-	public double evaporationStressWater=1;
-	
+	public double evaporationStressWater = 1;
+
 	double nullValue = -9999.0;
-	
-	//@In 
-	//public boolean  doProcess;
-	
-	//@Out 
-	//public boolean  doProcessOut = false;
-	
-	@In 
-	public boolean  doProcess4;
-	
-	@Out 
-	public boolean  doProcess5;
-	
+
+	// @In
+	// public boolean doProcess;
+
+	// @Out
+	// public boolean doProcessOut = false;
+
+	@In
+	public boolean doProcess4;
+
+	@Out
+	public boolean doProcess5;
+
 	@Description("The Evaporation.")
 	@Unit("mm h-1")
 	@Out
 	public double evaporation;
-	
-	// METHODS FROM CLASSES		
 
-	PenmanMonteithFAOModel soilevaporation 		= new PenmanMonteithFAOModel();
-	WindProfile windAtSoil = new WindProfile();
-	
-	private Parameters parameters;
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
-	
-	
+	public Parameters parameters;
+	public ProblemQuantities variables;
+	public InputTimeSeries input;
+
 	@Execute
 	public void process() throws Exception {
-		// System.out.print("\n\nStart PMEvaporationFromSoilSolverMain");
+		checkNull(parameters, variables, input);
 
-		parameters = Parameters.getInstance();
-		variables = ProblemQuantities.getInstance();
-		input = InputTimeSeries.getInstance();
-		
 		input.airTemperatureC = input.airTemperature - 273.15;
-				
+
 //////////// Evaporation from Soil //////////////////
-		
-		variables.windSoil = windAtSoil.computeWindProfile(input.windVelocity, 0.2);
-        
-        //soilevaporation.setNumber(input.airTemperatureC, input.atmosphericPressure, input.netRadiation, input.relativeHumidity, input.soilFlux, variables.windSoil);
-		//variables.fluxEvaporation = soilevaporation.doET(variables.windSoil)* parameters.latentHeatEvaporation / 86400 * evaporationStressWater; // --> W/m2
-		//variables.evaporation = variables.fluxEvaporation * (input.time / parameters.latentHeatEvaporation); // --> mm/time
-		
-		variables.evaporation = soilevaporation.doET(variables.windSoil, input.netRadiation) * evaporationStressWater; // --> mm/time
+
+		variables.windSoil = ProblemQuantities.computeWindProfile(input.windVelocity, 0.2);
+
+		variables.evaporation = PenmanMonteithFAOModel.doET(parameters, input, variables.windSoil, input.netRadiation)
+				* evaporationStressWater; // --> mm/time
 		variables.fluxEvaporation = variables.evaporation * parameters.latentHeatEvaporation / input.time; // --> W/m2
 
-		variables.evaporation = (variables.evaporation<0)?0:variables.evaporation;
-		variables.fluxEvaporation = (variables.fluxEvaporation<0)?0:variables.fluxEvaporation;
-		
-		evaporation = variables.evaporation;
-		
-		System.out.println("evaporation is  = "+ variables.fluxEvaporation);
+		variables.evaporation = (variables.evaporation < 0) ? 0 : variables.evaporation;
+		variables.fluxEvaporation = (variables.fluxEvaporation < 0) ? 0 : variables.fluxEvaporation;
 
-		
+		evaporation = variables.evaporation;
+
 		if (input.airTemperature == nullValue) {
-			//System.out.printf("\nAir temperature is null");
-			variables.evapoTranspiration = nullValue;}
-			
-		if (Double.isNaN(variables.evaporation)) {variables.evaporation = 0;}  
-		
+			// System.out.printf("\nAir temperature is null");
+			variables.evapoTranspiration = nullValue;
+		}
+
+		if (Double.isNaN(variables.evaporation)) {
+			variables.evaporation = 0;
+		}
+
 		// System.out.print("End PMEvaporationFromSoilSolverMain");
 	}
-	
+
 }

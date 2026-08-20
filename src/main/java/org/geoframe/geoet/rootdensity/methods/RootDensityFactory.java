@@ -17,52 +17,49 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.rootdensity.methods;
+
 import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputTimeSeries;
 
-
 /**
  * A simple design factory for creating a StressedETs objects
+ * 
  * @author Concetta D'Amato
  */
 
 public class RootDensityFactory {
 	/**
 	 * Creates a new StressedETs object.
-	 * @param type name of the Evaporation or Transpiration splitting model
-	 * @param z 
-	 * @param zR depth of the root
-	 * @param dx vector containing the length of each control volume
+	 * 
+	 * @param type                name of the Evaporation or Transpiration splitting
+	 *                            model
+	 * @param z
+	 * @param zR                  depth of the root
+	 * @param dx                  vector containing the length of each control
+	 *                            volume
 	 * @param NUM_CONTROL_VOLUMES number of control volume for domain discetrization
 	 * @return stressFactor G
 	 */
-	
-	private ProblemQuantities variables;
-	private InputTimeSeries input;
 
-	public RootDensity createRootDensity (String type) 
-	{
-		this.input = InputTimeSeries.getInstance();
-		this.variables = ProblemQuantities.getInstance();
-		
+	public static RootDensity createRootDensity(ProblemQuantities variables, InputTimeSeries input, String type) {
+
 		RootDensity rootDensity = null;
-		if(type.equalsIgnoreCase("CostantGrowthMethod") || type.equalsIgnoreCase("CostantGrowthMethod")){
-			rootDensity = new CostantGrowthMethod();}
-		
-		else if(type.equalsIgnoreCase("CostantMethod") || type.equalsIgnoreCase("CostantMethod")){
-			rootDensity = new CostantMethod();}
-		
-		else if(type.equalsIgnoreCase("LinearGrowthMethod") || type.equalsIgnoreCase("LinearGrowthMethod")){
-			rootDensity = new LinearGrowthMethod();}
-		
-		else if(type.equalsIgnoreCase("ExponentialGrowthMethod") || type.equalsIgnoreCase("ExponentialGrowthMethod")){
-			rootDensity = new ExponentialGrowthMethod();}
-		
+		if (type.equalsIgnoreCase("CostantGrowthMethod") || type.equalsIgnoreCase("CostantGrowthMethod")) {
+			rootDensity = new CostantGrowthMethod(variables, input);
+		}
+
+		else if (type.equalsIgnoreCase("CostantMethod") || type.equalsIgnoreCase("CostantMethod")) {
+			rootDensity = new CostantMethod(variables, input);
+		}
+
+		else if (type.equalsIgnoreCase("LinearGrowthMethod") || type.equalsIgnoreCase("LinearGrowthMethod")) {
+			rootDensity = new LinearGrowthMethod(variables, input);
+		}
+
+		else if (type.equalsIgnoreCase("ExponentialGrowthMethod") || type.equalsIgnoreCase("ExponentialGrowthMethod")) {
+			rootDensity = new ExponentialGrowthMethod(variables, input);
+		}
+
 		return rootDensity;
-	}	
+	}
 }
-
-
-
-
-

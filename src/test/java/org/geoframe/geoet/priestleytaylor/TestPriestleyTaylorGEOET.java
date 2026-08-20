@@ -3,7 +3,10 @@ package org.geoframe.geoet.priestleytaylor;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
+import org.geoframe.geoet.data.Parameters;
+import org.geoframe.geoet.data.ProblemQuantities;
 import org.geoframe.geoet.inout.InputReaderMain;
+import org.geoframe.geoet.inout.InputTimeSeries;
 import org.geoframe.geoet.inout.OutputWriterMain;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
@@ -25,6 +28,10 @@ public class TestPriestleyTaylorGEOET extends GeoetTestCase{
         String endDate	= "2013-12-16 00:00";
         int timeStepMinutes = 60;
         String fId = "ID";
+        
+		Parameters parameters = new Parameters();
+		ProblemQuantities variables = new ProblemQuantities();
+		InputTimeSeries input = new InputTimeSeries();
         
         //PrintStreamProgressMonitor pm = new PrintStreamProgressMonitor(System.out, System.out);
         OmsRasterReader DEMreader = new OmsRasterReader();
@@ -65,52 +72,62 @@ public class TestPriestleyTaylorGEOET extends GeoetTestCase{
         writerEvapotranspirationPT.tTimestep = timeStepMinutes;
         writerEvapotranspirationPT.fileNovalue="-9999";
 		
-        PriestleyTaylorPotentialETSolverMain PtEt = new PriestleyTaylorPotentialETSolverMain();
-        InputReaderMain Input 		= new InputReaderMain();
-        OutputWriterMain Output 	= new OutputWriterMain();
+        PriestleyTaylorPotentialETSolverMain ptEt = new PriestleyTaylorPotentialETSolverMain();
+        ptEt.parameters = parameters;
+        ptEt.variables = variables;
+        ptEt.input = input;
         
-        Input.inCentroids = stationsFC;
-		Input.idCentroids= "ID";
-		Input.centroidElevation="Elevation";
-		Input.inDem = digitalElevationModel; 
+		InputReaderMain inputReader = new InputReaderMain();
+		inputReader.parameters = parameters;
+		inputReader.variables = variables;
+		inputReader.input = input;
+
+		OutputWriterMain outputWriter = new OutputWriterMain();
+		outputWriter.variables = variables;
+		outputWriter.input = input;
         
-		PtEt.alpha = 1.26;
-        PtEt.soilFluxParameterDay = 0.35;
-        PtEt.soilFluxParameterNight = 0.75;
+        inputReader.inCentroids = stationsFC;
+		inputReader.idCentroids= "ID";
+		inputReader.centroidElevation="Elevation";
+		inputReader.inDem = digitalElevationModel; 
+        
+		ptEt.alpha = 1.26;
+        ptEt.soilFluxParameterDay = 0.35;
+        ptEt.soilFluxParameterNight = 0.75;
 
         
         //PtEt.doHourly = true;
-        Input.temporalStep = timeStepMinutes;
+        inputReader.temporalStep = timeStepMinutes;
         //PtEt.defaultAtmosphericPressure = 101.3;
 
         while(tempReader.doProcess ) {
             
         	tempReader.nextRecord();
             HashMap<Integer, double[]> id2ValueMap = tempReader.outData;
-            Input.inAirTemperature = id2ValueMap;
-            Input.tStartDate=startDate;
-            Output.doPrintOutputPT = true;
+            inputReader.inAirTemperature = id2ValueMap;
+            inputReader.tStartDate=startDate;
+            outputWriter.doPrintOutputPT = true;
             
             netradReader.nextRecord();
             id2ValueMap = netradReader.outData;
-            Input.inNetRadiation = id2ValueMap;
+            inputReader.inNetRadiation = id2ValueMap;
 
             pressureReader.nextRecord();
             id2ValueMap = pressureReader.outData;
-            Input.inAtmosphericPressure = id2ValueMap;
+            inputReader.inAtmosphericPressure = id2ValueMap;
                       
             soilHeatFluxReader.nextRecord();
             id2ValueMap = soilHeatFluxReader.outData;
-            Input.inSoilFlux = id2ValueMap;
+            inputReader.inSoilFlux = id2ValueMap;
             
-            Input.process();
+            inputReader.process();
             
-            PtEt.process();
+            ptEt.process();
             
-            Output.process();
+            outputWriter.process();
             
           //HashMap<Integer, double[]> outLatentHeat = PtEt.outLatentHeatPt;
-            writerLatentHeatPT.inData = Output.outLatentHeatPT;
+            writerLatentHeatPT.inData = outputWriter.outLatentHeatPT;
             writerLatentHeatPT.writeNextLine();	
             
             if (pathToLatentHeatPT != null) {
@@ -118,7 +135,7 @@ public class TestPriestleyTaylorGEOET extends GeoetTestCase{
 			}
             
            // HashMap<Integer, double[]> outEvapotranspiration= PtEt.outEvapotranspirationPt;
-            writerEvapotranspirationPT.inData = Output.outEvapoTranspirationPT;
+            writerEvapotranspirationPT.inData = outputWriter.outEvapoTranspirationPT;
             writerEvapotranspirationPT.writeNextLine();		
 			
 			if (pathToEvapotranspirationPT != null) {
