@@ -48,6 +48,8 @@ public class GeoetOutputsHandler implements AutoCloseable {
 	public static final String COL_TIMESTAMP = "timestamp";
 	public static final String COL_EVAPO_TRANSPIRATION = "evapo_transpiration";
 	public static final String COL_FLUX_EVAPO_TRANSPIRATION = "flux_evapo_transpiration";
+	public static final String COL_EVAPORATION = "evaporation";
+	public static final String COL_FLUX_EVAPORATION = "flux_evaporation";
 
 	// mandatory per-step output - the row key every run always has
 	public long timestamp;
@@ -263,9 +265,9 @@ public class GeoetOutputsHandler implements AutoCloseable {
 		if (withFluxEvapoTranspiration)
 			resultCols.add(COL_FLUX_EVAPO_TRANSPIRATION);
 		if (withEvaporation)
-			resultCols.add("evaporation");
+			resultCols.add(COL_EVAPORATION);
 		if (withFluxEvaporation)
-			resultCols.add("flux_evaporation");
+			resultCols.add(COL_FLUX_EVAPORATION);
 		if (withTranspiration)
 			resultCols.add("transpiration");
 		if (withFluxTranspiration)
