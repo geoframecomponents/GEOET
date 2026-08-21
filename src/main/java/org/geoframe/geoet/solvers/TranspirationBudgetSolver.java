@@ -1,11 +1,11 @@
 package org.geoframe.geoet.solvers;
 
 import org.geoframe.geoet.core.transpiration.ComputeQuantities;
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.solvers.*;
-import org.geoframe.geoet.core.data.*;
 import org.geoframe.geoet.core.radiation.RadiationMethod;
 import org.geoframe.geoet.core.stressfactor.*;
 import org.geoframe.geoet.core.transpiration.*;
@@ -63,7 +63,7 @@ public class TranspirationBudgetSolver extends HMModel {
 
 	public Parameters parameters;
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 	public Leaf leafparameters;
 
 	@Execute

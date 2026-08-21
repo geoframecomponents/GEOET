@@ -2,10 +2,10 @@ package org.geoframe.geoet.core.radiation;
 
 import static java.lang.Math.pow;
 
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -140,7 +140,7 @@ public class RadiationMethodComplete {
 		return leafRadiativeFeedback;
 	}
 
-	public static void computeAirEmissivity(ProblemQuantities variables, InputTimeSeries input) {
+	public static void computeAirEmissivity(ProblemQuantities variables, CurrentStepInput input) {
 		// Compute the emissivity of air according to Prata 1996
 		// Eq. 11
 		variables.precipitableWater = 4650 * variables.saturationVaporPressure / input.airTemperature;
@@ -149,7 +149,7 @@ public class RadiationMethodComplete {
 				- (1 + variables.precipitableWater) * exp(-(pow((1.2 + 3 * variables.precipitableWater), 0.5))));
 	}
 
-	public static void computeRadiativeConductance(Parameters parameters, ProblemQuantities variables, InputTimeSeries input) {
+	public static void computeRadiativeConductance(Parameters parameters, ProblemQuantities variables, CurrentStepInput input) {
 		// Compute the radiative conductance g_r [kg m-2 s-1]
 		// Table A1
 		variables.radiativeConductance = (4 * parameters.leafEmissivity * parameters.stefanBoltzmannConstant
@@ -170,7 +170,7 @@ public class RadiationMethodComplete {
 	 * @return
 	 */
 	public static double computeAbsorbedLongwaveRadiation(Parameters parameters, ProblemQuantities variables,
-			InputTimeSeries input, double leafAreaIndex, double solarElevationAngle) {
+			CurrentStepInput input, double leafAreaIndex, double solarElevationAngle) {
 
 		// Ryu et all 2011
 		double directExtinctionCoefficientInCanopy = 0.5 / solarElevationAngle; // kb
@@ -211,7 +211,7 @@ public class RadiationMethodComplete {
 	}
 
 	public static void computeLongRadiationFromSoil(Parameters parameters, ProblemQuantities variables,
-			InputTimeSeries input) {
+			CurrentStepInput input) {
 
 		variables.soilTemperature = input.airTemperature;
 		variables.longRadiationFromSoil = parameters.soilEmissivity * parameters.stefanBoltzmannConstant
@@ -219,14 +219,14 @@ public class RadiationMethodComplete {
 	}
 
 	public static void computeLongRadiationFromShadeLeaf(Parameters parameters, ProblemQuantities variables,
-			InputTimeSeries input) {
+			CurrentStepInput input) {
 
 		variables.longRadiationFromShadeLeaf = parameters.leafEmissivity * parameters.stefanBoltzmannConstant
 				* pow(variables.leafTemperatureShade, 4);
 	}
 
 	public static void computeIncidentRadiation(Parameters parameters, ProblemQuantities variables,
-			InputTimeSeries input) {
+			CurrentStepInput input) {
 		variables.NewincidentSolarRadiationSoil = input.shortWaveRadiationDirect + input.shortWaveRadiationDiffuse
 				+ input.longWaveRadiation - variables.shortwaveCanopySun - variables.shortwaveCanopyShade
 				- variables.absorbedLongwaveRadiationSunlit - variables.absorbedLongwaveRadiationShadow

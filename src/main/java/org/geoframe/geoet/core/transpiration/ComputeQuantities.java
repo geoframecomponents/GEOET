@@ -30,9 +30,9 @@ import oms3.annotations.Documentation;
 import oms3.annotations.Keywords;
 import oms3.annotations.License;
 
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 @Description("This class compute some of the quantities of the radiation balance considering the LAI.")
 @Documentation("")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")

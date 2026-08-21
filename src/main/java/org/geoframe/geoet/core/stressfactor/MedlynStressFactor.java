@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.core.stressfactor;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -35,7 +35,7 @@ import oms3.annotations.License;
 
 public class MedlynStressFactor {
 
-	public static double stressFactorMedlyn(ProblemQuantities variables, InputTimeSeries input) {
+	public static double stressFactorMedlyn(ProblemQuantities variables, CurrentStepInput input) {
 		return 1.6*(1+input.g1/Math.sqrt(variables.vapourPressureDeficit))*(input.assimilationRate/variables.carbonDioxideLeafConcentration);
 	}
 }

@@ -20,7 +20,7 @@ package org.geoframe.geoet.core.stressfactor;
 
 import static java.lang.Math.pow;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;

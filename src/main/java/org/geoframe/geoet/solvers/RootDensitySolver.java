@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.solvers;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.core.rootdensity.RootDensity;
 import org.geoframe.geoet.core.rootdensity.RootDensityFactory;
 
@@ -60,7 +60,7 @@ public class RootDensitySolver {
 	private RootDensity rootDensity;
 
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 
 	@Execute
 	public void solve() {

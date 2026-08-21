@@ -20,8 +20,8 @@ package org.geoframe.geoet.solvers;
 
 import java.util.ArrayList;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.core.stressfactor.EnvironmentalStress;
 import org.geoframe.geoet.core.stressfactor.RepresentativeStressFactor;
 import org.geoframe.geoet.core.stressfactor.RepresentativeStressFactorFactory;
@@ -38,7 +38,6 @@ import oms3.annotations.License;
 import oms3.annotations.Out;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.stressfactor.FaoWaterStress;
 @Description("This class is used to compute Jarvis stress factors")
 @Documentation("")
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -238,7 +237,7 @@ public class JarvisStressFactorSolver extends HMModel {
 	// FaoWaterStress faoWaterStress = new FaoWaterStress();
 
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 
 	@Execute
 	public void solve() {

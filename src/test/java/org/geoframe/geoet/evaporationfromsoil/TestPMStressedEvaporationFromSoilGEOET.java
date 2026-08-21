@@ -1,15 +1,15 @@
 package org.geoframe.geoet.evaporationfromsoil;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
 
 import java.util.HashMap;
 
 import org.geoframe.geoet.solvers.*;
-import org.geoframe.geoet.core.data.*;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -30,7 +30,7 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 		String fId = "ID";
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 
 		////////////////////////////////////////////////////////////////////////////////////////////// int
 		////////////////////////////////////////////////////////////////////////////////////////////// stationID
@@ -86,10 +86,10 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 		EvaporationWriter.tTimestep = timeStepMinutes;
 		EvaporationWriter.fileNovalue = "-9999";
 
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
@@ -103,12 +103,12 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 		pmSoilevaporation.variables = variables;
 		pmSoilevaporation.input = input;
 
-		inputReader.inCentroids = stationsFC;
-		inputReader.idCentroids = "ID";
-		inputReader.centroidElevation = "Elevation";
-		inputReader.inDem = digitalElevationModel;
-		inputReader.tStartDate = startDate;
-		inputReader.temporalStep = timeStepMinutes;
+		inputPreprocessor.inCentroids = stationsFC;
+		inputPreprocessor.idCentroids = "ID";
+		inputPreprocessor.centroidElevation = "Elevation";
+		inputPreprocessor.inDem = digitalElevationModel;
+		inputPreprocessor.tStartDate = startDate;
+		inputPreprocessor.temporalStep = timeStepMinutes;
 
 		pmWaterStressFactor.defaultStress = 1.0;
 
@@ -122,34 +122,34 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 			temperatureReader.nextRecord();
 
 			HashMap<Integer, double[]> id2ValueMap = temperatureReader.outData;
-			inputReader.inAirTemperature = id2ValueMap;
-			inputReader.tStartDate = startDate;
-			inputReader.temporalStep = timeStepMinutes;
+			inputPreprocessor.inAirTemperature = id2ValueMap;
+			inputPreprocessor.tStartDate = startDate;
+			inputPreprocessor.temporalStep = timeStepMinutes;
 
 			windReader.nextRecord();
 			id2ValueMap = windReader.outData;
-			inputReader.inWindVelocity = id2ValueMap;
+			inputPreprocessor.inWindVelocity = id2ValueMap;
 
 			humidityReader.nextRecord();
 			id2ValueMap = humidityReader.outData;
-			inputReader.inRelativeHumidity = id2ValueMap;
+			inputPreprocessor.inRelativeHumidity = id2ValueMap;
 
 			soilHeatFluxReader.nextRecord();
 			id2ValueMap = soilHeatFluxReader.outData;
-			inputReader.inSoilFlux = id2ValueMap;
+			inputPreprocessor.inSoilFlux = id2ValueMap;
 
 			pressureReader.nextRecord();
 			id2ValueMap = pressureReader.outData;
-			inputReader.inAtmosphericPressure = id2ValueMap;
+			inputPreprocessor.inAtmosphericPressure = id2ValueMap;
 
 			netRadReader.nextRecord();
 			id2ValueMap = netRadReader.outData;
-			inputReader.inNetRadiation = id2ValueMap;
+			inputPreprocessor.inNetRadiation = id2ValueMap;
 
 			soilMoistureReader.nextRecord();
 			id2ValueMap = soilMoistureReader.outData;
-			inputReader.inSoilMoisture = id2ValueMap;
-			inputReader.process();
+			inputPreprocessor.inSoilMoisture = id2ValueMap;
+			inputPreprocessor.process();
 
 			pmWaterStressFactor.solve();
 

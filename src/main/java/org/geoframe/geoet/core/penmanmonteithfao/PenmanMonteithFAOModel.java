@@ -1,7 +1,7 @@
 package org.geoframe.geoet.core.penmanmonteithfao;
 
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 //import static java.lang.Math.pow;
 //
@@ -33,7 +33,7 @@ import oms3.annotations.Status;
 @License("General Public License Version 3 (GPLv3)")
 public class PenmanMonteithFAOModel {
 
-	public static double doET(Parameters parameters, InputTimeSeries input, double windAtZ, double radiation) {
+	public static double doET(Parameters parameters, CurrentStepInput input, double windAtZ, double radiation) {
 
 		double atmosphericPressure = input.atmosphericPressure / 1000;
 		double netRadiation = radiation * input.time / 1E6;

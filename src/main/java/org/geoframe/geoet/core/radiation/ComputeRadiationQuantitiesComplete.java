@@ -19,9 +19,9 @@
 
 package org.geoframe.geoet.core.radiation;
 
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.core.transpiration.*;
 import org.joda.time.DateTime;
 
@@ -40,7 +40,7 @@ import oms3.annotations.License;
 @License("General Public License Version 3 (GPLv3)")
 public class ComputeRadiationQuantitiesComplete {
 
-	public static void computeRadiationQuantities(Parameters parameters, ProblemQuantities variables, InputTimeSeries input,
+	public static void computeRadiationQuantities(Parameters parameters, ProblemQuantities variables, CurrentStepInput input,
 			DateTime date, double latitude, double longitude, double time, double leafAreaIndex, String typeOfCanopy,
 			double shortWaveRadiationDirect, double shortWaveRadiationDiffuse) {
 

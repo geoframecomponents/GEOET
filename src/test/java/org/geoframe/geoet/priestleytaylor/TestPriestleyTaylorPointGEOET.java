@@ -3,11 +3,11 @@ package org.geoframe.geoet.priestleytaylor;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
@@ -29,7 +29,7 @@ public class TestPriestleyTaylorPointGEOET extends GeoetTestCase {
 		
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 
 		String inPathToNetRad = getRes("/Input/dataET_point/1/Net_1.csv");
 		String inPathToTemperature = getRes("/Input/dataET_point/1/airT_1.csv");
@@ -64,16 +64,16 @@ public class TestPriestleyTaylorPointGEOET extends GeoetTestCase {
 		ptEt.variables = variables;
 		ptEt.input = input;
 		
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 
-		inputReader.elevation = 579;
+		inputPreprocessor.elevation = 579;
 		// Input.latitude = 37.97;
 		// Input.longitude= 13.57;
 
@@ -82,30 +82,30 @@ public class TestPriestleyTaylorPointGEOET extends GeoetTestCase {
 		ptEt.soilFluxParameterNight = 0.75;
 
 		// PtEt.doHourly = true;
-		inputReader.temporalStep = timeStepMinutes;
+		inputPreprocessor.temporalStep = timeStepMinutes;
 		// PtEt.defaultAtmosphericPressure = 101.3;
 
 		while (tempReader.doProcess) {
 
 			tempReader.nextRecord();
 			HashMap<Integer, double[]> id2ValueMap = tempReader.outData;
-			inputReader.inAirTemperature = id2ValueMap;
-			inputReader.tStartDate = startDate;
+			inputPreprocessor.inAirTemperature = id2ValueMap;
+			inputPreprocessor.tStartDate = startDate;
 			outputWriter.doPrintOutputPT = true;
 
 			netradReader.nextRecord();
 			id2ValueMap = netradReader.outData;
-			inputReader.inNetRadiation = id2ValueMap;
+			inputPreprocessor.inNetRadiation = id2ValueMap;
 
 			pressureReader.nextRecord();
 			id2ValueMap = pressureReader.outData;
-			inputReader.inAtmosphericPressure = id2ValueMap;
+			inputPreprocessor.inAtmosphericPressure = id2ValueMap;
 
 			soilHeatFluxReader.nextRecord();
 			id2ValueMap = soilHeatFluxReader.outData;
-			inputReader.inSoilFlux = id2ValueMap;
+			inputPreprocessor.inSoilFlux = id2ValueMap;
 
-			inputReader.process();
+			inputPreprocessor.process();
 
 			ptEt.process();
 

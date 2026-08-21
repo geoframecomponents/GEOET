@@ -31,8 +31,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.core.stressfactor.EnvironmentalStress;
 import org.geoframe.geoet.core.stressfactor.RepresentativeStressFactor;
 import org.geoframe.geoet.core.stressfactor.RepresentativeStressFactorFactory;
@@ -167,7 +167,7 @@ public class JarvisStressFactorSolverWithEvaporationOnly extends HMModel {
 	// FaoWaterStress faoWaterStress = new FaoWaterStress();
 
 	public ProblemQuantities variables;
-	// private InputTimeSeries input;
+	// private CurrentStepInput input;
 
 	@Execute
 	public void solve() {
@@ -189,7 +189,7 @@ public class JarvisStressFactorSolverWithEvaporationOnly extends HMModel {
 
 			outputToBuffer = new ArrayList<double[]>();
 		}
-		// input = InputTimeSeries.getInstance();
+		// input = CurrentStepInput.getInstance();
 
 		outputToBuffer.clear();
 

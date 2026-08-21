@@ -1,13 +1,13 @@
 package org.geoframe.geoet.prospero;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.InputTimeSeries;
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.solvers.ProsperoSolver;
 import org.geoframe.geoet.solvers.ProsperoStressFactorSolver;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
@@ -28,7 +28,7 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 	public void Test() throws Exception {
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 		Leaf leaf = new Leaf();
 
 		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/ProsperoGEOET_Cavone.gpkg"));
@@ -49,19 +49,19 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 		prospero.input = input;
 		prospero.leafparameters = leaf;
 
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		// no DEM/shapefile: elevation/latitude/longitude come straight from the gpkg
-		inputReader.elevation = inputs.getParameterDouble("elevation");
-		inputReader.latitude = inputs.getParameterDouble("latitude");
-		inputReader.longitude = inputs.getParameterDouble("longitude");
-		inputReader.tStartDate = startDate;
-		inputReader.temporalStep = timeStepMinutes;
+		inputPreprocessor.elevation = inputs.getParameterDouble("elevation");
+		inputPreprocessor.latitude = inputs.getParameterDouble("latitude");
+		inputPreprocessor.longitude = inputs.getParameterDouble("longitude");
+		inputPreprocessor.tStartDate = startDate;
+		inputPreprocessor.temporalStep = timeStepMinutes;
 
-		inputReader.canopyHeight = inputs.getParameterDouble("canopyHeight");
+		inputPreprocessor.canopyHeight = inputs.getParameterDouble("canopyHeight");
 		prospero.typeOfCanopy = inputs.getParameterString("typeOfCanopy");
 
 		prosperoStressFactor.defaultStress = inputs.getParameterDouble("defaultStress");
@@ -113,19 +113,19 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 				laiIt.next();
 				soilMoistureIt.next();
 
-				inputReader.inAirTemperature = one(STATION_ID, tempIt.value());
-				inputReader.inWindVelocity = one(STATION_ID, windIt.value());
-				inputReader.inRelativeHumidity = one(STATION_ID, humIt.value());
-				inputReader.inShortWaveRadiationDirect = one(STATION_ID, swDirectIt.value());
-				inputReader.inShortWaveRadiationDiffuse = one(STATION_ID, swDiffuseIt.value());
-				inputReader.inLongWaveRadiation = one(STATION_ID, lwIt.value());
-				inputReader.inSoilFlux = one(STATION_ID, soilFluxIt.value());
-				inputReader.inAtmosphericPressure = one(STATION_ID, pressureIt.value());
-				inputReader.inLeafAreaIndex = one(STATION_ID, laiIt.value());
-				inputReader.inNetRadiation = one(STATION_ID, netradIt.value());
-				inputReader.inSoilMoisture = one(STATION_ID, soilMoistureIt.value());
+				inputPreprocessor.inAirTemperature = one(STATION_ID, tempIt.value());
+				inputPreprocessor.inWindVelocity = one(STATION_ID, windIt.value());
+				inputPreprocessor.inRelativeHumidity = one(STATION_ID, humIt.value());
+				inputPreprocessor.inShortWaveRadiationDirect = one(STATION_ID, swDirectIt.value());
+				inputPreprocessor.inShortWaveRadiationDiffuse = one(STATION_ID, swDiffuseIt.value());
+				inputPreprocessor.inLongWaveRadiation = one(STATION_ID, lwIt.value());
+				inputPreprocessor.inSoilFlux = one(STATION_ID, soilFluxIt.value());
+				inputPreprocessor.inAtmosphericPressure = one(STATION_ID, pressureIt.value());
+				inputPreprocessor.inLeafAreaIndex = one(STATION_ID, laiIt.value());
+				inputPreprocessor.inNetRadiation = one(STATION_ID, netradIt.value());
+				inputPreprocessor.inSoilMoisture = one(STATION_ID, soilMoistureIt.value());
 
-				inputReader.process();
+				inputPreprocessor.process();
 
 				prosperoStressFactor.solve();
 				prospero.stressSun = prosperoStressFactor.stressSun;

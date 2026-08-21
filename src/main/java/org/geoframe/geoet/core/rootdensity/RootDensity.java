@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.core.rootdensity;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 /**
  * The stressedETs abstract class.
@@ -30,9 +30,9 @@ import org.geoframe.geoet.core.data.InputTimeSeries;
 public abstract class RootDensity {
 
 	protected ProblemQuantities variables;
-	protected InputTimeSeries input;
+	protected CurrentStepInput input;
 
-	public RootDensity(ProblemQuantities variables, InputTimeSeries input) {
+	public RootDensity(ProblemQuantities variables, CurrentStepInput input) {
 		this.variables = variables;
 		this.input = input;
 	}

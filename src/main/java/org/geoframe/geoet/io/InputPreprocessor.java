@@ -10,9 +10,9 @@ import java.util.LinkedHashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.core.transpiration.PressureMethods;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -42,7 +42,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 @Description("")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -51,7 +51,7 @@ import org.geoframe.geoet.core.data.InputTimeSeries;
 @Name("")
 @Status(Status.CERTIFIED)
 @License("General Public License Version 3 (GPLv3)")
-public class InputReader {
+public class InputPreprocessor {
 
 	/////////////////////////////////////////////
 	// ENVIRONMENTAL VARIABLES - INPUT
@@ -252,11 +252,11 @@ public class InputReader {
 	public Leaf leafparameters;
 	public Parameters parameters;
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {
-		// System.out.print("\nStart InputReader");
+		// System.out.print("\nStart InputPreprocessor");
 
 		// input.rootType = rootType;
 		input.rootDepth = rootDepth;
@@ -281,7 +281,7 @@ public class InputReader {
 
 				input.ID = ID;
 				input.elevation = elevation;
-				input.latitude = Math.toRadians(latitude);
+				input.latitude = latitude;
 				input.longitude = longitude;
 
 				if (inCentroids != null) {
@@ -294,7 +294,7 @@ public class InputReader {
 						CoordinateReferenceSystem sourceCRS = inDem.getCoordinateReferenceSystem2D();
 						Point[] idPoint = getPoint(coordinate, sourceCRS, targetCRS);
 						input.longitude = (idPoint[0].getX());
-						input.latitude = Math.toRadians(idPoint[0].getY());
+						input.latitude = idPoint[0].getY();
 					}
 				}
 
@@ -450,8 +450,8 @@ public class InputReader {
 		}
 
 		step++;
-		// System.out.println("\nairTinputReader = "+input.airTemperature+ " ID ="+ID);
-		// System.out.print("\n\nEnd InputReader");
+		// System.out.println("\nairTinputPreprocessor = "+input.airTemperature+ " ID ="+ID);
+		// System.out.print("\n\nEnd InputPreprocessor");
 	}
 
 	private Point[] getPoint(Coordinate coordinate, CoordinateReferenceSystem sourceCRS,

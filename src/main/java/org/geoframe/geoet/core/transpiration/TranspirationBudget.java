@@ -1,8 +1,8 @@
 package org.geoframe.geoet.core.transpiration;
 
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.core.radiation.*;
 
 import oms3.annotations.Author;

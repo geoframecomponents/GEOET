@@ -3,7 +3,7 @@ package org.geoframe.geoet.core.stressfactor;
 import oms3.annotations.Author;
 import oms3.annotations.License;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @License("General Public License Version 3 (GPLv3)")
 public class EnvironmentalStress {

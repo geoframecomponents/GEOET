@@ -19,8 +19,8 @@
 
 package org.geoframe.geoet.core.radiation;
 
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.core.transpiration.SolarGeometry;
 import org.joda.time.DateTime;
 

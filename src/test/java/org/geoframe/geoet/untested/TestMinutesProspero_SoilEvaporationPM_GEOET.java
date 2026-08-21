@@ -3,12 +3,12 @@ package org.geoframe.geoet.untested;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.Leaf;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.core.config.Leaf;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.solvers.PenmanMonteithFAOSoilEvaporationSolverWithCanopy;
 import org.geoframe.geoet.solvers.ProsperoStressFactorSolverWithEvaporation;
 import org.geoframe.geoet.solvers.ProsperoSolver;
@@ -37,7 +37,7 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 		Leaf leaf = new Leaf();
 
 		////////////////////////////////////////////////////////////////////////////////////////////// int
@@ -239,22 +239,22 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 		prospero.input = input;
 		prospero.leafparameters = leaf;
 
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 
-		inputReader.inCentroids = stationsFC;
-		inputReader.idCentroids = "ID";
-		inputReader.centroidElevation = "Elevation";
+		inputPreprocessor.inCentroids = stationsFC;
+		inputPreprocessor.idCentroids = "ID";
+		inputPreprocessor.centroidElevation = "Elevation";
 
-		inputReader.inDem = digitalElevationModel;
+		inputPreprocessor.inDem = digitalElevationModel;
 
-		inputReader.canopyHeight = 0.2;
+		inputPreprocessor.canopyHeight = 0.2;
 		prosperoStressFactor.defaultStress = 1.0;
 		// Prospero.doIterative = false;
 
@@ -281,54 +281,54 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 			temperatureReader.nextRecord();
 
 			HashMap<Integer, double[]> id2ValueMap = temperatureReader.outData;
-			inputReader.inAirTemperature = id2ValueMap;
+			inputPreprocessor.inAirTemperature = id2ValueMap;
 			// Input.doHourly = true;
 			outputWriter.doFullPrint = true;
 			// Prospero.typeOfTerrainCover = "FlatSurface";
-			inputReader.tStartDate = startDate;
-			inputReader.temporalStep = timeStepMinutes;
+			inputPreprocessor.tStartDate = startDate;
+			inputPreprocessor.temporalStep = timeStepMinutes;
 
 			windReader.nextRecord();
 			id2ValueMap = windReader.outData;
-			inputReader.inWindVelocity = id2ValueMap;
+			inputPreprocessor.inWindVelocity = id2ValueMap;
 
 			humidityReader.nextRecord();
 			id2ValueMap = humidityReader.outData;
-			inputReader.inRelativeHumidity = id2ValueMap;
+			inputPreprocessor.inRelativeHumidity = id2ValueMap;
 
 			shortwaveReaderDirect.nextRecord();
 			id2ValueMap = shortwaveReaderDirect.outData;
-			inputReader.inShortWaveRadiationDirect = id2ValueMap;
+			inputPreprocessor.inShortWaveRadiationDirect = id2ValueMap;
 
 			shortwaveReaderDiffuse.nextRecord();
 			id2ValueMap = shortwaveReaderDiffuse.outData;
-			inputReader.inShortWaveRadiationDiffuse = id2ValueMap;
+			inputPreprocessor.inShortWaveRadiationDiffuse = id2ValueMap;
 
 			longwaveReader.nextRecord();
 			id2ValueMap = longwaveReader.outData;
-			inputReader.inLongWaveRadiation = id2ValueMap;
+			inputPreprocessor.inLongWaveRadiation = id2ValueMap;
 
 			soilHeatFluxReader.nextRecord();
 			id2ValueMap = soilHeatFluxReader.outData;
-			inputReader.inSoilFlux = id2ValueMap;
+			inputPreprocessor.inSoilFlux = id2ValueMap;
 
 			pressureReader.nextRecord();
 			id2ValueMap = pressureReader.outData;
-			inputReader.inAtmosphericPressure = id2ValueMap;
+			inputPreprocessor.inAtmosphericPressure = id2ValueMap;
 
 			leafAreaIndexReader.nextRecord();
 			id2ValueMap = leafAreaIndexReader.outData;
-			inputReader.inLeafAreaIndex = id2ValueMap;
+			inputPreprocessor.inLeafAreaIndex = id2ValueMap;
 
 			netRadReader.nextRecord();
 			id2ValueMap = netRadReader.outData;
-			inputReader.inNetRadiation = id2ValueMap;
+			inputPreprocessor.inNetRadiation = id2ValueMap;
 
 			soilMoistureReader.nextRecord();
 			id2ValueMap = soilMoistureReader.outData;
-			inputReader.inSoilMoisture = id2ValueMap;
+			inputPreprocessor.inSoilMoisture = id2ValueMap;
 
-			inputReader.process();
+			inputPreprocessor.process();
 
 			pmSoilevaporation.evaporationStressWater = 0.9;
 			pmSoilevaporation.process();

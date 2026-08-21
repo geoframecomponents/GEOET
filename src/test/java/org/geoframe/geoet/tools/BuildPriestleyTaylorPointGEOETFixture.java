@@ -8,7 +8,7 @@ import java.util.Map;
  * baking in the same CSVs and scalar literals {@code
  * TestPriestleyTaylorPointGEOET} currently hardcodes. Unlike {@code
  * TestPriestleyTaylorGEOET}, no DEM/shapefile is read at all here, and
- * latitude/longitude are never set (left at {@code InputReader}'s own
+ * latitude/longitude are never set (left at {@code InputPreprocessor}'s own
  * {@code NaN} default) - only elevation is set, so this fixture's
  * {@code parameters} table carries no latitude/longitude columns either.
  */

@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.core.rootdensity;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 /**
  * 
@@ -28,7 +28,7 @@ import org.geoframe.geoet.core.data.InputTimeSeries;
 
 public class LinearGrowthMethod extends RootDensity {
 
-	public LinearGrowthMethod(ProblemQuantities variables, InputTimeSeries input) {
+	public LinearGrowthMethod(ProblemQuantities variables, CurrentStepInput input) {
 		super(variables, input);
 	}
 

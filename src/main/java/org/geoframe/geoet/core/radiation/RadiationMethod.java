@@ -2,7 +2,7 @@ package org.geoframe.geoet.core.radiation;
 
 import static java.lang.Math.pow;
 
-import org.geoframe.geoet.core.data.Parameters;
+import org.geoframe.geoet.core.config.Parameters;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;

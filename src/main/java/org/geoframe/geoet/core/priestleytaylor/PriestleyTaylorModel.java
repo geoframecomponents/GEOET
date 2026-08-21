@@ -1,7 +1,7 @@
 package org.geoframe.geoet.core.priestleytaylor;
 
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 //import static java.lang.Math.pow;
 //
@@ -33,7 +33,7 @@ import oms3.annotations.Status;
 @License("General Public License Version 3 (GPLv3)")
 public class PriestleyTaylorModel {
 
-	public static double doET(Parameters parameters, InputTimeSeries input, double radiation) {
+	public static double doET(Parameters parameters, CurrentStepInput input, double radiation) {
 		double atmosphericPressure = input.atmosphericPressure / 1000;
 		// Computation of Delta [kPa °C-1]
 		double denDelta = Math.pow((input.airTemperatureC + 237.3), 2);

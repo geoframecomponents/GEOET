@@ -3,7 +3,7 @@ package org.geoframe.geoet.untested;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
 import org.geoframe.geoet.solvers.PriestleyTaylorSolverWithStressFactor;
 import org.geoframe.geoet.solvers.PriestleyTaylorPenmanMonteithFAOStressFactorSolver;
@@ -56,7 +56,7 @@ public class TestActualPriestleyTaylorPointGEOET extends GeoetTestCase{
         writerEvapotranspirationPT.tTimestep = timeStepMinutes;
         writerEvapotranspirationPT.fileNovalue="-9999";
         
-        InputReader Input 		= new InputReader();
+        InputPreprocessor Input 		= new InputPreprocessor();
         PriestleyTaylorSolverWithStressFactor PtEt = new PriestleyTaylorSolverWithStressFactor();
         PriestleyTaylorPenmanMonteithFAOStressFactorSolver PTstressfactor = new PriestleyTaylorPenmanMonteithFAOStressFactorSolver();
         OutputWriter Output 	= new OutputWriter();

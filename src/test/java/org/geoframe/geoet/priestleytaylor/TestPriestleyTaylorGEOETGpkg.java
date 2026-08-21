@@ -1,12 +1,12 @@
 package org.geoframe.geoet.priestleytaylor;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.InputTimeSeries;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.solvers.PriestleyTaylorSolver;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
@@ -25,7 +25,7 @@ public class TestPriestleyTaylorGEOETGpkg extends GeoetTestCase {
 	public void Test() throws Exception {
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 
 		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PriestleyTaylorGEOET.gpkg"));
 		inputs.read();
@@ -41,22 +41,22 @@ public class TestPriestleyTaylorGEOETGpkg extends GeoetTestCase {
 		ptEt.variables = variables;
 		ptEt.input = input;
 
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		// no DEM/shapefile: elevation/latitude/longitude come straight from the gpkg
-		inputReader.elevation = inputs.getParameterDouble("elevation");
-		inputReader.latitude = inputs.getParameterDouble("latitude");
-		inputReader.longitude = inputs.getParameterDouble("longitude");
+		inputPreprocessor.elevation = inputs.getParameterDouble("elevation");
+		inputPreprocessor.latitude = inputs.getParameterDouble("latitude");
+		inputPreprocessor.longitude = inputs.getParameterDouble("longitude");
 
 		ptEt.alpha = inputs.getParameterDouble("alpha");
 		ptEt.soilFluxParameterDay = inputs.getParameterDouble("soilFluxParameterDay");
 		ptEt.soilFluxParameterNight = inputs.getParameterDouble("soilFluxParameterNight");
 
-		inputReader.tStartDate = startDate;
-		inputReader.temporalStep = timeStepMinutes;
+		inputPreprocessor.tStartDate = startDate;
+		inputPreprocessor.temporalStep = timeStepMinutes;
 
 		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries("airTemperature", startDate, endDate, 1000);
 				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries("netRadiation", startDate, endDate,
@@ -72,12 +72,12 @@ public class TestPriestleyTaylorGEOETGpkg extends GeoetTestCase {
 				pressureIt.next();
 				soilFluxIt.next();
 
-				inputReader.inAirTemperature = one(STATION_ID, tempIt.value());
-				inputReader.inNetRadiation = one(STATION_ID, netradIt.value());
-				inputReader.inAtmosphericPressure = one(STATION_ID, pressureIt.value());
-				inputReader.inSoilFlux = one(STATION_ID, soilFluxIt.value());
+				inputPreprocessor.inAirTemperature = one(STATION_ID, tempIt.value());
+				inputPreprocessor.inNetRadiation = one(STATION_ID, netradIt.value());
+				inputPreprocessor.inAtmosphericPressure = one(STATION_ID, pressureIt.value());
+				inputPreprocessor.inSoilFlux = one(STATION_ID, soilFluxIt.value());
 
-				inputReader.process();
+				inputPreprocessor.process();
 				ptEt.process();
 
 				outputs.timestamp = tempIt.timestamp();

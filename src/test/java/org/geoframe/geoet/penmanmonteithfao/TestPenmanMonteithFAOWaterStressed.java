@@ -3,11 +3,11 @@ package org.geoframe.geoet.penmanmonteithfao;
 import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
@@ -33,7 +33,7 @@ public class TestPenmanMonteithFAOWaterStressed extends GeoetTestCase {
 		String fId = "ID";
 		Parameters parameters = new Parameters();
 		ProblemQuantities variables = new ProblemQuantities();
-		InputTimeSeries input = new InputTimeSeries();
+		CurrentStepInput input = new CurrentStepInput();
 
 		OmsRasterReader DEMreader = new OmsRasterReader();
 
@@ -90,31 +90,31 @@ public class TestPenmanMonteithFAOWaterStressed extends GeoetTestCase {
 		pmFAO.variables = variables;
 		pmFAO.input = input;
 		
-		InputReader inputReader = new InputReader();
-		inputReader.parameters = parameters;
-		inputReader.variables = variables;
-		inputReader.input = input;
+		InputPreprocessor inputPreprocessor = new InputPreprocessor();
+		inputPreprocessor.parameters = parameters;
+		inputPreprocessor.variables = variables;
+		inputPreprocessor.input = input;
 
 		OutputWriter outputWriter = new OutputWriter();
 		outputWriter.variables = variables;
 		outputWriter.input = input;
 
-		inputReader.inCentroids = stationsFC;
-		inputReader.idCentroids = "ID";
-		inputReader.centroidElevation = "Elevation";
-		inputReader.inDem = digitalElevationModel;
+		inputPreprocessor.inCentroids = stationsFC;
+		inputPreprocessor.idCentroids = "ID";
+		inputPreprocessor.centroidElevation = "Elevation";
+		inputPreprocessor.inDem = digitalElevationModel;
 
 		pmFAO.cropCoefficient = 0.75; // 0.75
 		// PmFAO.waterWiltingPoint = 0.05;
 		// PmFAO.waterFieldCapacity = 0.27;
 		pmFAO.rootsDepth = 0.75;
 		// PmFAO.depletionFraction = 0.55;
-		inputReader.canopyHeight = 0.12;
+		inputPreprocessor.canopyHeight = 0.12;
 		pmFAO.soilFluxParameterDay = 0.35;
 		pmFAO.soilFluxParameterNight = 0.75;
 
-		inputReader.tStartDate = startDate;
-		inputReader.temporalStep = timeStepMinutes;
+		inputPreprocessor.tStartDate = startDate;
+		inputPreprocessor.temporalStep = timeStepMinutes;
 		// PmFAO.defaultAtmosphericPressure = 101.3;
 		// PmFAO.doHourly = true;
 
@@ -124,34 +124,34 @@ public class TestPenmanMonteithFAOWaterStressed extends GeoetTestCase {
 			tempReader.nextRecord();
 
 			HashMap<Integer, double[]> id2ValueMap = tempReader.outData;
-			inputReader.inAirTemperature = id2ValueMap;
+			inputPreprocessor.inAirTemperature = id2ValueMap;
 
 			windReader.nextRecord();
 			id2ValueMap = windReader.outData;
-			inputReader.inWindVelocity = id2ValueMap;
+			inputPreprocessor.inWindVelocity = id2ValueMap;
 
 			humReader.nextRecord();
 			id2ValueMap = humReader.outData;
-			inputReader.inRelativeHumidity = id2ValueMap;
+			inputPreprocessor.inRelativeHumidity = id2ValueMap;
 
 			netradReader.nextRecord();
 			id2ValueMap = netradReader.outData;
-			inputReader.inNetRadiation = id2ValueMap;
+			inputPreprocessor.inNetRadiation = id2ValueMap;
 
 			pressureReader.nextRecord();
 			id2ValueMap = pressureReader.outData;
-			inputReader.inAtmosphericPressure = id2ValueMap;
+			inputPreprocessor.inAtmosphericPressure = id2ValueMap;
 
 			soilMoistureReader.nextRecord();
 			id2ValueMap = soilMoistureReader.outData;
-			inputReader.inSoilMoisture = id2ValueMap;
+			inputPreprocessor.inSoilMoisture = id2ValueMap;
 
 			soilHeatFluxReader.nextRecord();
 			id2ValueMap = soilHeatFluxReader.outData;
-			inputReader.inSoilFlux = id2ValueMap;
+			inputPreprocessor.inSoilFlux = id2ValueMap;
 
 //            PmFAO.pm = pm;
-			inputReader.process();
+			inputPreprocessor.process();
 			pmFAO.process();
 			outputWriter.process();
 

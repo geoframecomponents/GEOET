@@ -20,8 +20,8 @@ package org.geoframe.geoet.core.rootdensity;
 
 import static java.lang.Math.exp;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 
 /**
  * 
@@ -30,7 +30,7 @@ import org.geoframe.geoet.core.data.InputTimeSeries;
 
 public class ExponentialGrowthMethod extends RootDensity {
 
-	public ExponentialGrowthMethod(ProblemQuantities variables, InputTimeSeries input) {
+	public ExponentialGrowthMethod(ProblemQuantities variables, CurrentStepInput input) {
 		super(variables, input);
 	}
 

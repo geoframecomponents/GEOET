@@ -2,7 +2,7 @@ package org.geoframe.geoet.io;
 
 import java.util.HashMap;
 
-import org.geoframe.geoet.core.data.ProblemQuantities;
+import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geotools.feature.SchemaException;
 
 import oms3.annotations.Author;
@@ -17,7 +17,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 @Description("")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -150,7 +150,7 @@ public class OutputWriter {
 	public boolean doProcess8;
 
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {

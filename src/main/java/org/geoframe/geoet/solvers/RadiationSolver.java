@@ -1,8 +1,8 @@
 package org.geoframe.geoet.solvers;
 
-import org.geoframe.geoet.core.data.Parameters;
-import org.geoframe.geoet.core.data.ProblemQuantities;
-import org.geoframe.geoet.core.data.InputTimeSeries;
+import org.geoframe.geoet.core.config.Parameters;
+import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.CurrentStepInput;
 import org.geoframe.geoet.core.radiation.ComputeRadiationQuantities;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
@@ -16,7 +16,7 @@ import oms3.annotations.License;
 import oms3.annotations.Name;
 import oms3.annotations.Status;
 
-import org.geoframe.geoet.core.data.Leaf;
+import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.radiation.RadiationMethod;
 import org.geoframe.geoet.core.stressfactor.EnvironmentalStress;
 import org.geoframe.geoet.core.transpiration.LatentHeatMethods;
@@ -72,7 +72,7 @@ public class RadiationSolver extends HMModel {
 	// private Leaf leafparameters;
 	public Parameters parameters;
 	public ProblemQuantities variables;
-	public InputTimeSeries input;
+	public CurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {
