@@ -17,6 +17,7 @@ import org.junit.Test;
  * Test ProsperoSolver using single geopackages as input and output files.
  *
  * @author D'Amato Concetta
+ * @author Michele Bottazzi
  * @author Andrea Antonello
  */
 public class TestProsperoPointGEOETGpkg extends GeoetTestCase {

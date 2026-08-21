@@ -18,6 +18,7 @@ import org.junit.Test;
  * Test ProsperoSolverWithExplicitLAI using single geopackages as input and output files.
  *
  * @author D'Amato Concetta
+ * @author Michele Bottazzi
  * @author Andrea Antonello
  */
 public class TestProsperoLAIGEOET_CavoneGpkg extends GeoetTestCase {

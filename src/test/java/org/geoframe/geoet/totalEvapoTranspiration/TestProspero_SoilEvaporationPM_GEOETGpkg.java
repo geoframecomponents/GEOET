@@ -1,4 +1,4 @@
-package org.geoframe.geoet.prospero;
+package org.geoframe.geoet.totalEvapoTranspiration;
 
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.data.InputTimeSeries;
@@ -8,19 +8,21 @@ import org.geoframe.geoet.core.data.ProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputReader;
+import org.geoframe.geoet.solvers.PenmanMonteithFAOSoilEvaporationSolverWithCanopy;
 import org.geoframe.geoet.solvers.ProsperoSolver;
-import org.geoframe.geoet.solvers.ProsperoStressFactorSolver;
+import org.geoframe.geoet.solvers.ProsperoStressFactorSolverWithEvaporation;
+import org.geoframe.geoet.solvers.TotalEvapoTranspirationSolver;
 import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test ProsperoSolver using single geopackages as input and output files.
+ * Test TotalEvapoTranspirationSolver using single geopackages as input and output files.
  *
  * @author D'Amato Concetta
  * @author Michele Bottazzi
  * @author Andrea Antonello
  */
-public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
+public class TestProspero_SoilEvaporationPM_GEOETGpkg extends GeoetTestCase {
 
 	private static final int STATION_ID = 1;
 
@@ -31,18 +33,29 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 		InputTimeSeries input = new InputTimeSeries();
 		Leaf leaf = new Leaf();
 
-		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/ProsperoGEOET_Cavone.gpkg"));
+		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/ProsperoSoilEvaporationPMGEOET.gpkg"));
 		inputs.read();
 
 		String startDate = inputs.getParameterString("startDate");
 		String endDate = inputs.getParameterString("endDate");
 		int timeStepMinutes = inputs.getParameterInt("timeStepMinutes");
 
-		String pathToOutputGpkg = getOutRes("ProsperoGEOET_Cavone.gpkg");
+		String pathToOutputGpkg = getOutRes("ProsperoSoilEvaporationPMGEOET.gpkg");
 
-		ProsperoStressFactorSolver prosperoStressFactor = new ProsperoStressFactorSolver();
+		TotalEvapoTranspirationSolver totalEvapoTranspiration = new TotalEvapoTranspirationSolver();
+		totalEvapoTranspiration.parameters = parameters;
+		totalEvapoTranspiration.variables = variables;
+		totalEvapoTranspiration.input = input;
+
+		PenmanMonteithFAOSoilEvaporationSolverWithCanopy pmSoilevaporation = new PenmanMonteithFAOSoilEvaporationSolverWithCanopy();
+		pmSoilevaporation.parameters = parameters;
+		pmSoilevaporation.variables = variables;
+		pmSoilevaporation.input = input;
+
+		ProsperoStressFactorSolverWithEvaporation prosperoStressFactor = new ProsperoStressFactorSolverWithEvaporation();
 		prosperoStressFactor.variables = variables;
 		prosperoStressFactor.input = input;
+
 		ProsperoSolver prospero = new ProsperoSolver();
 		prospero.parameters = parameters;
 		prospero.variables = variables;
@@ -80,6 +93,7 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 		prosperoStressFactor.rootsDepth = inputs.getParameterDouble("rootsDepth");
 		prosperoStressFactor.depletionFraction = inputs.getParameterDouble("depletionFraction");
 		prosperoStressFactor.cropCoefficient = inputs.getParameterDouble("cropCoefficient");
+		prosperoStressFactor.evaporationDepth = inputs.getParameterDouble("evaporationDepth");
 
 		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries("airTemperature", startDate, endDate, 1000);
 				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries("windVelocity", startDate, endDate, 1000);
@@ -132,11 +146,22 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 				prospero.stressShade = prosperoStressFactor.stressShade;
 				prospero.process();
 
+				pmSoilevaporation.evaporationStressWater = prosperoStressFactor.evaporationStress;
+				pmSoilevaporation.process();
+
+				totalEvapoTranspiration.evaporation = pmSoilevaporation.evaporation;
+				totalEvapoTranspiration.transpiration = prospero.transpiration;
+				totalEvapoTranspiration.process();
+
 				outputs.timestamp = tempIt.timestamp();
-				outputs.latentHeatSun = variables.latentHeatFluxSun;
-				outputs.latentHeatShade = variables.latentHeatFluxShade;
+				outputs.evapoTranspiration = variables.evapoTranspiration;
+				outputs.fluxEvapoTranspiration = variables.fluxEvapoTranspiration;
+				outputs.evaporation = variables.evaporation;
+				outputs.fluxEvaporation = variables.fluxEvaporation;
 				outputs.transpiration = variables.transpiration;
 				outputs.fluxTranspiration = variables.fluxTranspiration;
+				outputs.latentHeatSun = variables.latentHeatFluxSun;
+				outputs.latentHeatShade = variables.latentHeatFluxShade;
 				outputs.leafTemperatureSun = variables.leafTemperatureSun;
 				outputs.leafTemperatureShade = variables.leafTemperatureShade;
 				outputs.radiationSun = variables.shortwaveCanopySun;
@@ -150,45 +175,57 @@ public class TestProsperoGEOET_CavoneGpkg extends GeoetTestCase {
 			}
 		}
 
-		String goldenDir = "/golden/TestProsperoGEOET_Cavone/";
-		assertGpkgColumnMatchesGolden(goldenDir + "LatentHeatSun_potential10.csv", pathToOutputGpkg,
+		String goldenDir = "/golden/TestProspero_SoilEvaporationPM_GEOET/";
+		assertGpkgColumnMatchesGolden(goldenDir + "EvapoTranspiration.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
-				GeoetOutputsHandler.COL_LATENT_HEAT_SUN);
-		assertGpkgColumnMatchesGolden(goldenDir + "LatentHeatShadow_potential10.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.COL_EVAPO_TRANSPIRATION);
+		assertGpkgColumnMatchesGolden(goldenDir + "FluxEvapoTranspiration.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
-				GeoetOutputsHandler.COL_LATENT_HEAT_SHADE);
-		assertGpkgColumnMatchesGolden(goldenDir + "Transpiration_potential10.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.COL_FLUX_EVAPO_TRANSPIRATION);
+		assertGpkgColumnMatchesGolden(goldenDir + "Evaporation.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_EVAPORATION);
+		assertGpkgColumnMatchesGolden(goldenDir + "FluxEvaporation.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_FLUX_EVAPORATION);
+		assertGpkgColumnMatchesGolden(goldenDir + "Transpiration.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_TRANSPIRATION);
-		assertGpkgColumnMatchesGolden(goldenDir + "FluxTranspiration_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "FluxTranspiration.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_FLUX_TRANSPIRATION);
-		assertGpkgColumnMatchesGolden(goldenDir + "LeafTemperatureSun_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "LatentHeatSun.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_LATENT_HEAT_SUN);
+		assertGpkgColumnMatchesGolden(goldenDir + "LatentHeatShadow.csv", pathToOutputGpkg,
+				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
+				GeoetOutputsHandler.COL_LATENT_HEAT_SHADE);
+		assertGpkgColumnMatchesGolden(goldenDir + "LeafTemperatureSun.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_LEAF_TEMPERATURE_SUN);
-		assertGpkgColumnMatchesGolden(goldenDir + "LeafTemperatureSh_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "LeafTemperatureSh.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_LEAF_TEMPERATURE_SHADE);
-		assertGpkgColumnMatchesGolden(goldenDir + "RadSun_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "RadSun.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_RADIATION_SUN);
-		assertGpkgColumnMatchesGolden(goldenDir + "RadShadow_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "RadShadow.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_RADIATION_SHADE);
-		assertGpkgColumnMatchesGolden(goldenDir + "sensibleSun_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "sensibleSun.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_SENSIBLE_HEAT_SUN);
-		assertGpkgColumnMatchesGolden(goldenDir + "sensibleShadow_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "sensibleShadow.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_SENSIBLE_HEAT_SHADE);
-		assertGpkgColumnMatchesGolden(goldenDir + "RadiationSoil_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "RadiationSoil.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_RADIATION_SOIL);
-		assertGpkgColumnMatchesGolden(goldenDir + "Canopy_potential10.csv", pathToOutputGpkg,
+		assertGpkgColumnMatchesGolden(goldenDir + "Canopy.csv", pathToOutputGpkg,
 				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP,
 				GeoetOutputsHandler.COL_CANOPY);
-		assertGpkgColumnMatchesGolden(goldenDir + "VPD_potential10.csv", pathToOutputGpkg,
-				GeoetOutputsHandler.TABLE_OUTPUT_RESULTS, GeoetOutputsHandler.COL_TIMESTAMP, GeoetOutputsHandler.COL_VPD);
+		assertGpkgColumnMatchesGolden(goldenDir + "VPD.csv", pathToOutputGpkg, GeoetOutputsHandler.TABLE_OUTPUT_RESULTS,
+				GeoetOutputsHandler.COL_TIMESTAMP, GeoetOutputsHandler.COL_VPD);
 	}
 
 }
