@@ -12,19 +12,10 @@ import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test Priestley-Taylor evapotranspiration, driven by a single input
- * GeoPackage ({@code PriestleyTaylorPointGEOET.gpkg} - scalar parameters +
- * driving timeseries in one file) instead of the individual CSVs {@link
- * TestPriestleyTaylorPointGEOET} reads. Same solver wiring as the original -
- * no DEM/shapefile in either version, and latitude/longitude are left unset
- * (at {@code InputReader}'s own {@code NaN} default) here too, only
- * elevation is read from the gpkg. The computed values go only into the
- * output GeoPackage (via {@link GeoetOutputsHandler}); this test then reads
- * them straight back out of that gpkg and compares them against the golden
- * reference CSVs {@link TestPriestleyTaylorPointGEOET} already checks (see
- * {@link GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the
- * assertion actually exercises the gpkg's contents, not a parallel CSV
- * written alongside it purely for comparison purposes.
+ * Test PriestleyTaylorSolver using single geopackages as input and output files.
+ *
+ * @author D'Amato Concetta
+ * @author Andrea Antonello
  */
 public class TestPriestleyTaylorPointGEOETGpkg extends GeoetTestCase {
 

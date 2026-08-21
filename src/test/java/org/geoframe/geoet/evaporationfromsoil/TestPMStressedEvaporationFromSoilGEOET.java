@@ -10,14 +10,12 @@ import java.util.HashMap;
 
 import org.geoframe.geoet.solvers.*;
 import org.geoframe.geoet.core.data.*;
-import org.geoframe.geoet.solvers.*;
 import org.geotools.coverage.grid.GridCoverage2D;
 import org.geotools.data.simple.SimpleFeatureCollection;
 import org.hortonmachine.gears.io.rasterreader.OmsRasterReader;
 import org.hortonmachine.gears.io.shapefile.OmsShapefileFeatureReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
-//import org.jgrasstools.gears.libs.monitor.PrintStreamProgressMonitor;
 import org.junit.*;
 
 /**

@@ -12,19 +12,10 @@ import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test FAO Hourly evapotranspiration, driven by a single input GeoPackage
- * ({@code PenmanMonteithFAOWaterStressed.gpkg} - scalar parameters +
- * driving timeseries in one file) instead of the individual CSVs/DEM/
- * shapefile {@link TestPenmanMonteithFAOWaterStressed} reads. Same solver
- * wiring as the original. The computed values go only into the output
- * GeoPackage (via {@link GeoetOutputsHandler}); this test then reads them
- * straight back out of that gpkg and compares them against the golden
- * reference CSVs {@link TestPenmanMonteithFAOWaterStressed} already checks
- * (see {@link GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the
- * assertion actually exercises the gpkg's contents, not a parallel CSV
- * written alongside it purely for comparison purposes.
+ * Test PenmanMonteithFAOSolverWithFAOWaterStress using single geopackages as input and output files.
  *
- * @author D'Amato Concetta (concetta.damato@unitn.it)
+ * @author D'Amato Concetta
+ * @author Andrea Antonello
  */
 public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 

@@ -12,18 +12,10 @@ import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
 import org.junit.Test;
 
 /**
- * Test soil evaporation, driven by a single input GeoPackage ({@code
- * PMEvaporationFromSoilGEOET.gpkg} - scalar parameters + driving timeseries
- * in one file) instead of the individual CSVs/DEM/shapefile {@link
- * TestPMEvaporationFromSoilGEOET} reads. Same solver wiring as the original
- * (no scalar parameters set on the solver at all - it runs off its own
- * defaults). The computed values go only into the output GeoPackage (via
- * {@link GeoetOutputsHandler}); this test then reads them straight back out
- * of that gpkg and compares them against the golden reference CSVs {@link
- * TestPMEvaporationFromSoilGEOET} already checks (see {@link
- * GeoetTestCase#assertGpkgColumnMatchesGolden}) - this way the assertion
- * actually exercises the gpkg's contents, not a parallel CSV written
- * alongside it purely for comparison purposes.
+ * Test PenmanMonteithFAOSoilEvaporationSolver using single geopackages as input and output files.
+ *
+ * @author D'Amato Concetta
+ * @author Andrea Antonello
  */
 public class TestPMEvaporationFromSoilGEOETGpkg extends GeoetTestCase {
 

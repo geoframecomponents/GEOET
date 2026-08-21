@@ -50,6 +50,19 @@ public class GeoetOutputsHandler implements AutoCloseable {
 	public static final String COL_FLUX_EVAPO_TRANSPIRATION = "flux_evapo_transpiration";
 	public static final String COL_EVAPORATION = "evaporation";
 	public static final String COL_FLUX_EVAPORATION = "flux_evaporation";
+	public static final String COL_TRANSPIRATION = "transpiration";
+	public static final String COL_FLUX_TRANSPIRATION = "flux_transpiration";
+	public static final String COL_LATENT_HEAT_SUN = "latent_heat_sun";
+	public static final String COL_LATENT_HEAT_SHADE = "latent_heat_shade";
+	public static final String COL_SENSIBLE_HEAT_SUN = "sensible_heat_sun";
+	public static final String COL_SENSIBLE_HEAT_SHADE = "sensible_heat_shade";
+	public static final String COL_LEAF_TEMPERATURE_SUN = "leaf_temperature_sun";
+	public static final String COL_LEAF_TEMPERATURE_SHADE = "leaf_temperature_shade";
+	public static final String COL_RADIATION_SUN = "radiation_sun";
+	public static final String COL_RADIATION_SHADE = "radiation_shade";
+	public static final String COL_RADIATION_SOIL = "radiation_soil";
+	public static final String COL_CANOPY = "canopy";
+	public static final String COL_VPD = "vpd";
 
 	// mandatory per-step output - the row key every run always has
 	public long timestamp;
@@ -269,31 +282,31 @@ public class GeoetOutputsHandler implements AutoCloseable {
 		if (withFluxEvaporation)
 			resultCols.add(COL_FLUX_EVAPORATION);
 		if (withTranspiration)
-			resultCols.add("transpiration");
+			resultCols.add(COL_TRANSPIRATION);
 		if (withFluxTranspiration)
-			resultCols.add("flux_transpiration");
+			resultCols.add(COL_FLUX_TRANSPIRATION);
 		if (withLatentHeatSun)
-			resultCols.add("latent_heat_sun");
+			resultCols.add(COL_LATENT_HEAT_SUN);
 		if (withLatentHeatShade)
-			resultCols.add("latent_heat_shade");
+			resultCols.add(COL_LATENT_HEAT_SHADE);
 		if (withSensibleHeatSun)
-			resultCols.add("sensible_heat_sun");
+			resultCols.add(COL_SENSIBLE_HEAT_SUN);
 		if (withSensibleHeatShade)
-			resultCols.add("sensible_heat_shade");
+			resultCols.add(COL_SENSIBLE_HEAT_SHADE);
 		if (withLeafTemperatureSun)
-			resultCols.add("leaf_temperature_sun");
+			resultCols.add(COL_LEAF_TEMPERATURE_SUN);
 		if (withLeafTemperatureShade)
-			resultCols.add("leaf_temperature_shade");
+			resultCols.add(COL_LEAF_TEMPERATURE_SHADE);
 		if (withRadiationSun)
-			resultCols.add("radiation_sun");
+			resultCols.add(COL_RADIATION_SUN);
 		if (withRadiationShade)
-			resultCols.add("radiation_shade");
+			resultCols.add(COL_RADIATION_SHADE);
 		if (withRadiationSoil)
-			resultCols.add("radiation_soil");
+			resultCols.add(COL_RADIATION_SOIL);
 		if (withCanopy)
-			resultCols.add("canopy");
+			resultCols.add(COL_CANOPY);
 		if (withVpd)
-			resultCols.add("vpd");
+			resultCols.add(COL_VPD);
 
 		if (!db.hasTable(resultsTable)) {
 			List<String> fieldDefs = new ArrayList<>();
