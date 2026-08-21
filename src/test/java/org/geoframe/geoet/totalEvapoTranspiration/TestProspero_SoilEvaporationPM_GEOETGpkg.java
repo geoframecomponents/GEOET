@@ -12,7 +12,7 @@ import org.geoframe.geoet.solvers.PenmanMonteithFAOSoilEvaporationSolverWithCano
 import org.geoframe.geoet.solvers.ProsperoSolver;
 import org.geoframe.geoet.solvers.ProsperoStressFactorSolverWithEvaporation;
 import org.geoframe.geoet.solvers.TotalEvapoTranspirationSolver;
-import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
+import org.hortonmachine.dbs.utils.DbTimeseriesIterator;
 import org.junit.Test;
 
 /**
@@ -95,22 +95,22 @@ public class TestProspero_SoilEvaporationPM_GEOETGpkg extends GeoetTestCase {
 		prosperoStressFactor.cropCoefficient = inputs.getParameterDouble(GeoetInputsHandler.PARAM_CROP_COEFFICIENT);
 		prosperoStressFactor.evaporationDepth = inputs.getParameterDouble(GeoetInputsHandler.PARAM_EVAPORATION_DEPTH);
 
-		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_WIND_VELOCITY, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator humIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, startDate, endDate,
+		try (DbTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
+				DbTimeseriesIterator windIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_WIND_VELOCITY, startDate, endDate, 1000);
+				DbTimeseriesIterator humIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator swDirectIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SHORT_WAVE_RADIATION_DIRECT, startDate,
+				DbTimeseriesIterator swDirectIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SHORT_WAVE_RADIATION_DIRECT, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator swDiffuseIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SHORT_WAVE_RADIATION_DIFFUSE, startDate,
+				DbTimeseriesIterator swDiffuseIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SHORT_WAVE_RADIATION_DIFFUSE, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator lwIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_LONG_WAVE_RADIATION, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
+				DbTimeseriesIterator lwIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_LONG_WAVE_RADIATION, startDate, endDate, 1000);
+				DbTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
+				DbTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
+				DbTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator laiIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_LEAF_AREA_INDEX, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator soilMoistureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_MOISTURE, startDate, endDate,
+				DbTimeseriesIterator laiIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_LEAF_AREA_INDEX, startDate, endDate, 1000);
+				DbTimeseriesIterator soilMoistureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_MOISTURE, startDate, endDate,
 						1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
 			outputs.parameters = inputs.getParameters();

@@ -8,7 +8,7 @@ import java.util.Set;
 import org.hortonmachine.dbs.compat.ADb;
 import org.hortonmachine.dbs.compat.EDb;
 import org.hortonmachine.dbs.utils.SqlName;
-import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
+import org.hortonmachine.dbs.utils.DbTimeseriesIterator;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
@@ -22,7 +22,7 @@ import org.joda.time.format.DateTimeFormatter;
  *
  * <p>
  * Deliberately not {@code AutoCloseable}: {@link #iterateTimeseries} hands
- * out a {@link GeopackageTimeseriesIterator} that closes the handler's own
+ * out a {@link DbTimeseriesIterator} that closes the handler's own
  * shared connection when the iterator itself is closed (same as
  * {@code Whetgeo1DInputsHandler}, for the same reason) - closing the handler
  * afterwards would double-close it.
@@ -34,10 +34,6 @@ public class GeoetInputsHandler {
 	public static final String COL_ID = "id";
 	public static final String COL_TIMESTAMP = "timestamp";
 
-	// Scalar parameter-table keys, shared between every GpkgFixtureBuilder call
-	// site and the Gpkg test that reads the fixture back - a single source of
-	// truth so the two sides of a fixture/test pair can't drift out of sync
-	// via a typo'd string literal on either end. Not every test uses every key.
 	public static final String PARAM_START_DATE = "startDate";
 	public static final String PARAM_END_DATE = "endDate";
 	public static final String PARAM_TIME_STEP_MINUTES = "timeStepMinutes";
@@ -67,9 +63,6 @@ public class GeoetInputsHandler {
 	public static final String PARAM_DEPLETION_FRACTION = "depletionFraction";
 	public static final String PARAM_EVAPORATION_DEPTH = "evaporationDepth";
 
-	// Driving-timeseries variable names, shared the same way: each resolves to
-	// table timeseries_<name> via iterateTimeseries, and to the CSV a
-	// GpkgFixtureBuilder call writes it from.
 	public static final String VAR_AIR_TEMPERATURE = "airTemperature";
 	public static final String VAR_WIND_VELOCITY = "windVelocity";
 	public static final String VAR_RELATIVE_HUMIDITY = "relativeHumidity";
@@ -85,6 +78,10 @@ public class GeoetInputsHandler {
 	private final ADb db;
 	private final Map<String, Object> parameters = new HashMap<>();
 
+	public GeoetInputsHandler(ADb db) {
+		this.db = db;
+	}
+
 	public GeoetInputsHandler(String gpkgPath) throws Exception {
 		this.db = EDb.GEOPACKAGE.getDb();
 		this.db.open(gpkgPath);
@@ -94,12 +91,9 @@ public class GeoetInputsHandler {
 	public void read() throws Exception {
 		SqlName table = SqlName.m(TABLE_PARAMETERS);
 		Set<String> cols = new HashSet<>();
-		db.execOnResultSet("PRAGMA table_info(\"" + TABLE_PARAMETERS + "\")", rs -> {
-			while (rs.next()) {
-				cols.add(rs.getString(2));
-			}
-			return null;
-		});
+		for (String[] col : db.getTableColumns(table)) {
+			cols.add(col[0]);
+		}
 		cols.remove(COL_ID);
 
 		db.execOnResultSet("SELECT * FROM " + table.fixedDoubleName + " LIMIT 1", rs -> {
@@ -170,13 +164,13 @@ public class GeoetInputsHandler {
 	 * @param endDate      inclusive end, format {@code "yyyy-MM-dd HH:mm"} (UTC),
 	 *                     or null for no upper limit
 	 */
-	public GeopackageTimeseriesIterator iterateTimeseries(String variableName, String startDate, String endDate,
+	public DbTimeseriesIterator iterateTimeseries(String variableName, String startDate, String endDate,
 			int bufferSize) throws Exception {
 		DateTimeFormatter fmt = DateTimeFormat.forPattern("yyyy-MM-dd HH:mm").withZoneUTC();
 		Long startMillis = (startDate != null) ? fmt.parseDateTime(startDate).getMillis() : null;
 		Long endMillis = (endDate != null) ? fmt.parseDateTime(endDate).getMillis() : null;
 		// GpkgFixtureBuilder always names the value column after the variable itself
-		return new GeopackageTimeseriesIterator(db, TIMESERIES_TABLE_PREFIX + variableName, COL_TIMESTAMP,
+		return new DbTimeseriesIterator(db, TIMESERIES_TABLE_PREFIX + variableName, COL_TIMESTAMP,
 				variableName, startMillis, endMillis, bufferSize);
 	}
 }

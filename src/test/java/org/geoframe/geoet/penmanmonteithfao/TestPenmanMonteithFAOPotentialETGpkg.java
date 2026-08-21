@@ -8,7 +8,7 @@ import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.solvers.PenmanMonteithFAOSolver;
-import org.hortonmachine.gears.io.geopackage.GeopackageTimeseriesIterator;
+import org.hortonmachine.dbs.utils.DbTimeseriesIterator;
 import org.junit.Test;
 
 /**
@@ -58,15 +58,15 @@ public class TestPenmanMonteithFAOPotentialETGpkg extends GeoetTestCase {
 		inputPreprocessor.tStartDate = startDate;
 		inputPreprocessor.temporalStep = timeStepMinutes;
 
-		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_WIND_VELOCITY, startDate, endDate, 1000);
-				GeopackageTimeseriesIterator humIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, startDate, endDate,
+		try (DbTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
+				DbTimeseriesIterator windIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_WIND_VELOCITY, startDate, endDate, 1000);
+				DbTimeseriesIterator humIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
+				DbTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
+				DbTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
+				DbTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
 			outputs.parameters = inputs.getParameters();
 
