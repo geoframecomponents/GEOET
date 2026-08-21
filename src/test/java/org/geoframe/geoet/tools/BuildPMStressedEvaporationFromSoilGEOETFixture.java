@@ -3,6 +3,8 @@ package org.geoframe.geoet.tools;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.geoframe.geoet.io.GeoetInputsHandler;
+
 /**
  * One-off generator for the {@code PMStressedEvaporationFromSoilGEOET.gpkg}
  * fixture, baking in the same CSVs, elevation/latitude/longitude (from the
@@ -22,27 +24,27 @@ public class BuildPMStressedEvaporationFromSoilGEOETFixture {
 		String outPath = "src/test/resources/Input/gpkg/PMStressedEvaporationFromSoilGEOET.gpkg";
 
 		Map<String, Object> parameters = new LinkedHashMap<>();
-		parameters.put("startDate", "2013-12-15 00:00");
-		parameters.put("endDate", "2013-12-15 02:00");
-		parameters.put("timeStepMinutes", 60);
-		parameters.put("elevation", 536.0);
-		parameters.put("latitude", 40.50554583408996);
-		parameters.put("longitude", 16.245253020414495);
-		parameters.put("defaultStress", 1.0);
-		parameters.put("useWaterStress", 0);
-		parameters.put("waterWiltingPoint", 0.16);
-		parameters.put("waterFieldCapacity", 0.27);
-		parameters.put("depth", 0.25);
-		parameters.put("depletionFraction", 0.75);
+		parameters.put(GeoetInputsHandler.PARAM_START_DATE, "2013-12-15 00:00");
+		parameters.put(GeoetInputsHandler.PARAM_END_DATE, "2013-12-15 02:00");
+		parameters.put(GeoetInputsHandler.PARAM_TIME_STEP_MINUTES, 60);
+		parameters.put(GeoetInputsHandler.PARAM_ELEVATION, 536.0);
+		parameters.put(GeoetInputsHandler.PARAM_LATITUDE, 40.50554583408996);
+		parameters.put(GeoetInputsHandler.PARAM_LONGITUDE, 16.245253020414495);
+		parameters.put(GeoetInputsHandler.PARAM_DEFAULT_STRESS, 1.0);
+		parameters.put(GeoetInputsHandler.PARAM_USE_WATER_STRESS, 0);
+		parameters.put(GeoetInputsHandler.PARAM_WATER_WILTING_POINT, 0.16);
+		parameters.put(GeoetInputsHandler.PARAM_WATER_FIELD_CAPACITY, 0.27);
+		parameters.put(GeoetInputsHandler.PARAM_DEPTH, 0.25);
+		parameters.put(GeoetInputsHandler.PARAM_DEPLETION_FRACTION, 0.75);
 
 		Map<String, String> timeseries = new LinkedHashMap<>();
-		timeseries.put("airTemperature", resIn + "airT_1.csv");
-		timeseries.put("windVelocity", resIn + "Wind_1.csv");
-		timeseries.put("relativeHumidity", resIn + "RH_1.csv");
-		timeseries.put("netRadiation", resIn + "Net_1.csv");
-		timeseries.put("atmosphericPressure", resIn + "Pres_1.csv");
-		timeseries.put("soilFlux", resIn + "GHF_1.csv");
-		timeseries.put("soilMoisture", resIn + "SoilMoisture18.csv");
+		timeseries.put(GeoetInputsHandler.VAR_AIR_TEMPERATURE, resIn + "airT_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_WIND_VELOCITY, resIn + "Wind_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, resIn + "RH_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_NET_RADIATION, resIn + "Net_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, resIn + "Pres_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_SOIL_FLUX, resIn + "GHF_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_SOIL_MOISTURE, resIn + "SoilMoisture18.csv");
 
 		GpkgFixtureBuilder.build(outPath, parameters, timeseries);
 		System.out.println("Wrote " + outPath);

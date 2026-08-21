@@ -3,6 +3,8 @@ package org.geoframe.geoet.tools;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.geoframe.geoet.io.GeoetInputsHandler;
+
 /**
  * One-off generator for the {@code PriestleyTaylorPointGEOET.gpkg} fixture,
  * baking in the same CSVs and scalar literals {@code
@@ -19,19 +21,19 @@ public class BuildPriestleyTaylorPointGEOETFixture {
 		String outPath = "src/test/resources/Input/gpkg/PriestleyTaylorPointGEOET.gpkg";
 
 		Map<String, Object> parameters = new LinkedHashMap<>();
-		parameters.put("startDate", "2013-12-15 00:00");
-		parameters.put("endDate", "2013-12-16 00:00");
-		parameters.put("timeStepMinutes", 60);
-		parameters.put("elevation", 579.0);
-		parameters.put("alpha", 1.26);
-		parameters.put("soilFluxParameterDay", 0.35);
-		parameters.put("soilFluxParameterNight", 0.75);
+		parameters.put(GeoetInputsHandler.PARAM_START_DATE, "2013-12-15 00:00");
+		parameters.put(GeoetInputsHandler.PARAM_END_DATE, "2013-12-16 00:00");
+		parameters.put(GeoetInputsHandler.PARAM_TIME_STEP_MINUTES, 60);
+		parameters.put(GeoetInputsHandler.PARAM_ELEVATION, 579.0);
+		parameters.put(GeoetInputsHandler.PARAM_ALPHA, 1.26);
+		parameters.put(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_DAY, 0.35);
+		parameters.put(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_NIGHT, 0.75);
 
 		Map<String, String> timeseries = new LinkedHashMap<>();
-		timeseries.put("airTemperature", resIn + "airT_1.csv");
-		timeseries.put("netRadiation", resIn + "Net_1.csv");
-		timeseries.put("atmosphericPressure", resIn + "Pres_1.csv");
-		timeseries.put("soilFlux", resIn + "GHF_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_AIR_TEMPERATURE, resIn + "airT_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_NET_RADIATION, resIn + "Net_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, resIn + "Pres_1.csv");
+		timeseries.put(GeoetInputsHandler.VAR_SOIL_FLUX, resIn + "GHF_1.csv");
 
 		GpkgFixtureBuilder.build(outPath, parameters, timeseries);
 		System.out.println("Wrote " + outPath);

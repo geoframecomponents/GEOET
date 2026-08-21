@@ -34,6 +34,54 @@ public class GeoetInputsHandler {
 	public static final String COL_ID = "id";
 	public static final String COL_TIMESTAMP = "timestamp";
 
+	// Scalar parameter-table keys, shared between every GpkgFixtureBuilder call
+	// site and the Gpkg test that reads the fixture back - a single source of
+	// truth so the two sides of a fixture/test pair can't drift out of sync
+	// via a typo'd string literal on either end. Not every test uses every key.
+	public static final String PARAM_START_DATE = "startDate";
+	public static final String PARAM_END_DATE = "endDate";
+	public static final String PARAM_TIME_STEP_MINUTES = "timeStepMinutes";
+	public static final String PARAM_ELEVATION = "elevation";
+	public static final String PARAM_LATITUDE = "latitude";
+	public static final String PARAM_LONGITUDE = "longitude";
+	public static final String PARAM_CANOPY_HEIGHT = "canopyHeight";
+	public static final String PARAM_TYPE_OF_CANOPY = "typeOfCanopy";
+	public static final String PARAM_CROP_COEFFICIENT = "cropCoefficient";
+	public static final String PARAM_ROOTS_DEPTH = "rootsDepth";
+	public static final String PARAM_SOIL_FLUX_PARAMETER_DAY = "soilFluxParameterDay";
+	public static final String PARAM_SOIL_FLUX_PARAMETER_NIGHT = "soilFluxParameterNight";
+	public static final String PARAM_DEFAULT_STRESS = "defaultStress";
+	public static final String PARAM_USE_RADIATION_STRESS = "useRadiationStress";
+	public static final String PARAM_USE_TEMPERATURE_STRESS = "useTemperatureStress";
+	public static final String PARAM_USE_VDP_STRESS = "useVDPStress";
+	public static final String PARAM_USE_WATER_STRESS = "useWaterStress";
+	public static final String PARAM_ALPHA = "alpha";
+	public static final String PARAM_THETA = "theta";
+	public static final String PARAM_VPD0 = "VPD0";
+	public static final String PARAM_TL = "Tl";
+	public static final String PARAM_T0 = "T0";
+	public static final String PARAM_TH = "Th";
+	public static final String PARAM_WATER_WILTING_POINT = "waterWiltingPoint";
+	public static final String PARAM_WATER_FIELD_CAPACITY = "waterFieldCapacity";
+	public static final String PARAM_DEPTH = "depth";
+	public static final String PARAM_DEPLETION_FRACTION = "depletionFraction";
+	public static final String PARAM_EVAPORATION_DEPTH = "evaporationDepth";
+
+	// Driving-timeseries variable names, shared the same way: each resolves to
+	// table timeseries_<name> via iterateTimeseries, and to the CSV a
+	// GpkgFixtureBuilder call writes it from.
+	public static final String VAR_AIR_TEMPERATURE = "airTemperature";
+	public static final String VAR_WIND_VELOCITY = "windVelocity";
+	public static final String VAR_RELATIVE_HUMIDITY = "relativeHumidity";
+	public static final String VAR_SHORT_WAVE_RADIATION_DIRECT = "shortWaveRadiationDirect";
+	public static final String VAR_SHORT_WAVE_RADIATION_DIFFUSE = "shortWaveRadiationDiffuse";
+	public static final String VAR_LONG_WAVE_RADIATION = "longWaveRadiation";
+	public static final String VAR_NET_RADIATION = "netRadiation";
+	public static final String VAR_ATMOSPHERIC_PRESSURE = "atmosphericPressure";
+	public static final String VAR_SOIL_FLUX = "soilFlux";
+	public static final String VAR_SOIL_MOISTURE = "soilMoisture";
+	public static final String VAR_LEAF_AREA_INDEX = "leafAreaIndex";
+
 	private final ADb db;
 	private final Map<String, Object> parameters = new HashMap<>();
 

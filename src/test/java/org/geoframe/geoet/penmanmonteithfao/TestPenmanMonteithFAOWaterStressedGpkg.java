@@ -30,9 +30,9 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PenmanMonteithFAOWaterStressed.gpkg"));
 		inputs.read();
 
-		String startDate = inputs.getParameterString("startDate");
-		String endDate = inputs.getParameterString("endDate");
-		int timeStepMinutes = inputs.getParameterInt("timeStepMinutes");
+		String startDate = inputs.getParameterString(GeoetInputsHandler.PARAM_START_DATE);
+		String endDate = inputs.getParameterString(GeoetInputsHandler.PARAM_END_DATE);
+		int timeStepMinutes = inputs.getParameterInt(GeoetInputsHandler.PARAM_TIME_STEP_MINUTES);
 
 		String pathToOutputGpkg = getOutRes("PenmanMonteithFAOWaterStressed.gpkg");
 
@@ -47,35 +47,35 @@ public class TestPenmanMonteithFAOWaterStressedGpkg extends GeoetTestCase {
 		inputPreprocessor.input = input;
 
 		// no DEM/shapefile: elevation/latitude/longitude come straight from the gpkg
-		inputPreprocessor.elevation = inputs.getParameterDouble("elevation");
-		inputPreprocessor.latitude = inputs.getParameterDouble("latitude");
-		inputPreprocessor.longitude = inputs.getParameterDouble("longitude");
+		inputPreprocessor.elevation = inputs.getParameterDouble(GeoetInputsHandler.PARAM_ELEVATION);
+		inputPreprocessor.latitude = inputs.getParameterDouble(GeoetInputsHandler.PARAM_LATITUDE);
+		inputPreprocessor.longitude = inputs.getParameterDouble(GeoetInputsHandler.PARAM_LONGITUDE);
 
-		pmFAO.cropCoefficient = inputs.getParameterDouble("cropCoefficient");
+		pmFAO.cropCoefficient = inputs.getParameterDouble(GeoetInputsHandler.PARAM_CROP_COEFFICIENT);
 		// PmFAO.waterWiltingPoint = 0.05;
 		// PmFAO.waterFieldCapacity = 0.27;
-		pmFAO.rootsDepth = inputs.getParameterDouble("rootsDepth");
+		pmFAO.rootsDepth = inputs.getParameterDouble(GeoetInputsHandler.PARAM_ROOTS_DEPTH);
 		// PmFAO.depletionFraction = 0.55;
-		inputPreprocessor.canopyHeight = inputs.getParameterDouble("canopyHeight");
-		pmFAO.soilFluxParameterDay = inputs.getParameterDouble("soilFluxParameterDay");
-		pmFAO.soilFluxParameterNight = inputs.getParameterDouble("soilFluxParameterNight");
+		inputPreprocessor.canopyHeight = inputs.getParameterDouble(GeoetInputsHandler.PARAM_CANOPY_HEIGHT);
+		pmFAO.soilFluxParameterDay = inputs.getParameterDouble(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_DAY);
+		pmFAO.soilFluxParameterNight = inputs.getParameterDouble(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_NIGHT);
 
 		inputPreprocessor.tStartDate = startDate;
 		inputPreprocessor.temporalStep = timeStepMinutes;
 		// PmFAO.defaultAtmosphericPressure = 101.3;
 		// PmFAO.doHourly = true;
 
-		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries("airTemperature", startDate, endDate, 1000);
-				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries("windVelocity", startDate, endDate, 1000);
-				GeopackageTimeseriesIterator humIt = inputs.iterateTimeseries("relativeHumidity", startDate, endDate,
+		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
+				GeopackageTimeseriesIterator windIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_WIND_VELOCITY, startDate, endDate, 1000);
+				GeopackageTimeseriesIterator humIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_RELATIVE_HUMIDITY, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries("netRadiation", startDate, endDate,
+				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries("atmosphericPressure", startDate,
+				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator soilMoistureIt = inputs.iterateTimeseries("soilMoisture", startDate, endDate,
+				GeopackageTimeseriesIterator soilMoistureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_MOISTURE, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries("soilFlux", startDate, endDate, 1000);
+				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
 			outputs.parameters = inputs.getParameters();
 

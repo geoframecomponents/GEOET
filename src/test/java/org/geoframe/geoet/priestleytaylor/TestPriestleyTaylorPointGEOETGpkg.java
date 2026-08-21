@@ -30,9 +30,9 @@ public class TestPriestleyTaylorPointGEOETGpkg extends GeoetTestCase {
 		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PriestleyTaylorPointGEOET.gpkg"));
 		inputs.read();
 
-		String startDate = inputs.getParameterString("startDate");
-		String endDate = inputs.getParameterString("endDate");
-		int timeStepMinutes = inputs.getParameterInt("timeStepMinutes");
+		String startDate = inputs.getParameterString(GeoetInputsHandler.PARAM_START_DATE);
+		String endDate = inputs.getParameterString(GeoetInputsHandler.PARAM_END_DATE);
+		int timeStepMinutes = inputs.getParameterInt(GeoetInputsHandler.PARAM_TIME_STEP_MINUTES);
 
 		String pathToOutputGpkg = getOutRes("PriestleyTaylorPointGEOET.gpkg");
 
@@ -48,21 +48,21 @@ public class TestPriestleyTaylorPointGEOETGpkg extends GeoetTestCase {
 
 		// no DEM/shapefile: elevation comes straight from the gpkg; latitude and
 		// longitude are left unset (NaN default), since they are not used by the solver
-		inputPreprocessor.elevation = inputs.getParameterDouble("elevation");
+		inputPreprocessor.elevation = inputs.getParameterDouble(GeoetInputsHandler.PARAM_ELEVATION);
 
-		ptEt.alpha = inputs.getParameterDouble("alpha");
-		ptEt.soilFluxParameterDay = inputs.getParameterDouble("soilFluxParameterDay");
-		ptEt.soilFluxParameterNight = inputs.getParameterDouble("soilFluxParameterNight");
+		ptEt.alpha = inputs.getParameterDouble(GeoetInputsHandler.PARAM_ALPHA);
+		ptEt.soilFluxParameterDay = inputs.getParameterDouble(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_DAY);
+		ptEt.soilFluxParameterNight = inputs.getParameterDouble(GeoetInputsHandler.PARAM_SOIL_FLUX_PARAMETER_NIGHT);
 
 		inputPreprocessor.tStartDate = startDate;
 		inputPreprocessor.temporalStep = timeStepMinutes;
 
-		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries("airTemperature", startDate, endDate, 1000);
-				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries("netRadiation", startDate, endDate,
+		try (GeopackageTimeseriesIterator tempIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_AIR_TEMPERATURE, startDate, endDate, 1000);
+				GeopackageTimeseriesIterator netradIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_NET_RADIATION, startDate, endDate,
 						1000);
-				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries("atmosphericPressure", startDate,
+				GeopackageTimeseriesIterator pressureIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_ATMOSPHERIC_PRESSURE, startDate,
 						endDate, 1000);
-				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries("soilFlux", startDate, endDate, 1000);
+				GeopackageTimeseriesIterator soilFluxIt = inputs.iterateTimeseries(GeoetInputsHandler.VAR_SOIL_FLUX, startDate, endDate, 1000);
 				GeoetOutputsHandler outputs = new GeoetOutputsHandler(pathToOutputGpkg, 500)) {
 			outputs.parameters = inputs.getParameters();
 
