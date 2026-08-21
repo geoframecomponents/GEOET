@@ -28,7 +28,8 @@ public class TranspirationBudget {
 
 		// Compute the leaf temperature in sunlit
 		variables.deltaTemperatureSun = SurfaceTemperatureMethods.computeDeltaLeafTemperature(variables, leafparameters,
-				parameters, variables.absorbedRadiationCanopySun, variables.energyBalanceResidualSun, airTemperature,
+				parameters.stefanBoltzmannConstant, parameters.latentHeatEvaporation,
+				variables.absorbedRadiationCanopySun, variables.energyBalanceResidualSun, airTemperature,
 				variables.areaCanopySun, stressSun, atmosphericPressure);
 
 		variables.leafTemperatureSun = variables.deltaTemperatureSun + airTemperature;
@@ -43,7 +44,8 @@ public class TranspirationBudget {
 
 		// Compute the vapour pressure deficit eq.13 e eq.8 (e∆ = δa + ∆ T∆)
 		variables.vapourPressureDeltaSun1 = PressureMethods.computeVapourPressureDelta(variables, leafparameters,
-				parameters, variables.absorbedRadiationCanopySun, variables.areaCanopySun, airTemperature, stressSun,
+				parameters.stefanBoltzmannConstant, parameters.latentHeatEvaporation,
+				variables.absorbedRadiationCanopySun, variables.areaCanopySun, airTemperature, stressSun,
 				atmosphericPressure, variables.energyBalanceResidualSun);
 		variables.vapourPressureDeltaSun2 = (variables.saturationVaporPressure - variables.vaporPressure)
 				+ variables.delta * variables.deltaTemperatureSun;
@@ -59,9 +61,9 @@ public class TranspirationBudget {
 
 		////////////////// SHADE CANOPY ENERGY BALANCE //////////////////
 		variables.deltaTemperatureShade = SurfaceTemperatureMethods.computeDeltaLeafTemperature(variables,
-				leafparameters, parameters, variables.absorbedRadiationCanopyShade,
-				variables.energyBalanceResidualShade, airTemperature, variables.areaCanopyShade, stressShade,
-				atmosphericPressure);
+				leafparameters, parameters.stefanBoltzmannConstant, parameters.latentHeatEvaporation,
+				variables.absorbedRadiationCanopyShade, variables.energyBalanceResidualShade, airTemperature,
+				variables.areaCanopyShade, stressShade, atmosphericPressure);
 
 		variables.leafTemperatureShade = variables.deltaTemperatureShade + airTemperature;
 
@@ -75,8 +77,9 @@ public class TranspirationBudget {
 
 		// Compute the vapour pressure deficit eq.13 e eq.8 (e∆ = δa + ∆ T∆)
 		variables.vapourPressureDeltaShade1 = PressureMethods.computeVapourPressureDelta(variables, leafparameters,
-				parameters, variables.absorbedRadiationCanopyShade, variables.areaCanopyShade, airTemperature,
-				stressShade, atmosphericPressure, variables.energyBalanceResidualShade);
+				parameters.stefanBoltzmannConstant, parameters.latentHeatEvaporation,
+				variables.absorbedRadiationCanopyShade, variables.areaCanopyShade, airTemperature, stressShade,
+				atmosphericPressure, variables.energyBalanceResidualShade);
 		variables.vapourPressureDeltaShade2 = (variables.saturationVaporPressure - variables.vaporPressure)
 				+ variables.delta * variables.deltaTemperatureShade;
 

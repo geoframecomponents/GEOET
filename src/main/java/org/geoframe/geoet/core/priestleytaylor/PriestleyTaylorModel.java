@@ -1,8 +1,5 @@
 package org.geoframe.geoet.core.priestleytaylor;
 
-import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.CurrentStepInput;
-
 //import static java.lang.Math.pow;
 //
 //import java.util.HashMap;
@@ -33,17 +30,29 @@ import oms3.annotations.Status;
 @License("General Public License Version 3 (GPLv3)")
 public class PriestleyTaylorModel {
 
-	public static double doET(Parameters parameters, CurrentStepInput input, double radiation) {
-		double atmosphericPressure = input.atmosphericPressure / 1000;
+	/**
+	 * Priestley-Taylor evapotranspiration equation. This formulation yields the flux
+	 * directly.
+	 *
+	 * @param alpha               Priestley-Taylor coefficient
+	 * @param atmosphericPressure Pa
+	 * @param airTemperatureC     °C
+	 * @param soilFlux            soil heat flux density, W m-2
+	 * @param radiation           net radiation, W m-2
+	 * @return evapotranspiration flux, W m-2
+	 */
+	public static double computeEvapotranspirationFlux(double alpha, double atmosphericPressure,
+			double airTemperatureC, double soilFlux, double radiation) {
+		double atmosphericPressureKPa = atmosphericPressure / 1000;
 		// Computation of Delta [kPa °C-1]
-		double denDelta = Math.pow((input.airTemperatureC + 237.3), 2);
-		double expDelta = (17.27 * input.airTemperatureC) / (input.airTemperatureC + 237.3);
+		double denDelta = Math.pow((airTemperatureC + 237.3), 2);
+		double expDelta = (17.27 * airTemperatureC) / (airTemperatureC + 237.3);
 		double numDelta = 4098 * (0.6108 * Math.exp(expDelta));
 		double delta = numDelta / denDelta;
 		// Computation of Psicrometric constant [kPa °C-1]
-		double psychrometricConstant = 0.665 * 0.001 * atmosphericPressure;
+		double psychrometricConstant = 0.665 * 0.001 * atmosphericPressureKPa;
 		// Computation of Evapotranspiration [W m-2]
-		double result = ((parameters.alpha) * delta * (radiation - input.soilFlux)) / (psychrometricConstant + delta);
+		double result = (alpha * delta * (radiation - soilFlux)) / (psychrometricConstant + delta);
 		return result; // -----> [W m-2]
 	}
 }

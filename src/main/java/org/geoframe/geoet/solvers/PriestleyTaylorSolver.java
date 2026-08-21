@@ -96,7 +96,8 @@ public class PriestleyTaylorSolver extends HMModel {
 		}
 
 		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0
-				: PriestleyTaylorModel.doET(parameters, input, input.netRadiation);
+				: PriestleyTaylorModel.computeEvapotranspirationFlux(parameters.alpha, input.atmosphericPressure,
+						input.airTemperatureC, input.soilFlux, input.netRadiation);
 		variables.fluxEvapoTranspirationPT = (variables.fluxEvapoTranspirationPT < 0) ? 0
 				: variables.fluxEvapoTranspirationPT;
 

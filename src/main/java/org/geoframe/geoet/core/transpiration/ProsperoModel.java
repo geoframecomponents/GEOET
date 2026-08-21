@@ -1,7 +1,6 @@
 package org.geoframe.geoet.core.transpiration;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.config.Parameters;
 import org.geoframe.geoet.core.state.ProblemQuantities;
 import org.geoframe.geoet.core.radiation.RadiationMethod;
 
@@ -13,9 +12,10 @@ import oms3.annotations.License;
 
 public class ProsperoModel {
 
-	public static double computeTranspiration(ProblemQuantities variables, Leaf leafparameters, Parameters parameters,
-			double stressSun, double stressShade, double longWaveRadiation, double airTemperature, double time,
-			double nullValue) {
+	/** @param stefanBoltzmannConstant W m-2 K-4 */
+	public static double computeTranspiration(ProblemQuantities variables, Leaf leafparameters,
+			double stefanBoltzmannConstant, double stressSun, double stressShade, double longWaveRadiation,
+			double airTemperature, double nullValue) {
 
 		variables.fluxTranspiration = 0.0;
 
@@ -31,7 +31,7 @@ public class ProsperoModel {
 		// Compute the net longwave radiation in sunlight
 		variables.netLongWaveRadiationSun = variables.areaCanopySun * RadiationMethod.computeLongWaveRadiationBalance(
 				leafparameters.leafSide, leafparameters.longWaveEmittance, airTemperature, variables.leafTemperatureSun,
-				parameters.stefanBoltzmannConstant);
+				stefanBoltzmannConstant);
 
 		// Compute the latent heat flux from the sunlight area
 		variables.latentHeatFluxSun = variables.areaCanopySun * stressSun
@@ -64,7 +64,7 @@ public class ProsperoModel {
 		// Compute the net longwave radiation in shade
 		variables.netLongWaveRadiationShade = variables.areaCanopyShade * RadiationMethod
 				.computeLongWaveRadiationBalance(leafparameters.leafSide, leafparameters.longWaveEmittance,
-						airTemperature, variables.leafTemperatureShade, parameters.stefanBoltzmannConstant);
+						airTemperature, variables.leafTemperatureShade, stefanBoltzmannConstant);
 
 		// Compute the latent heat flux from the shaded area
 		variables.latentHeatFluxShade = variables.areaCanopyShade * stressShade

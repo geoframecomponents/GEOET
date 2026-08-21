@@ -1,8 +1,5 @@
 package org.geoframe.geoet.core.penmanmonteithfao;
 
-import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.CurrentStepInput;
-
 //import static java.lang.Math.pow;
 //
 //import java.util.HashMap;
@@ -33,40 +30,60 @@ import oms3.annotations.Status;
 @License("General Public License Version 3 (GPLv3)")
 public class PenmanMonteithFAOModel {
 
-	public static double doET(Parameters parameters, CurrentStepInput input, double windAtZ, double radiation) {
+	/**
+	 * FAO-56 Penman-Monteith reference evapotranspiration equation (Allen et
+	 * al. 1998).
+	 *
+	 * @param Cp                  bulk aerodynamic resistance coefficient, 900
+	 *                            for a daily timestep, 37 for hourly (this
+	 *                            method substitutes 37 itself whenever
+	 *                            {@code timestep} is exactly one hour,
+	 *                            regardless of what's passed in)
+	 * @param Cd                  bulk surface resistance coefficient, 0.34
+	 * @param atmosphericPressure Pa
+	 * @param airTemperatureC     °C
+	 * @param relativeHumidity    %
+	 * @param soilFlux            soil heat flux density, W m-2
+	 * @param timestep            timestep length, s
+	 * @param windAtZ             wind speed at the reference height used by
+	 *                            the surface resistance term, m s-1
+	 * @param radiation           net radiation, W m-2
+	 * @return evapotranspiration, mm per timestep
+	 */
+	public static double computeEvapotranspirationDepth(double Cp, double Cd, double atmosphericPressure,
+			double airTemperatureC, double relativeHumidity, double soilFlux, int timestep, double windAtZ,
+			double radiation) {
 
-		double atmosphericPressure = input.atmosphericPressure / 1000;
-		double netRadiation = radiation * input.time / 1E6;
-		double soilHeatFlux = input.soilFlux * input.time / 1E6;
+		double atmosphericPressureKPa = atmosphericPressure / 1000;
+		double netRadiation = radiation * timestep / 1E6;
+		double soilHeatFlux = soilFlux * timestep / 1E6;
 
-		if (input.time == 3600) {
-			parameters.Cp = 37;
-		}
+		double cp = (timestep == 3600) ? 37 : Cp;
 
-		double denDelta = Math.pow((input.airTemperatureC + 237.3), 2);
-		double expDelta = (17.27 * input.airTemperatureC) / (input.airTemperatureC + 237.3);
+		double denDelta = Math.pow((airTemperatureC + 237.3), 2);
+		double expDelta = (17.27 * airTemperatureC) / (airTemperatureC + 237.3);
 		double numDelta = 4098 * (0.6108 * Math.exp(expDelta));
 		double delta = numDelta / denDelta;
 
 		// Computation of Psicrometric constant [kPa °C-1]
-		double psychrometricConstant = 0.665 * 0.001 * atmosphericPressure;
+		double psychrometricConstant = 0.665 * 0.001 * atmosphericPressureKPa;
 
 		// Computation of mean saturation vapour pressure [kPa]
 		double saturationVaporPressure = 0.6108 * Math.exp(expDelta);
 
 		// Computation of average hourly actual vapour pressure [kPa]
-		double vaporPressure = saturationVaporPressure * input.relativeHumidity / 100;
+		double vaporPressure = saturationVaporPressure * relativeHumidity / 100;
 
 		// Computation of ET [mm time-1]
 		double num = 0.408 * delta * (netRadiation - soilHeatFlux)
-				+ (parameters.Cp * psychrometricConstant * windAtZ * (saturationVaporPressure - vaporPressure))
-						/ (input.airTemperatureC + 273);
-		double den = delta + psychrometricConstant * (1 + parameters.Cd * windAtZ);
+				+ (cp * psychrometricConstant * windAtZ * (saturationVaporPressure - vaporPressure))
+						/ (airTemperatureC + 273);
+		double den = delta + psychrometricConstant * (1 + Cd * windAtZ);
 		double result = (num / den);
 		result = (result < 0) ? 0 : result;
 
-		if (input.time != 86400 && input.time != 3600) {
-			result = result * input.time / 86400;
+		if (timestep != 86400 && timestep != 3600) {
+			result = result * timestep / 86400;
 		}
 
 		return result;

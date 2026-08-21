@@ -3,7 +3,6 @@ package org.geoframe.geoet.core.transpiration;
 import static java.lang.Math.pow;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.config.Parameters;
 import org.geoframe.geoet.core.state.ProblemQuantities;
 
 import oms3.annotations.Author;
@@ -34,22 +33,26 @@ public class SurfaceTemperatureMethods {
 		return surfaceTemperature;
 	}
 
+	/**
+	 * @param stefanBoltzmannConstant W m-2 K-4
+	 * @param latentHeatEvaporation   latent heat of vaporization of water, J
+	 *                                kg-1
+	 */
 	public static double computeDeltaLeafTemperature(ProblemQuantities variables, Leaf leafparameters,
-			Parameters parameters, double absorbedRadiation, double residual, double airTemperature, double canopyArea,
-			double stress, double atmosphericPressure) {
+			double stefanBoltzmannConstant, double latentHeatEvaporation, double absorbedRadiation, double residual,
+			double airTemperature, double canopyArea, double stress, double atmosphericPressure) {
 
 		double surfaceTemperature1 = absorbedRadiation
 				- leafparameters.leafSide * canopyArea
-						* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant
-								* pow(airTemperature, 4))
-				- 2 * parameters.latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
+						* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 4))
+				- 2 * latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
 						* (variables.saturationVaporPressure - variables.vaporPressure)
 				- residual;
 
 		double surfaceTemperature2 = 1 / (leafparameters.leafSide * canopyArea
-				* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow(airTemperature, 3))
-				+ 2 * variables.convectiveTransferCoefficient * canopyArea + 2 * parameters.latentHeatEvaporation
-						* stress * canopyArea * 0.622 / atmosphericPressure * variables.delta);
+				* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 3))
+				+ 2 * variables.convectiveTransferCoefficient * canopyArea + 2 * latentHeatEvaporation * stress
+						* canopyArea * 0.622 / atmosphericPressure * variables.delta);
 
 		double deltaTemperature = surfaceTemperature1 * surfaceTemperature2;
 

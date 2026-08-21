@@ -52,11 +52,14 @@ public class ComputeRadiationQuantities {
 
 		else {
 			// RADIATION SUN
-			variables.shortwaveCanopySun = RadiationMethod.computeAbsorbedRadiationSunlit(parameters, leafAreaIndex,
-					variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
+			variables.shortwaveCanopySun = RadiationMethod.computeAbsorbedRadiationSunlit(
+					parameters.leafScatteringCoefficient, parameters.canopyReflectionCoefficientDiffuse,
+					parameters.diffuseExtinctionCoefficient, leafAreaIndex, variables.solarElevationAngle,
+					shortWaveRadiationDirect, shortWaveRadiationDiffuse);
 
 			// RADIATION SHADOW
-			variables.shortwaveCanopyShade = RadiationMethod.computeAbsorbedRadiationShadow(parameters, leafAreaIndex,
+			variables.shortwaveCanopyShade = RadiationMethod.computeAbsorbedRadiationShadow(
+					parameters.leafScatteringCoefficient, parameters.diffuseExtinctionCoefficient, leafAreaIndex,
 					variables.solarElevationAngle, shortWaveRadiationDirect, shortWaveRadiationDiffuse);
 		}
 

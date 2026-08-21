@@ -66,8 +66,9 @@ public class PenmanMonteithFAOSoilEvaporationSolver extends HMModel {
 
 		variables.windSoil = ProblemQuantities.computeWindProfile(input.windVelocity, 0.2);
 
-		variables.evaporation = PenmanMonteithFAOModel.doET(parameters, input, variables.windSoil, input.netRadiation)
-				* evaporationStressWater; // --> mm/time
+		variables.evaporation = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp, parameters.Cd,
+				input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity, input.soilFlux, input.time,
+				variables.windSoil, input.netRadiation) * evaporationStressWater; // --> mm/time
 		variables.fluxEvaporation = variables.evaporation * parameters.latentHeatEvaporation / input.time; // --> W/m2
 
 		variables.evaporation = (variables.evaporation < 0) ? 0 : variables.evaporation;

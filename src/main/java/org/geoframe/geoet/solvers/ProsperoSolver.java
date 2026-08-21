@@ -88,8 +88,9 @@ public class ProsperoSolver extends HMModel {
 		/////////// Transpiration ///////////////////////
 		/////////////////////////////////////////////////
 
-		variables.fluxTranspiration = ProsperoModel.computeTranspiration(variables, leafparameters, parameters,
-				stressSun, stressShade, input.longWaveRadiation, input.airTemperature, input.time, nullValue);
+		variables.fluxTranspiration = ProsperoModel.computeTranspiration(variables, leafparameters,
+				parameters.stefanBoltzmannConstant, stressSun, stressShade, input.longWaveRadiation,
+				input.airTemperature, nullValue);
 		variables.transpiration = variables.fluxTranspiration * (input.time / parameters.latentHeatEvaporation);
 		transpiration = variables.transpiration;
 		// System.out.println("\nflux transpiration is = "+

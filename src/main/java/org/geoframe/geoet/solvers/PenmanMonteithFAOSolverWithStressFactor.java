@@ -111,8 +111,9 @@ public class PenmanMonteithFAOSolverWithStressFactor extends HMModel {
 
 		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
-		variables.evapoTranspirationPM = PenmanMonteithFAOModel.doET(parameters, input, variables.windAtZ,
-				input.netRadiation) * stressFactor;// --> mm/time
+		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
+				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,
+				input.soilFlux, input.time, variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
 
 		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation
 				/ input.time;

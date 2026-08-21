@@ -117,7 +117,8 @@ public class PriestleyTaylorSolverWithStressFactor extends HMModel {
 		}
 
 		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0
-				: PriestleyTaylorModel.doET(parameters, input, input.netRadiation) * stressFactor;
+				: PriestleyTaylorModel.computeEvapotranspirationFlux(parameters.alpha, input.atmosphericPressure,
+						input.airTemperatureC, input.soilFlux, input.netRadiation) * stressFactor;
 		variables.fluxEvapoTranspirationPT = (variables.fluxEvapoTranspirationPT < 0) ? 0
 				: variables.fluxEvapoTranspirationPT;
 

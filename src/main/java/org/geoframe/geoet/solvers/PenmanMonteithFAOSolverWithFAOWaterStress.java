@@ -135,7 +135,9 @@ public class PenmanMonteithFAOSolverWithFAOWaterStress extends HMModel {
 					waterWiltingPoint, rootsDepth, depletionFraction);
 
 ////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
-		variables.evapoTranspirationPM = PenmanMonteithFAOModel.doET(parameters, input, variables.windAtZ, input.netRadiation) * variables.stressWater
+		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
+				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,
+				input.soilFlux, input.time, variables.windAtZ, input.netRadiation) * variables.stressWater
 				* cropCoefficient;// --> mm/time
 
 		variables.fluxEvapoTranspirationPM = variables.evapoTranspirationPM * parameters.latentHeatEvaporation

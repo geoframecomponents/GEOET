@@ -18,15 +18,12 @@
  */
 package org.geoframe.geoet.core.stressfactor;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
-
 import oms3.annotations.Author;
 import oms3.annotations.License;
 
 /**
  * Computation of the stress factor by Medlyn et al. 2011
- * 
+ *
  * @author Concetta D'Amato
  */
 
@@ -35,7 +32,17 @@ import oms3.annotations.License;
 
 public class MedlynStressFactor {
 
-	public static double stressFactorMedlyn(ProblemQuantities variables, CurrentStepInput input) {
-		return 1.6*(1+input.g1/Math.sqrt(variables.vapourPressureDeficit))*(input.assimilationRate/variables.carbonDioxideLeafConcentration);
+	/**
+	 * @param g1                             Medlyn stomatal-conductance model
+	 *                                       slope parameter
+	 * @param vapourPressureDeficit          Pa
+	 * @param assimilationRate               photosynthetic assimilation rate
+	 * @param carbonDioxideLeafConcentration leaf-internal CO2 concentration,
+	 *                                       ppm-like ratio
+	 * @return the stress factor
+	 */
+	public static double stressFactorMedlyn(double g1, double vapourPressureDeficit, double assimilationRate,
+			double carbonDioxideLeafConcentration) {
+		return 1.6 * (1 + g1 / Math.sqrt(vapourPressureDeficit)) * (assimilationRate / carbonDioxideLeafConcentration);
 	}
 }

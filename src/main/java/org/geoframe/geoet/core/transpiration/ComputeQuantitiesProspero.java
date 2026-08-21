@@ -97,8 +97,10 @@ public class ComputeQuantitiesProspero {
 
 		// RADIATION SUN
 		variables.solarElevationAngle = solarGeometry.getSolarElevationAngle(date, latitude, longitude, time);
-		variables.shortwaveCanopySun = RadiationMethod.computeAbsorbedRadiationSunlit(parameters, leafAreaIndex,
-				variables.solarElevationAngle, shortWaveRadiationDirect * 2.1, shortWaveRadiationDiffuse * 2.1);
+		variables.shortwaveCanopySun = RadiationMethod.computeAbsorbedRadiationSunlit(
+				parameters.leafScatteringCoefficient, parameters.canopyReflectionCoefficientDiffuse,
+				parameters.diffuseExtinctionCoefficient, leafAreaIndex, variables.solarElevationAngle,
+				shortWaveRadiationDirect * 2.1, shortWaveRadiationDiffuse * 2.1);
 
 		if (variables.shortwaveCanopySun == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0) {
 			variables.shortwaveCanopySun = 0;
@@ -113,7 +115,8 @@ public class ComputeQuantitiesProspero {
 				variables.solarElevationAngle);
 
 		// RADIATION SHADOW
-		variables.shortwaveCanopyShade = RadiationMethod.computeAbsorbedRadiationShadow(parameters, leafAreaIndex,
+		variables.shortwaveCanopyShade = RadiationMethod.computeAbsorbedRadiationShadow(
+				parameters.leafScatteringCoefficient, parameters.diffuseExtinctionCoefficient, leafAreaIndex,
 				variables.solarElevationAngle, shortWaveRadiationDirect * 2.1, shortWaveRadiationDiffuse * 2.1);
 
 		if (variables.shortwaveCanopyShade == 0 && shortWaveRadiationDirect == 0 && shortWaveRadiationDiffuse == 0) {

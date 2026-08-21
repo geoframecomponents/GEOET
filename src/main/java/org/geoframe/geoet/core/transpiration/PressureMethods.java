@@ -4,7 +4,6 @@ import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.config.Parameters;
 import org.geoframe.geoet.core.state.ProblemQuantities;
 
 import oms3.annotations.Author;
@@ -59,28 +58,30 @@ public class PressureMethods {
 		return vapourPressureDeficit;
 	}
 
+	/**
+	 * @param stefanBoltzmannConstant W m-2 K-4
+	 * @param latentHeatEvaporation   latent heat of vaporization of water, J
+	 *                                kg-1
+	 */
 	public static double computeVapourPressureDelta(ProblemQuantities variables, Leaf leafparameters,
-			Parameters parameters, double absorbedRadiation, double canopyArea, double airTemperature, double stress,
-			double atmosphericPressure, double residual) {
+			double stefanBoltzmannConstant, double latentHeatEvaporation, double absorbedRadiation,
+			double canopyArea, double airTemperature, double stress, double atmosphericPressure, double residual) {
 
 		double factor1 = (leafparameters.leafSide * canopyArea
-				* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow(airTemperature, 3))
+				* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 3))
 				+ 2 * variables.convectiveTransferCoefficient * canopyArea)
 				/ (leafparameters.leafSide * canopyArea
-						* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant
-								* pow(airTemperature, 3))
+						* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 3))
 						+ 2 * variables.convectiveTransferCoefficient * canopyArea
-						+ 2 * parameters.latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
+						+ 2 * latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
 								* variables.delta);
 
 		double factor2 = (absorbedRadiation - leafparameters.leafSide * canopyArea
-				* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant * pow(airTemperature, 4))
-				- residual)
+				* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 4)) - residual)
 				/ (leafparameters.leafSide * canopyArea
-						* (leafparameters.longWaveEmittance * parameters.stefanBoltzmannConstant
-								* pow(airTemperature, 3))
+						* (leafparameters.longWaveEmittance * stefanBoltzmannConstant * pow(airTemperature, 3))
 						+ 2 * variables.convectiveTransferCoefficient * canopyArea
-						+ 2 * parameters.latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
+						+ 2 * latentHeatEvaporation * stress * canopyArea * 0.622 / atmosphericPressure
 								* variables.delta);
 
 		double vapourPressureDelta = factor1 * (variables.saturationVaporPressure - variables.vaporPressure)

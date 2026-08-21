@@ -2,8 +2,6 @@ package org.geoframe.geoet.core.radiation;
 
 import static java.lang.Math.pow;
 
-import org.geoframe.geoet.core.config.Parameters;
-
 import oms3.annotations.Author;
 import oms3.annotations.License;
 
@@ -29,7 +27,23 @@ public class RadiationMethod {
 	// QUESTO SAREBBE IL FEEDBACK RADIATIVO - la radiazione ad onda lunga incoming
 	// calcolata con la Ta
 
-	public static double computeAbsorbedRadiationSunlit(Parameters parameters, double leafAreaIndex,
+	/**
+	 * @param leafScatteringCoefficient         leaf scattering coefficient for
+	 *                                           Photosynthetically Active
+	 *                                           Radiation (PAR), dimensionless
+	 * @param canopyReflectionCoefficientDiffuse canopy reflectance for diffuse
+	 *                                           PAR, dimensionless
+	 * @param diffuseExtinctionCoefficient       extinction coefficient for
+	 *                                           diffuse and scattered diffuse
+	 *                                           PAR, dimensionless
+	 * @param leafAreaIndex                      m2 m-2
+	 * @param solarElevationAngle                radians
+	 * @param shortWaveRadiationDirect           W m-2
+	 * @param shortWaveRadiationDiffuse          W m-2
+	 * @return absorbed radiation, sunlit canopy fraction, W m-2
+	 */
+	public static double computeAbsorbedRadiationSunlit(double leafScatteringCoefficient,
+			double canopyReflectionCoefficientDiffuse, double diffuseExtinctionCoefficient, double leafAreaIndex,
 			double solarElevationAngle, double shortWaveRadiationDirect, double shortWaveRadiationDiffuse) {
 		// Ryu et all 2011
 
@@ -41,23 +55,20 @@ public class RadiationMethod {
 				- exp((-2 * 0.041 * directExtinctionCoefficientInCanopy) / (1 + directExtinctionCoefficientInCanopy)); // ρcbP
 
 		// Ryu et all 2011 eq.3
-		double directAbsorbedRadiation = shortWaveRadiationDirect * (1 - parameters.leafScatteringCoefficient)
+		double directAbsorbedRadiation = shortWaveRadiationDirect * (1 - leafScatteringCoefficient)
 				* (1 - exp(-directExtinctionCoefficientInCanopy * leafAreaIndex));
 
 		// Ryu et all 2011 eq.4
-		double diffuseAbsorbedRadiation = shortWaveRadiationDiffuse
-				* (1 - parameters.canopyReflectionCoefficientDiffuse)
-				* (1 - exp(-(parameters.diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy)
-						* leafAreaIndex))
-				* (parameters.diffuseExtinctionCoefficient
-						/ (parameters.diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy));
+		double diffuseAbsorbedRadiation = shortWaveRadiationDiffuse * (1 - canopyReflectionCoefficientDiffuse)
+				* (1 - exp(-(diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy) * leafAreaIndex))
+				* (diffuseExtinctionCoefficient / (diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy));
 
 		// Ryu et all 2011 eq.5
 		double scatteredAbsorbedRadiation = shortWaveRadiationDirect * ((1 - canopyReflectionCoefficientBeam)
 				* (1 - exp(-(directExtinctionCoefficientInCanopy + scatteredExtinctionCoefficient) * leafAreaIndex))
 				* (scatteredExtinctionCoefficient
 						/ (directExtinctionCoefficientInCanopy + scatteredExtinctionCoefficient))
-				- (1 - parameters.leafScatteringCoefficient)
+				- (1 - leafScatteringCoefficient)
 						* (1 - exp(-2 * directExtinctionCoefficientInCanopy * leafAreaIndex)) / 2);
 
 		double absordebRadiationSunlit = directAbsorbedRadiation + diffuseAbsorbedRadiation
@@ -66,8 +77,21 @@ public class RadiationMethod {
 		return absordebRadiationSunlit;
 	}
 
-	public static double computeAbsorbedRadiationShadow(Parameters parameters, double leafAreaIndex,
-			double solarElevationAngle, double shortWaveRadiationDirect, double shortWaveRadiationDiffuse) {
+	/**
+	 * @param leafScatteringCoefficient    leaf scattering coefficient for PAR,
+	 *                                      dimensionless
+	 * @param diffuseExtinctionCoefficient extinction coefficient for diffuse
+	 *                                      and scattered diffuse PAR,
+	 *                                      dimensionless
+	 * @param leafAreaIndex                m2 m-2
+	 * @param solarElevationAngle          radians
+	 * @param shortWaveRadiationDirect     W m-2
+	 * @param shortWaveRadiationDiffuse    W m-2
+	 * @return absorbed radiation, shaded canopy fraction, W m-2
+	 */
+	public static double computeAbsorbedRadiationShadow(double leafScatteringCoefficient,
+			double diffuseExtinctionCoefficient, double leafAreaIndex, double solarElevationAngle,
+			double shortWaveRadiationDirect, double shortWaveRadiationDiffuse) {
 
 		double directExtinctionCoefficientInCanopy = 0.5 / solarElevationAngle;
 		double scatteredExtinctionCoefficient = 0.46 / solarElevationAngle;
@@ -76,18 +100,17 @@ public class RadiationMethod {
 				- exp((-2 * 0.041 * directExtinctionCoefficientInCanopy) / (1 + directExtinctionCoefficientInCanopy));
 
 		double diffuseAbsorbedRadiationShadow = shortWaveRadiationDiffuse * (1 - canopyReflectionCoefficientBeam) * (1
-				- exp(-parameters.diffuseExtinctionCoefficient * leafAreaIndex)
-				- (1 - exp(-(parameters.diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy)
-						* leafAreaIndex))
-						* (parameters.diffuseExtinctionCoefficient
-								/ (parameters.diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy)));
+				- exp(-diffuseExtinctionCoefficient * leafAreaIndex)
+				- (1 - exp(-(diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy) * leafAreaIndex))
+						* (diffuseExtinctionCoefficient
+								/ (diffuseExtinctionCoefficient + directExtinctionCoefficientInCanopy)));
 
 		double scatteredAbsorbedRadiationShadow = shortWaveRadiationDirect * ((1 - canopyReflectionCoefficientBeam) * (1
 				- exp(-scatteredExtinctionCoefficient * leafAreaIndex)
 				- (1 - exp(-(scatteredExtinctionCoefficient + directExtinctionCoefficientInCanopy) * leafAreaIndex))
 						* (scatteredExtinctionCoefficient
 								/ (scatteredExtinctionCoefficient + directExtinctionCoefficientInCanopy)))
-				- (1 - parameters.leafScatteringCoefficient)
+				- (1 - leafScatteringCoefficient)
 						* (1 - exp(-directExtinctionCoefficientInCanopy * leafAreaIndex)
 								- (1 - exp(-2 * directExtinctionCoefficientInCanopy * leafAreaIndex)) / 2));
 
