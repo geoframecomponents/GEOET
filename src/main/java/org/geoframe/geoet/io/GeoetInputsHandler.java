@@ -18,16 +18,18 @@ import org.joda.time.format.DateTimeFormatter;
  * and one {@code timeseries_<variable>} table per driving variable (e.g.
  * {@code timeseries_airTemperature}), each independently spanned/resolved -
  * the same convention and {@code ADb}/{@code SqlName}-based approach as
- * {@code org.hortonmachine.gears.io.geoframe.whetgeo.Whetgeo1DInputsHandler}.
+ * WHETGEO-1D's own input handler.
  *
  * <p>
- * Deliberately not {@code AutoCloseable}: {@link #iterateTimeseries} hands
- * out a {@link DbTimeseriesIterator} that closes the handler's own
- * shared connection when the iterator itself is closed (same as
- * {@code Whetgeo1DInputsHandler}, for the same reason) - closing the handler
- * afterwards would double-close it.
+ * {@code AutoCloseable}: closing this closes the underlying connection, but
+ * only if it was opened by the {@code String gpkgPath} constructor - if an
+ * already-open {@link ADb} was passed in instead, this handler doesn't own
+ * it and leaves it open for the caller to close. {@link DbTimeseriesIterator}s
+ * handed out by {@link #iterateTimeseries} only close their own statement,
+ * not the connection, so this handler should be closed last, after every
+ * iterator obtained from it.
  */
-public class GeoetInputsHandler {
+public class GeoetInputsHandler implements AutoCloseable {
 
 	public static final String TABLE_PARAMETERS = "parameters";
 	public static final String TIMESERIES_TABLE_PREFIX = "timeseries_";
@@ -76,15 +78,26 @@ public class GeoetInputsHandler {
 	public static final String VAR_LEAF_AREA_INDEX = "leafAreaIndex";
 
 	private final ADb db;
+	private final boolean ownsDb;
 	private final Map<String, Object> parameters = new HashMap<>();
 
 	public GeoetInputsHandler(ADb db) {
 		this.db = db;
+		this.ownsDb = false;
 	}
 
 	public GeoetInputsHandler(String gpkgPath) throws Exception {
 		this.db = EDb.GEOPACKAGE.getDb();
 		this.db.open(gpkgPath);
+		this.ownsDb = true;
+	}
+
+	/** Closes the underlying connection, but only if this handler opened it itself. */
+	@Override
+	public void close() throws Exception {
+		if (ownsDb) {
+			db.close();
+		}
 	}
 
 	/** Reads the {@code parameters} table's single row into memory. */
