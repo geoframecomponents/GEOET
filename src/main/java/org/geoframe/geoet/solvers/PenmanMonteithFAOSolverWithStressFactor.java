@@ -18,8 +18,8 @@
 package org.geoframe.geoet.solvers;
 
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
@@ -83,8 +83,8 @@ public class PenmanMonteithFAOSolverWithStressFactor extends HMModel {
 
 
 	public Parameters parameters;
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {
@@ -109,7 +109,7 @@ public class PenmanMonteithFAOSolverWithStressFactor extends HMModel {
 			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
 		}
 
-		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
+		variables.windAtZ = ETProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
 		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
 				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,

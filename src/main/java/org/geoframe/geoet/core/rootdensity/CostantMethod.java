@@ -17,8 +17,8 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package org.geoframe.geoet.core.rootdensity;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 
 /**
  * 
@@ -28,7 +28,7 @@ import org.geoframe.geoet.core.state.CurrentStepInput;
 
 public class CostantMethod extends RootDensity{
 
-	public CostantMethod(ProblemQuantities variables, CurrentStepInput input) {
+	public CostantMethod(ETProblemQuantities variables, ETCurrentStepInput input) {
 		super(variables, input);
 	}
 	

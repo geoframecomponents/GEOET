@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.solvers;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.stressfactor.EnvironmentalStress;
 import org.geoframe.geoet.core.stressfactor.FaoWaterStress;
 import org.hortonmachine.gears.libs.modules.HMModel;
@@ -117,8 +117,8 @@ public class PriestleyTaylorPenmanMonteithFAOStressFactorSolver extends HMModel 
 
 	/////////////////////////////////////////////////////////////////////////////
 
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void solve() {

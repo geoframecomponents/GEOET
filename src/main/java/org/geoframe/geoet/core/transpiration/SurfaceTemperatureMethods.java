@@ -3,7 +3,7 @@ package org.geoframe.geoet.core.transpiration;
 import static java.lang.Math.pow;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -38,7 +38,7 @@ public class SurfaceTemperatureMethods {
 	 * @param latentHeatEvaporation   latent heat of vaporization of water, J
 	 *                                kg-1
 	 */
-	public static double computeDeltaLeafTemperature(ProblemQuantities variables, Leaf leafparameters,
+	public static double computeDeltaLeafTemperature(ETProblemQuantities variables, Leaf leafparameters,
 			double stefanBoltzmannConstant, double latentHeatEvaporation, double absorbedRadiation, double residual,
 			double airTemperature, double canopyArea, double stress, double atmosphericPressure) {
 

@@ -1,9 +1,9 @@
 package org.geoframe.geoet.penmanmonteithfao;
 
 import org.geoframe.geoet.GeoetTestCase;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.io.GeoetInputsHandler;
 import org.geoframe.geoet.io.GeoetOutputsHandler;
 import org.geoframe.geoet.io.InputPreprocessor;
@@ -25,8 +25,8 @@ public class TestPenmanMonteithFAOTotalStressedGpkg extends GeoetTestCase {
 	@Test
 	public void Test() throws Exception {
 		Parameters parameters = new Parameters();
-		ProblemQuantities variables = new ProblemQuantities();
-		CurrentStepInput input = new CurrentStepInput();
+		ETProblemQuantities variables = new ETProblemQuantities();
+		ETCurrentStepInput input = new ETCurrentStepInput();
 
 		GeoetInputsHandler inputs = new GeoetInputsHandler(getRes("/Input/gpkg/PenmanMonteithFAOTotalStressed.gpkg"));
 		inputs.read();

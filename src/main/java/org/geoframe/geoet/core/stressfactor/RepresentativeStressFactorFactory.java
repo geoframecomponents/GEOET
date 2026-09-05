@@ -18,7 +18,7 @@
  */
 package org.geoframe.geoet.core.stressfactor;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -46,7 +46,7 @@ public class RepresentativeStressFactorFactory {
 	 * @return the requested stress factor object.
 	 */
 	public static RepresentativeStressFactor createRepresentativeStressFactor(String type, double[] z, double[] deltaZ,
-			int NUM_CONTROL_VOLUMES, double totalDepth, ProblemQuantities variables) {
+			int NUM_CONTROL_VOLUMES, double totalDepth, ETProblemQuantities variables) {
 		RepresentativeStressFactor generalSF = null;
 		if (type.equalsIgnoreCase("AverageMethod") || type.equalsIgnoreCase("AverageMethod")) {
 			generalSF = new AverageStressFactor(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);

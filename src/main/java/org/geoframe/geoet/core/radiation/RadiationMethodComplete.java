@@ -4,8 +4,8 @@ import static java.lang.Math.pow;
 
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -17,7 +17,7 @@ import static java.lang.Math.exp;
 
 public class RadiationMethodComplete {
 
-	public static double computeAbsorbedRadiationSunlit(Parameters parameters, ProblemQuantities variables,
+	public static double computeAbsorbedRadiationSunlit(Parameters parameters, ETProblemQuantities variables,
 			double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,
 			double shortWaveRadiationDiffuse) {
 
@@ -56,7 +56,7 @@ public class RadiationMethodComplete {
 		return absordebRadiationSunlit;
 	}
 
-	public static double computeAbsorbedRadiationShadow(Parameters parameters, ProblemQuantities variables,
+	public static double computeAbsorbedRadiationShadow(Parameters parameters, ETProblemQuantities variables,
 			double leafAreaIndex, double solarElevationAngle, double shortWaveRadiationDirect,
 			double shortWaveRadiationDiffuse) {
 
@@ -103,7 +103,7 @@ public class RadiationMethodComplete {
 		}
 	}
 
-	public static void computeAbsorbedRadiationReflectedSoil(Parameters parameters, ProblemQuantities variables,
+	public static void computeAbsorbedRadiationReflectedSoil(Parameters parameters, ETProblemQuantities variables,
 			String typeOfCanopy, double leafAreaIndex, double shortWaveRadiationDirect,
 			double shortWaveRadiationDiffuse, double directExtinctionCoefficientInCanopy) {
 
@@ -132,7 +132,7 @@ public class RadiationMethodComplete {
 				* (1 - exp(-parameters.diffuseExtinctionCoefficient * leafAreaIndex));
 	}
 
-	public static double computeLeafRadiativeFeedback(Parameters parameters, ProblemQuantities variables,
+	public static double computeLeafRadiativeFeedback(Parameters parameters, ETProblemQuantities variables,
 			Leaf leafparameters, double airTemperature, double leafTemperature, double canopyArea) {
 
 		double leafRadiativeFeedback = leafparameters.leafSide * canopyArea * (leafparameters.longWaveEmittance
@@ -140,7 +140,7 @@ public class RadiationMethodComplete {
 		return leafRadiativeFeedback;
 	}
 
-	public static void computeAirEmissivity(ProblemQuantities variables, CurrentStepInput input) {
+	public static void computeAirEmissivity(ETProblemQuantities variables, ETCurrentStepInput input) {
 		// Compute the emissivity of air according to Prata 1996
 		// Eq. 11
 		variables.precipitableWater = 4650 * variables.saturationVaporPressure / input.airTemperature;
@@ -149,7 +149,7 @@ public class RadiationMethodComplete {
 				- (1 + variables.precipitableWater) * exp(-(pow((1.2 + 3 * variables.precipitableWater), 0.5))));
 	}
 
-	public static void computeRadiativeConductance(Parameters parameters, ProblemQuantities variables, CurrentStepInput input) {
+	public static void computeRadiativeConductance(Parameters parameters, ETProblemQuantities variables, ETCurrentStepInput input) {
 		// Compute the radiative conductance g_r [kg m-2 s-1]
 		// Table A1
 		variables.radiativeConductance = (4 * parameters.leafEmissivity * parameters.stefanBoltzmannConstant
@@ -160,7 +160,7 @@ public class RadiationMethodComplete {
 	 * Compute the absorbed longwave radiation in the canopy according to Ryu et al.
 	 * 2011. Returns the direct extinction coefficient in the canopy.
 	 * 
-	 * <p>Needed in {@link #computeAbsorbedRadiationReflectedSoil(Parameters, ProblemQuantities, String, double, double, double, double)}
+	 * <p>Needed in {@link #computeAbsorbedRadiationReflectedSoil(Parameters, ETProblemQuantities, String, double, double, double, double)}
 	 * 
 	 * @param parameters
 	 * @param variables
@@ -169,8 +169,8 @@ public class RadiationMethodComplete {
 	 * @param solarElevationAngle
 	 * @return
 	 */
-	public static double computeAbsorbedLongwaveRadiation(Parameters parameters, ProblemQuantities variables,
-			CurrentStepInput input, double leafAreaIndex, double solarElevationAngle) {
+	public static double computeAbsorbedLongwaveRadiation(Parameters parameters, ETProblemQuantities variables,
+			ETCurrentStepInput input, double leafAreaIndex, double solarElevationAngle) {
 
 		// Ryu et all 2011
 		double directExtinctionCoefficientInCanopy = 0.5 / solarElevationAngle; // kb
@@ -210,23 +210,23 @@ public class RadiationMethodComplete {
 		return directExtinctionCoefficientInCanopy;
 	}
 
-	public static void computeLongRadiationFromSoil(Parameters parameters, ProblemQuantities variables,
-			CurrentStepInput input) {
+	public static void computeLongRadiationFromSoil(Parameters parameters, ETProblemQuantities variables,
+			ETCurrentStepInput input) {
 
 		variables.soilTemperature = input.airTemperature;
 		variables.longRadiationFromSoil = parameters.soilEmissivity * parameters.stefanBoltzmannConstant
 				* pow(variables.soilTemperature, 4);
 	}
 
-	public static void computeLongRadiationFromShadeLeaf(Parameters parameters, ProblemQuantities variables,
-			CurrentStepInput input) {
+	public static void computeLongRadiationFromShadeLeaf(Parameters parameters, ETProblemQuantities variables,
+			ETCurrentStepInput input) {
 
 		variables.longRadiationFromShadeLeaf = parameters.leafEmissivity * parameters.stefanBoltzmannConstant
 				* pow(variables.leafTemperatureShade, 4);
 	}
 
-	public static void computeIncidentRadiation(Parameters parameters, ProblemQuantities variables,
-			CurrentStepInput input) {
+	public static void computeIncidentRadiation(Parameters parameters, ETProblemQuantities variables,
+			ETCurrentStepInput input) {
 		variables.NewincidentSolarRadiationSoil = input.shortWaveRadiationDirect + input.shortWaveRadiationDiffuse
 				+ input.longWaveRadiation - variables.shortwaveCanopySun - variables.shortwaveCanopyShade
 				- variables.absorbedLongwaveRadiationSunlit - variables.absorbedLongwaveRadiationShadow

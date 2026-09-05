@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.core.rootdensity;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 
 /**
  * A simple design factory for creating a StressedETs objects
@@ -41,7 +41,7 @@ public class RootDensityFactory {
 	 * @return stressFactor G
 	 */
 
-	public static RootDensity createRootDensity(ProblemQuantities variables, CurrentStepInput input, String type) {
+	public static RootDensity createRootDensity(ETProblemQuantities variables, ETCurrentStepInput input, String type) {
 
 		RootDensity rootDensity = null;
 		if (type.equalsIgnoreCase("CostantGrowthMethod") || type.equalsIgnoreCase("CostantGrowthMethod")) {

@@ -18,8 +18,8 @@
 package org.geoframe.geoet.solvers;
 
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.stressfactor.FaoWaterStress;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
@@ -99,8 +99,8 @@ public class PenmanMonteithFAOSolverWithFAOWaterStress extends HMModel {
 
 
 	public Parameters parameters;
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {
@@ -126,7 +126,7 @@ public class PenmanMonteithFAOSolverWithFAOWaterStress extends HMModel {
 			input.soilFlux = variables.soilFluxparameter * input.netRadiation;
 		}
 
-		variables.windAtZ = ProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
+		variables.windAtZ = ETProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
 		if (waterWiltingPoint == 0.0 && waterFieldCapacity == 0.0 && depletionFraction == 0.0) {
 			variables.stressWater = 1;

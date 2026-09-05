@@ -2,7 +2,7 @@ package org.geoframe.geoet.core.transpiration;
 
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.core.radiation.*;
 
 import oms3.annotations.Author;
@@ -17,7 +17,7 @@ import oms3.annotations.License;
 public class TranspirationBudget {
 
 
-	public static double computeTranspirationBudget(ProblemQuantities variables, Leaf leafparameters, Parameters parameters,
+	public static double computeTranspirationBudget(ETProblemQuantities variables, Leaf leafparameters, Parameters parameters,
 			double stressSun, double stressShade, double atmosphericPressure, double airTemperature, double time,
 			double nullValue) {
 

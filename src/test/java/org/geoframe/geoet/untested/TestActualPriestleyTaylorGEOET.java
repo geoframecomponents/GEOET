@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.solvers.PriestleyTaylorSolverWithStressFactor;
 import org.geoframe.geoet.solvers.PriestleyTaylorPenmanMonteithFAOStressFactorSolver;
 import org.geotools.coverage.grid.GridCoverage2D;
@@ -34,8 +34,8 @@ public class TestActualPriestleyTaylorGEOET extends GeoetTestCase {
 		String lab1 = "test";
 
 		Parameters parameters = new Parameters();
-		ProblemQuantities variables = new ProblemQuantities();
-		CurrentStepInput input = new CurrentStepInput();
+		ETProblemQuantities variables = new ETProblemQuantities();
+		ETCurrentStepInput input = new ETCurrentStepInput();
 
 		OmsRasterReader DEMreader = new OmsRasterReader();
 		DEMreader.file = getRes("/Input/dataET_point/1/dem_1.tif");

@@ -18,7 +18,7 @@ import org.joda.time.DateTime;
  * @author Riccardo Rigon
  * @author Andrea Antonello
  */
-public class ProblemQuantities {
+public class ETProblemQuantities {
 
 	/** Leaf area index of the sunlit canopy fraction. Unit: m2 m-2. */
 	public double areaCanopySun;
@@ -167,9 +167,9 @@ public class ProblemQuantities {
 	/** Same as {@link #leafRadiativeFeedbackSun}, for the shaded canopy fraction. */
 	public double leafRadiativeFeedbackShade;
 
-	/** Root depth, mirrors {@link CurrentStepInput#rootDepth}. Unit: m. */
+	/** Root depth, mirrors {@link ETCurrentStepInput#rootDepth}. Unit: m. */
 	public double rootDepth;
-	/** Canopy height, mirrors {@link CurrentStepInput#canopyHeight}. Unit: m. */
+	/** Canopy height, mirrors {@link ETCurrentStepInput#canopyHeight}. Unit: m. */
 	public double canopyHeight;
 
 	/** Actual vapor pressure at the current air temperature/humidity. Unit: Pa. */

@@ -20,7 +20,7 @@ package org.geoframe.geoet.core.stressfactor;
 
 import static java.lang.Math.pow;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -36,10 +36,10 @@ import oms3.annotations.License;
 @License("General Public License Version 3 (GPLv3)")
 public class RootDensityWeightedSF extends RepresentativeStressFactor {
 
-	private ProblemQuantities variables;
+	private ETProblemQuantities variables;
 
 	/** General constructor used to pass the value of variables */
-	public RootDensityWeightedSF(ProblemQuantities variables, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,
+	public RootDensityWeightedSF(ETProblemQuantities variables, double[] z, double[] deltaZ, int NUM_CONTROL_VOLUMES,
 			double totalDepth) {
 		super(z, deltaZ, NUM_CONTROL_VOLUMES, totalDepth);
 		this.variables = variables;

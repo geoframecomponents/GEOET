@@ -20,7 +20,7 @@
 package org.geoframe.geoet.core.radiation;
 
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.core.transpiration.SolarGeometry;
 import org.joda.time.DateTime;
 
@@ -39,7 +39,7 @@ import oms3.annotations.License;
 @License("General Public License Version 3 (GPLv3)")
 public class ComputeRadiationQuantities {
 
-	public static void computeRadiationQuantities(Parameters parameters, ProblemQuantities variables, DateTime date,
+	public static void computeRadiationQuantities(Parameters parameters, ETProblemQuantities variables, DateTime date,
 			double latitude, double longitude, double time, double leafAreaIndex, String typeOfCanopy,
 			double shortWaveRadiationDirect, double shortWaveRadiationDiffuse, double netRadiation) {
 

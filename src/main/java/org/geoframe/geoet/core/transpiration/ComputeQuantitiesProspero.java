@@ -32,7 +32,7 @@ import oms3.annotations.License;
 
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 @Description("This class compute some of the quantities to solve the Prospero model.")
 @Documentation("")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -44,13 +44,13 @@ public class ComputeQuantitiesProspero {
 
 	private Leaf leafparameters;
 	private Parameters parameters;
-	private ProblemQuantities variables;
+	private ETProblemQuantities variables;
 	private SensibleHeatMethods sensibleHeat = new SensibleHeatMethods();
 	private LatentHeatMethods latentHeat = new LatentHeatMethods();
 	private PressureMethods pressure = new PressureMethods();
 	private SolarGeometry solarGeometry = new SolarGeometry();
 
-	public ComputeQuantitiesProspero(Leaf leafparameters, Parameters parameters, ProblemQuantities variables) {
+	public ComputeQuantitiesProspero(Leaf leafparameters, Parameters parameters, ETProblemQuantities variables) {
 		this.leafparameters = leafparameters;
 		this.parameters = parameters;
 		this.variables = variables;
@@ -62,8 +62,8 @@ public class ComputeQuantitiesProspero {
 			double shortWaveRadiationDiffuse, double netRadiation) {
 
 		////////// WIND
-		variables.windInCanopy = ProblemQuantities.computeWindProfile(windVelocity, canopyHeight);
-		variables.windSoil = ProblemQuantities.computeWindProfile(windVelocity, 0.2);
+		variables.windInCanopy = ETProblemQuantities.computeWindProfile(windVelocity, canopyHeight);
+		variables.windSoil = ETProblemQuantities.computeWindProfile(windVelocity, 0.2);
 
 		////////// Compute the saturation pressure
 		variables.saturationVaporPressure = pressure.computeSaturationVaporPressure(airTemperature,

@@ -18,8 +18,8 @@
  */
 package org.geoframe.geoet.solvers;
 
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.rootdensity.RootDensity;
 import org.geoframe.geoet.core.rootdensity.RootDensityFactory;
 
@@ -59,8 +59,8 @@ public class RootDensitySolver {
 	@Description("Object dealing with rootdensity in each control volume of the domain")
 	private RootDensity rootDensity;
 
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void solve() {

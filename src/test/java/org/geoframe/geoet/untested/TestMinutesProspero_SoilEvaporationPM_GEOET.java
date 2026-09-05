@@ -5,10 +5,10 @@ import java.util.HashMap;
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.solvers.PenmanMonteithFAOSoilEvaporationSolverWithCanopy;
 import org.geoframe.geoet.solvers.ProsperoStressFactorSolverWithEvaporation;
 import org.geoframe.geoet.solvers.ProsperoSolver;
@@ -36,8 +36,8 @@ public class TestMinutesProspero_SoilEvaporationPM_GEOET extends GeoetTestCase {
 		String fId = "ID";
 
 		Parameters parameters = new Parameters();
-		ProblemQuantities variables = new ProblemQuantities();
-		CurrentStepInput input = new CurrentStepInput();
+		ETProblemQuantities variables = new ETProblemQuantities();
+		ETCurrentStepInput input = new ETCurrentStepInput();
 		Leaf leaf = new Leaf();
 
 		////////////////////////////////////////////////////////////////////////////////////////////// int

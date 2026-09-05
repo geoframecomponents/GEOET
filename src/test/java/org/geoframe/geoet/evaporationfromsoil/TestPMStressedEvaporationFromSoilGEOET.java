@@ -2,8 +2,8 @@ package org.geoframe.geoet.evaporationfromsoil;
 
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.CurrentStepInput;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
 
@@ -29,8 +29,8 @@ public class TestPMStressedEvaporationFromSoilGEOET extends GeoetTestCase {
 		int timeStepMinutes = 60;
 		String fId = "ID";
 		Parameters parameters = new Parameters();
-		ProblemQuantities variables = new ProblemQuantities();
-		CurrentStepInput input = new CurrentStepInput();
+		ETProblemQuantities variables = new ETProblemQuantities();
+		ETCurrentStepInput input = new ETCurrentStepInput();
 
 		////////////////////////////////////////////////////////////////////////////////////////////// int
 		////////////////////////////////////////////////////////////////////////////////////////////// stationID

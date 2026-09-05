@@ -1,7 +1,7 @@
 package org.geoframe.geoet.core.transpiration;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.core.radiation.RadiationMethod;
 
 import oms3.annotations.Author;
@@ -13,7 +13,7 @@ import oms3.annotations.License;
 public class ProsperoModel {
 
 	/** @param stefanBoltzmannConstant W m-2 K-4 */
-	public static double computeTranspiration(ProblemQuantities variables, Leaf leafparameters,
+	public static double computeTranspiration(ETProblemQuantities variables, Leaf leafparameters,
 			double stefanBoltzmannConstant, double stressSun, double stressShade, double longWaveRadiation,
 			double airTemperature, double nullValue) {
 

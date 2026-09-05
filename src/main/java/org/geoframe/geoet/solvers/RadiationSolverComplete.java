@@ -1,8 +1,8 @@
 package org.geoframe.geoet.solvers;
 
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.radiation.ComputeRadiationQuantitiesComplete;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
@@ -29,8 +29,8 @@ public class RadiationSolverComplete extends HMModel {
 	public String typeOfCanopy;
 
 	public Parameters parameters;
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {

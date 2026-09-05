@@ -11,7 +11,7 @@ import org.joda.time.DateTime;
  * @author Concetta D'Amato and Riccardo Rigon
  * @author Andrea Antonello
  */
-public class CurrentStepInput {
+public class ETCurrentStepInput {
 
 	/** Air temperature for the current step. Unit: K. */
 	public double airTemperature;
@@ -81,7 +81,7 @@ public class CurrentStepInput {
 	/** Vector of Initial Condition for root density */
 	public double[] rootDensityIC;
 
-	/** Root growth rate per step, added to {@link org.geoframe.geoet.core.state.ProblemQuantities#rootDensity} by the root-growth methods. */
+	/** Root growth rate per step, added to {@link org.geoframe.geoet.core.state.ETProblemQuantities#rootDensity} by the root-growth methods. */
 	public double growthRateRoot;
 
 	/** Medlyn stomatal-conductance model slope parameter g1, used by {@code MedlynStressFactor}. */

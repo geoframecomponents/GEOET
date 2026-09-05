@@ -3,8 +3,8 @@ package org.geoframe.geoet.solvers;
 import org.geoframe.geoet.core.transpiration.ComputeQuantitiesProspero;
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.geoframe.geoet.core.transpiration.ProsperoModel;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
@@ -68,8 +68,8 @@ public class ProsperoSolver extends HMModel {
 	public double transpiration;
 
 	public Parameters parameters;
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 	public Leaf leafparameters;
 
 	@Execute

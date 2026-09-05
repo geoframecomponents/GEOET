@@ -12,7 +12,7 @@ import java.util.Set;
 
 import org.geoframe.geoet.core.config.Leaf;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.core.transpiration.PressureMethods;
 import org.geotools.api.feature.simple.SimpleFeature;
 import org.geotools.api.referencing.crs.CoordinateReferenceSystem;
@@ -42,7 +42,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 @Description("")
 
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
@@ -251,8 +251,8 @@ public class InputPreprocessor {
 
 	public Leaf leafparameters;
 	public Parameters parameters;
-	public ProblemQuantities variables;
-	public CurrentStepInput input;
+	public ETProblemQuantities variables;
+	public ETCurrentStepInput input;
 
 	@Execute
 	public void process() throws Exception {

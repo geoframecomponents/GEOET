@@ -4,7 +4,7 @@ import static java.lang.Math.exp;
 import static java.lang.Math.pow;
 
 import org.geoframe.geoet.core.config.Leaf;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 
 import oms3.annotations.Author;
 import oms3.annotations.License;
@@ -63,7 +63,7 @@ public class PressureMethods {
 	 * @param latentHeatEvaporation   latent heat of vaporization of water, J
 	 *                                kg-1
 	 */
-	public static double computeVapourPressureDelta(ProblemQuantities variables, Leaf leafparameters,
+	public static double computeVapourPressureDelta(ETProblemQuantities variables, Leaf leafparameters,
 			double stefanBoltzmannConstant, double latentHeatEvaporation, double absorbedRadiation,
 			double canopyArea, double airTemperature, double stress, double atmosphericPressure, double residual) {
 

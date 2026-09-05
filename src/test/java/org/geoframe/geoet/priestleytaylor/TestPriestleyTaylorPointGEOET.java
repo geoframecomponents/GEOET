@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import org.geoframe.geoet.GeoetTestCase;
 import org.geoframe.geoet.core.config.Parameters;
-import org.geoframe.geoet.core.state.ProblemQuantities;
+import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.io.InputPreprocessor;
 import org.geoframe.geoet.io.OutputWriter;
-import org.geoframe.geoet.core.state.CurrentStepInput;
+import org.geoframe.geoet.core.state.ETCurrentStepInput;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorReader;
 import org.hortonmachine.gears.io.timedependent.OmsTimeSeriesIteratorWriter;
 import org.junit.Test;
@@ -28,8 +28,8 @@ public class TestPriestleyTaylorPointGEOET extends GeoetTestCase {
 		String fId = "ID";
 		
 		Parameters parameters = new Parameters();
-		ProblemQuantities variables = new ProblemQuantities();
-		CurrentStepInput input = new CurrentStepInput();
+		ETProblemQuantities variables = new ETProblemQuantities();
+		ETCurrentStepInput input = new ETCurrentStepInput();
 
 		String inPathToNetRad = getRes("/Input/dataET_point/1/Net_1.csv");
 		String inPathToTemperature = getRes("/Input/dataET_point/1/airT_1.csv");
