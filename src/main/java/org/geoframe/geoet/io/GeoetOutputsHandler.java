@@ -102,6 +102,7 @@ public class GeoetOutputsHandler implements AutoCloseable {
 	public boolean dropAndRecreate = false;
 
 	private final ADb db;
+	private final boolean ownsDb;
 	private final int bufferSize;
 
 	private boolean initialized = false;
@@ -139,6 +140,19 @@ public class GeoetOutputsHandler implements AutoCloseable {
 		}
 		this.db = EDb.GEOPACKAGE.getDb();
 		this.db.open(dbPath);
+		this.ownsDb = true;
+		this.bufferSize = bufferSize;
+	}
+
+	/**
+	 * Shares an already-open {@link ADb} instead of owning its own file - not
+	 * deleted/recreated and not closed by this instance, since another writer may
+	 * already hold the same gpkg open (e.g. GEOSPACE-1D's coupled stack, writing
+	 * WHETGEO-1D's/BrokerGEO's own tables into the same file).
+	 */
+	public GeoetOutputsHandler(ADb db, int bufferSize) {
+		this.db = db;
+		this.ownsDb = false;
 		this.bufferSize = bufferSize;
 	}
 
@@ -196,7 +210,9 @@ public class GeoetOutputsHandler implements AutoCloseable {
 	@Override
 	public void close() throws Exception {
 		flush();
-		db.close();
+		if (ownsDb) {
+			db.close();
+		}
 	}
 
 	private static String placeholders(int n) {

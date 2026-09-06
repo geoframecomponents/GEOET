@@ -36,6 +36,10 @@ public class GeoetInputsHandler implements AutoCloseable {
 	public static final String COL_ID = "id";
 	public static final String COL_TIMESTAMP = "timestamp";
 
+	/** Optional per-cell root-density table - see {@link #rootDensityIC}'s javadoc. */
+	public static final String TABLE_ROOT_DENSITY_IC = "root_density_ic";
+	public static final String COL_ROOT_DENSITY_IC = "rootDensityIC";
+
 	public static final String PARAM_START_DATE = "startDate";
 	public static final String PARAM_END_DATE = "endDate";
 	public static final String PARAM_TIME_STEP_MINUTES = "timeStepMinutes";
@@ -81,6 +85,18 @@ public class GeoetInputsHandler implements AutoCloseable {
 	private final boolean ownsDb;
 	private final Map<String, Object> parameters = new HashMap<>();
 
+	/**
+	 * Per real soil cell (0-indexed, same convention as WHETGEO-1D's own
+	 * {@code Whetgeo1DInputsHandler} z/eta), the real root-density profile
+	 * {@code RootDensitySolver} needs when configured with {@code
+	 * rootDensityModel = "CostantMethod"} (and the raw input to {@code
+	 * LinearGrowthMethod}/{@code ExponentialGrowthMethod}, via {@code
+	 * InputPreprocessor}) - null if {@link #TABLE_ROOT_DENSITY_IC} is absent
+	 * from this run's input gpkg (a run with no root-water-uptake coupling has
+	 * no reason to carry it).
+	 */
+	public double[] rootDensityIC;
+
 	public GeoetInputsHandler(ADb db) {
 		this.db = db;
 		this.ownsDb = false;
@@ -100,7 +116,7 @@ public class GeoetInputsHandler implements AutoCloseable {
 		}
 	}
 
-	/** Reads the {@code parameters} table's single row into memory. */
+	/** Reads the {@code parameters} table's single row, and {@link #rootDensityIC} if present. */
 	public void read() throws Exception {
 		SqlName table = SqlName.m(TABLE_PARAMETERS);
 		Set<String> cols = new HashSet<>();
@@ -117,6 +133,20 @@ public class GeoetInputsHandler implements AutoCloseable {
 			}
 			return null;
 		});
+
+		SqlName rootDensityTable = SqlName.m(TABLE_ROOT_DENSITY_IC);
+		if (db.hasTable(rootDensityTable)) {
+			int n = (int) db.getCount(rootDensityTable);
+			rootDensityIC = new double[n];
+			String sql = "SELECT " + COL_ID + ", " + COL_ROOT_DENSITY_IC + " FROM " + rootDensityTable.fixedDoubleName
+					+ " ORDER BY " + COL_ID;
+			db.execOnResultSet(sql, rs -> {
+				while (rs.next()) {
+					rootDensityIC[rs.getInt(1)] = rs.getDouble(2);
+				}
+				return null;
+			});
+		}
 	}
 
 	private static int columnIndex(org.hortonmachine.dbs.compat.IHMResultSet rs, String colName) throws Exception {
