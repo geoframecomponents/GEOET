@@ -1,7 +1,11 @@
 package org.geoframe.geoet.io;
 
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -192,6 +196,103 @@ public class GeoetInputsHandler implements AutoCloseable {
 	 */
 	public Map<String, Object> getParameters() {
 		return new HashMap<>(parameters);
+	}
+
+	/**
+	 * Parameters stored under a name different from the solver field they fill,
+	 * as {parameter name, solver field name}.
+	 */
+	private static final String[][] FIELD_ALIASES = { //
+			{ PARAM_ROOTS_DEPTH, "rootDepth" }, //
+			{ PARAM_THETA, "thetaR" }, //
+			{ PARAM_TIME_STEP_MINUTES, "temporalStep" }, //
+			{ COL_ROOT_DENSITY_IC, "rootIC" } //
+	};
+
+	/**
+	 * Same as {@link #applyTo(Object, String)}, without a prefix.
+	 */
+	public List<String> applyTo(Object solver) throws Exception {
+		return applyTo(solver, null);
+	}
+
+	/**
+	 * Set on a solver (or on an {@link InputPreprocessor}, an
+	 * {@code ETCurrentStepInput}, ...) the parameters this handler read, and the
+	 * {@link #rootDensityIC}. A public field is set when a parameter has its name,
+	 * ex. {@code VPD0}, or an alias of it, ex. {@code rootsDepth} for
+	 * {@code rootDepth}. Numbers are converted to the type of the field, 0/1 to
+	 * boolean.
+	 *
+	 * <p>
+	 * The prefix picks a parameter that is meant for one solver only, when two
+	 * solvers have a field with the same name: with prefix "jarvis", the
+	 * parameter {@code jarvisAlpha} fills the field {@code alpha}, and wins over
+	 * a plain {@code alpha} parameter.
+	 *
+	 * <p>
+	 * A scalar parameter never fills an array field and vice versa, ex. the
+	 * {@code theta} parameter fills {@code thetaR}, not the per-cell {@code theta}
+	 * array of the Jarvis solver. The simulation dates are left to the caller.
+	 *
+	 * @param solver the solver, ex. a {@code JarvisStressFactorSolverWithNetRadiation}.
+	 * @param prefix the prefix of the solver's own parameters, ex. "jarvis", or
+	 *               <code>null</code>.
+	 * @return the names of the solver fields that were set.
+	 */
+	public List<String> applyTo(Object solver, String prefix) throws Exception {
+		Map<String, Object> values = new HashMap<>(parameters);
+		if (rootDensityIC != null) {
+			values.put(COL_ROOT_DENSITY_IC, rootDensityIC);
+		}
+
+		List<String> setFields = new ArrayList<>();
+		for (Field field : solver.getClass().getFields()) {
+			int modifiers = field.getModifiers();
+			if (Modifier.isStatic(modifiers) || Modifier.isFinal(modifiers)) {
+				continue;
+			}
+			String name = field.getName();
+			for (String[] alias : FIELD_ALIASES) {
+				if (alias[1].equals(name)) {
+					name = alias[0];
+					break;
+				}
+			}
+			String parameterName = name;
+			if (prefix != null && !prefix.isEmpty()) {
+				String prefixed = prefix + Character.toUpperCase(name.charAt(0)) + name.substring(1);
+				if (values.containsKey(prefixed)) {
+					parameterName = prefixed;
+				}
+			}
+			Object value = values.get(parameterName);
+			if (value == null || value.getClass().isArray() != field.getType().isArray()) {
+				continue;
+			}
+			field.set(solver, convert(value, field.getType(), parameterName, field.getName()));
+			setFields.add(field.getName());
+		}
+		return setFields;
+	}
+
+	private static Object convert(Object value, Class<?> type, String parameterName, String fieldName) {
+		if (type.isInstance(value)) {
+			return value;
+		}
+		if (value instanceof Number number) {
+			if (type == double.class || type == Double.class) {
+				return number.doubleValue();
+			}
+			if ((type == int.class || type == Integer.class) && number.doubleValue() == number.intValue()) {
+				return number.intValue();
+			}
+			if (type == boolean.class || type == Boolean.class) {
+				return number.doubleValue() != 0;
+			}
+		}
+		throw new IllegalArgumentException("The parameter " + parameterName + " = " + value
+				+ " can't fill the solver field " + fieldName + ", which is a " + type.getSimpleName());
 	}
 
 	/**

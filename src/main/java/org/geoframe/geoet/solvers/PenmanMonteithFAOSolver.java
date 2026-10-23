@@ -36,7 +36,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.penmanmonteithfao.PenmanMonteithFAOModel;
+import org.geoframe.geoet.core.GeoframeET;
 @Description("Calculates potential evapotranspiration at any timestep using FAO Penman-Monteith equation")
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
@@ -96,7 +96,7 @@ public class PenmanMonteithFAOSolver extends HMModel {
 
 		variables.windAtZ = ETProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
-		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
+		variables.evapoTranspirationPM = GeoframeET.penmanMonteithFAODepth(parameters.Cp,
 				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,
 				input.soilFlux, input.time, variables.windAtZ, input.netRadiation);// --> mm/time
 

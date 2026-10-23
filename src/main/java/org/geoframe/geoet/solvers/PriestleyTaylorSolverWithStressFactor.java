@@ -34,7 +34,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.priestleytaylor.PriestleyTaylorModel;
+import org.geoframe.geoet.core.GeoframeET;
 @Description("Calculate evapotraspiration based on the Priestley Taylor model")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
@@ -117,7 +117,7 @@ public class PriestleyTaylorSolverWithStressFactor extends HMModel {
 		}
 
 		variables.fluxEvapoTranspirationPT = (input.netRadiation < 0) ? 0
-				: PriestleyTaylorModel.computeEvapotranspirationFlux(parameters.alpha, input.atmosphericPressure,
+				: GeoframeET.priestleyTaylorFlux(parameters.alpha, input.atmosphericPressure,
 						input.airTemperatureC, input.soilFlux, input.netRadiation) * stressFactor;
 		variables.fluxEvapoTranspirationPT = (variables.fluxEvapoTranspirationPT < 0) ? 0
 				: variables.fluxEvapoTranspirationPT;

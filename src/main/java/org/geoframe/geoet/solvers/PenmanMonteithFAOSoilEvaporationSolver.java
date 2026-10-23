@@ -3,7 +3,7 @@ package org.geoframe.geoet.solvers;
 import org.geoframe.geoet.core.config.Parameters;
 import org.geoframe.geoet.core.state.ETProblemQuantities;
 import org.geoframe.geoet.core.state.ETCurrentStepInput;
-import org.geoframe.geoet.core.penmanmonteithfao.PenmanMonteithFAOModel;
+import org.geoframe.geoet.core.GeoframeET;
 import org.hortonmachine.gears.libs.modules.HMModel;
 
 import oms3.annotations.Author;
@@ -66,7 +66,7 @@ public class PenmanMonteithFAOSoilEvaporationSolver extends HMModel {
 
 		variables.windSoil = ETProblemQuantities.computeWindProfile(input.windVelocity, 0.2);
 
-		variables.evaporation = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp, parameters.Cd,
+		variables.evaporation = GeoframeET.penmanMonteithFAODepth(parameters.Cp, parameters.Cd,
 				input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity, input.soilFlux, input.time,
 				variables.windSoil, input.netRadiation) * evaporationStressWater; // --> mm/time
 		variables.fluxEvaporation = variables.evaporation * parameters.latentHeatEvaporation / input.time; // --> W/m2

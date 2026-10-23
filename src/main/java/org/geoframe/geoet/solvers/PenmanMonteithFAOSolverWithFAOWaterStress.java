@@ -40,7 +40,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.penmanmonteithfao.PenmanMonteithFAOModel;
+import org.geoframe.geoet.core.GeoframeET;
 @Description("Calculates evapotranspiration at any timestep using FAO Penman-Monteith equation and water stress factor according FAO formulation")
 @Author(name = "Concetta D'Amato, Michele Bottazzi and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
@@ -135,7 +135,7 @@ public class PenmanMonteithFAOSolverWithFAOWaterStress extends HMModel {
 					waterWiltingPoint, rootsDepth, depletionFraction);
 
 ////////////////// Chapter 2 - FAO Penman-Monteith equation 6 (https://www.fao.org/3/X0490E/x0490e06.htm#TopOfPage) //////////////////
-		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
+		variables.evapoTranspirationPM = GeoframeET.penmanMonteithFAODepth(parameters.Cp,
 				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,
 				input.soilFlux, input.time, variables.windAtZ, input.netRadiation) * variables.stressWater
 				* cropCoefficient;// --> mm/time

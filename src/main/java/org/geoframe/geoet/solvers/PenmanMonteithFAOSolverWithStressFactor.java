@@ -39,7 +39,7 @@ import oms3.annotations.Out;
 import oms3.annotations.Status;
 import oms3.annotations.Unit;
 
-import org.geoframe.geoet.core.penmanmonteithfao.PenmanMonteithFAOModel;
+import org.geoframe.geoet.core.GeoframeET;
 @Description("Calculates total stressed evapotranspiration at any timestep using FAO Penman-Monteith equation using any type of stress factor model")
 @Author(name = "Concetta D'Amato and Riccardo Rigon", contact = "concetta.damato@unitn.it")
 @Keywords("evapotraspiration, hydrology")
@@ -111,7 +111,7 @@ public class PenmanMonteithFAOSolverWithStressFactor extends HMModel {
 
 		variables.windAtZ = ETProblemQuantities.computeWindProfile(input.windVelocity, variables.canopyHeight);
 
-		variables.evapoTranspirationPM = PenmanMonteithFAOModel.computeEvapotranspirationDepth(parameters.Cp,
+		variables.evapoTranspirationPM = GeoframeET.penmanMonteithFAODepth(parameters.Cp,
 				parameters.Cd, input.atmosphericPressure, input.airTemperatureC, input.relativeHumidity,
 				input.soilFlux, input.time, variables.windAtZ, input.netRadiation) * stressFactor;// --> mm/time
 
